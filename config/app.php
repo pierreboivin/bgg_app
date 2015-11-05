@@ -26,7 +26,7 @@ return [
 	|
 	*/
 
-	'url' => env('APP_URL', 'http://localhost'),
+	'url' => env('APP_URL', 'http://bgg.app'),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -136,6 +136,8 @@ return [
 		'Illuminate\Validation\ValidationServiceProvider',
 		'Illuminate\View\ViewServiceProvider',
 
+		'Illuminate\Html\HtmlServiceProvider',
+
 		/*
 		 * Application Service Providers...
 		 */
@@ -192,6 +194,8 @@ return [
 		'URL'       => 'Illuminate\Support\Facades\URL',
 		'Validator' => 'Illuminate\Support\Facades\Validator',
 		'View'      => 'Illuminate\Support\Facades\View',
+		'Html'      => 'Illuminate\Html\HtmlFacade',
+		'Form'      => 'Illuminate\Html\FormFacade',
 
 	],
 

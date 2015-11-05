@@ -1,0 +1,9 @@
+{
+  "name": "BGG App",
+  "dependencies": {
+    "bootstrap": "~3.3.5",
+    "Chart.js": "~1.0.2",
+    "jquery": "~2.1.4",
+    "isotope": "~2.2.2"
+  }
+}
