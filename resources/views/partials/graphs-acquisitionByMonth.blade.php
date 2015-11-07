@@ -20,7 +20,7 @@
             onAnimationComplete: function () {
                 var ctx = this.chart.ctx;
                 ctx.font = this.scale.font;
-                ctx.fillStyle = this.scale.textColor
+                ctx.fillStyle = this.scale.textColor;
                 ctx.textAlign = "center";
                 ctx.textBaseline = "bottom";
 

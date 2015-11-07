@@ -5,11 +5,13 @@
 
 @section('content')
 
+    @include('partials.userInfo')
+
     <!-- Example : http://codepen.io/desandro/pen/Ehgij -->
     <div class="btn-group btn-group-lg filter-playingtime" role="group">
         <button type="button" class="btn btn-default is-checked" data-filter="*">Tous</button>
-        <button type="button" class="btn btn-default" data-filter=".shortgame">Jeu court</button>
-        <button type="button" class="btn btn-default" data-filter=".longgame">Jeu long</button>
+        <button type="button" class="btn btn-default" data-filter=".shortgame">Jeu court (30 min. et -)</button>
+        <button type="button" class="btn btn-default" data-filter=".longgame">Jeu long (60 min. et +)</button>
     </div>
     <div class="grid collection">
         @foreach($games as $idGame => $game)

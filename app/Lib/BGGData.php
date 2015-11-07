@@ -11,7 +11,7 @@ class BGGData
         $urlBGG = 'http://www.boardgamegeek.com/xmlapi2/collection?own=1&excludesubtype=boardgameexpansion&stats=1&showprivate=1&username=' . $GLOBALS['parameters']['general']['username'];
 
         return self::getBGGUrl($urlBGG, 'curl',
-            ['cookie' => 'bggusername=' . $GLOBALS['parameters']['general']['username'] . '; bggpassword=' . $GLOBALS['parameters']['general']['password']]);
+            ['cookie' => 'bggusername=' . $GLOBALS['parameters']['general']['username'] . '; bggpassword=' . $GLOBALS['parameters']['login']['password']]);
     }
 
     public static function getGamesAndExpansionsOwned()
@@ -19,7 +19,7 @@ class BGGData
         $urlBGG = 'http://www.boardgamegeek.com/xmlapi2/collection?own=1&stats=1&showprivate=1&username=' . $GLOBALS['parameters']['general']['username'];
 
         return self::getBGGUrl($urlBGG, 'curl',
-            ['cookie' => 'bggusername=' . $GLOBALS['parameters']['general']['username'] . '; bggpassword=' . $GLOBALS['parameters']['general']['password']]);
+            ['cookie' => 'bggusername=' . $GLOBALS['parameters']['general']['username'] . '; bggpassword=' . $GLOBALS['parameters']['login']['password']]);
     }
 
     public static function getUserInfos()

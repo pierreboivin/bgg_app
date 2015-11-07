@@ -11,26 +11,24 @@ use App\Lib\Stats;
 class StatsController extends Controller
 {
     /**
-     * @param string $username
      * @return mixed
      */
-    public function home($username = '')
+    public function home()
     {
-        SessionManager::guestConnexion($username);
         $paramsMenu = Page::getMenuParams();
 
+        $arrayRawUserInfos = BGGData::getUserInfos();
         $arrayRawGamesOwned = BGGData::getGamesOwned();
         $arrayRawGamesAndExpansionsOwned = BGGData::getGamesAndExpansionsOwned();
         $arrayRawGamesPlays = BGGData::getPlays();
-        $arrayRawUserInfos = BGGData::getUserInfos();
 
         Stats::getPlaysRelatedArrays($arrayRawGamesPlays);
         Stats::getAcquisitionRelatedArrays($arrayRawGamesAndExpansionsOwned);
         Stats::getCollectionArrays($arrayRawGamesOwned);
 
-        $arrayBuddies = \App\Lib\UserInfos::formatArrayUserInfo($arrayRawUserInfos, 'buddies', 'buddy');
-        $arrayGamesTop = \App\Lib\UserInfos::formatArrayUserInfo($arrayRawUserInfos, 'top', 'item');
         $arrayUserInfos = \App\Lib\UserInfos::getUserInformations($arrayRawUserInfos);
+
+        $params['userinfo'] = $arrayUserInfos;
 
         $params['stats']['nbGamesOwned'] = $arrayRawGamesOwned['@attributes']['totalitems'];
         $params['stats']['nbGamesAndExpansionsOwned'] = $arrayRawGamesAndExpansionsOwned['@attributes']['totalitems'];
@@ -51,10 +49,6 @@ class StatsController extends Controller
             $params['stats']['totalValueGames'] = '';
         }
 
-        $params['userinfo'] = $arrayUserInfos;
-        $params['userinfo']['lists']['buddies'] = $arrayBuddies;
-        $params['userinfo']['lists']['topGames'] = $arrayGamesTop;
-
         $params['graphs']['byMonth'] = Graphs::getPlayByMonth();
         $params['graphs']['mostPlayed'] = Graphs::getMostPlayed();
         $params['graphs']['ownedTimePlayed'] = Graphs::getOwnedTimePlayed();
@@ -69,10 +63,8 @@ class StatsController extends Controller
     /**
      * @param $page
      */
-    public function ajaxPlayByMonthPrevious($username, $page)
+    public function ajaxPlayByMonthPrevious($page)
     {
-        SessionManager::guestConnexion($username);
-
         $monthArray = $this->getMonthArray($page);
 
         echo json_encode($monthArray);
@@ -82,10 +74,8 @@ class StatsController extends Controller
      * @param $page
      * @param $label
      */
-    public function ajaxPlayByMonthGetUrl($username, $page, $label)
+    public function ajaxPlayByMonthGetUrl($page, $label)
     {
-        SessionManager::guestConnexion($username);
-
         $monthArray = $this->getMonthArray($page);
 
         echo $monthArray['urls'][$label];
@@ -107,10 +97,8 @@ class StatsController extends Controller
     /**
      * @param $page
      */
-    public function ajaxMostPlayedPrevious($username, $page)
+    public function ajaxMostPlayedPrevious($page)
     {
-        SessionManager::guestConnexion($username);
-
         $mostPlayedArray = $this->getMostPlayedArray($page);
 
         echo json_encode($mostPlayedArray);
@@ -120,10 +108,8 @@ class StatsController extends Controller
      * @param $page
      * @param $label
      */
-    public function ajaxMostPlayedGetUrl($username, $page, $label)
+    public function ajaxMostPlayedGetUrl($page, $label)
     {
-        SessionManager::guestConnexion($username);
-
         $mostPlayedArray = $this->getMostPlayedArray($page);
 
         echo $mostPlayedArray['urls'][$label];
@@ -147,10 +133,8 @@ class StatsController extends Controller
     /**
      * @param $page
      */
-    public function ajaxAcquisitionPrevious($username, $page)
+    public function ajaxAcquisitionPrevious($page)
     {
-        SessionManager::guestConnexion($username);
-
         $acquisitionArray = $this->getAcquisitionByMonthArray($page);
 
         echo json_encode($acquisitionArray);
@@ -160,10 +144,8 @@ class StatsController extends Controller
      * @param $page
      * @param $label
      */
-    public function ajaxAcquisitionByMonthGetUrl($username, $page, $label)
+    public function ajaxAcquisitionByMonthGetUrl($page, $label)
     {
-        SessionManager::guestConnexion($username);
-
         $acquisitionArray = $this->getAcquisitionByMonthArray($page);
 
         echo $acquisitionArray['urls'][$label];

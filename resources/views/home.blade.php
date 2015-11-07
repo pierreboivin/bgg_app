@@ -4,51 +4,56 @@
 
 @section('content')
 
-    <div class="jumbotron login vertical-center">
-        <div class="container">
-            @if(Session::has('success'))
-                <div class="alert alert-success">
-                    {{ Session::get('success') }}
+    @include('partials.userInfo')
+
+    <div class="list-group">
+        <a href="/stats/{{ $GLOBALS['parameters']['general']['username'] }}" class="list-group-item">
+            <h3 class="list-group-item-heading">Statistiques</h3>
+            <p class="list-group-item-text">Consulter des graphiques sur vos parties joués, vos jeux préférés et plus encore.</p>
+        </a>
+        <a href="/collection/{{ $GLOBALS['parameters']['general']['username'] }}" class="list-group-item">
+            <h3 class="list-group-item-heading">Collection</h3>
+            <p class="list-group-item-text">Consulter votre collection de jeux.</p>
+        </a>
+    </div>
+
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="heading2">
+                <h2>
+                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse2" aria-expanded="false" aria-controls="collapse2">
+                        Amis
+                    </a>
+                </h2>
+            </div>
+            <div id="collapse2" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading2">
+                <div class="panel-body">
+                    <ul>
+                        @foreach ($userinfo['lists']['buddies'] as $id => $name)
+                            <li>{!! HTML::linkRoute('stats', $name, array($name)) !!}</li>
+                        @endforeach
+                    </ul>
                 </div>
-            @endif
-            <h2>Connectez-vous</h2>
-
-            {!! Form::open(array('url' => '/userLogin')) !!}
-
-            <div class="form-group">
-                <!-- if there are login errors, show them here -->
-                @foreach ($errors->all() as $message)
-                    <div class="alert alert-danger">
-                        {{ $message }}
-                    </div>
-                @endforeach
-
-                <p>
-                    {!! Form::label('email', 'Adresse courriel') !!}
-                    {!! Form::text('email', Input::old('email'), ['placeholder' => 'info@email.com', 'class' => 'form-control']) !!}
-                </p>
-
-                <p>
-                    {!! Form::label('password', 'Mot de passe') !!}
-                    {!! Form::password('password', ['class' => 'form-control']) !!}
-                </p>
-
-                <p>{!! Form::submit('Se connecter', ['class' => 'btn btn-mini btn-primary', 'id' => 'btnUserLogin', 'data-loading-text' => 'Chargement en cours...']) !!}</p>
             </div>
-            {!! Form::close() !!}
-
-
-            <h2>Visitez le site en tant qu'invité</h2>
-
-            {!! Form::open(array('url' => '/guestLogin')) !!}
-            <div class="form-group">
-                <p>
-                    {!! Form::label('username', 'Nom d\'utilisateur BGG') !!}
-                    {!! Form::text('username', Input::old('username'), ['class' => 'form-control']) !!}
-                </p>
-                <p>{!! Form::submit('Visiter', ['class' => 'btn btn-mini btn-primary', 'id' => 'btnGuestLogin', 'data-loading-text' => 'Chargement en cours...']) !!}</p>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="heading3">
+                <h2>
+                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse3" aria-expanded="false" aria-controls="collapse3">
+                        Jeux préférés
+                    </a>
+                </h2>
             </div>
-            {!! Form::close() !!}
+            <div id="collapse3" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading3">
+                <div class="panel-body">
+                    <ul>
+                        @foreach ($userinfo['lists']['topGames'] as $id => $name)
+                            <li><a href="http://boardgamegeek.com/boardgame/{{ $id }}">{{ $name }}</a></li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 

@@ -1,0 +1,1 @@
+<h1>{{ $userinfo['firstname'] }} {{ $userinfo['lastname'] }} ({{ $userinfo['username'] }})</h1>

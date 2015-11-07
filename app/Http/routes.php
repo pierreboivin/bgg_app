@@ -11,23 +11,29 @@
 |
 */
 
+Route::get('/', function()
+{
+    return redirect('/home');
+});
 
-Route::get('/', 'HomeController@home');
-Route::post('/userLogin', ['uses' => 'HomeController@userLogin']);
-Route::post('/guestLogin', ['uses' => 'HomeController@guestLogin']);
-Route::get('/logout', ['uses' => 'HomeController@logout']);
+Route::get('/home', ['uses' => 'HomeController@home', 'middleware' => 'app.auth']);
+Route::get('/home/{username}', ['uses' => 'HomeController@home', 'middleware' => 'app.auth']);
+Route::get('/login', ['uses' => 'LoginController@login']);
+Route::post('/userLogin', ['uses' => 'LoginController@userLogin']);
+Route::post('/guestLogin', ['uses' => 'LoginController@guestLogin']);
+Route::get('/logout', ['uses' => 'LoginController@logout']);
 
 Route::get('/tools/flushCaches', ['uses' => 'ToolsController@flushCaches']);
 
-Route::get('/stats/{username}', ['as' => 'stats', 'uses' => 'StatsController@home']);
-Route::get('/collection/{username}', ['as' => 'collection', 'uses' => 'CollectionController@home']);
+Route::get('/stats/{username}', ['as' => 'stats', 'uses' => 'StatsController@home', 'middleware' => 'app.auth']);
+Route::get('/collection/{username}', ['as' => 'collection', 'uses' => 'CollectionController@home', 'middleware' => 'app.auth']);
 
 // Routes for getting previous pages
-Route::get('ajaxPlayByMonthPrevious/{username}/{page}', ['as' => 'ajaxPlayByMonthPrevious', 'uses' => 'StatsController@ajaxPlayByMonthPrevious']);
-Route::get('ajaxMostPlayedPrevious/{username}/{page}', ['as' => 'ajaxMostPlayedPrevious', 'uses' => 'StatsController@ajaxMostPlayedPrevious']);
-Route::get('ajaxAcquisitionPrevious/{username}/{page}', ['as' => 'ajaxAcquisitionPrevious', 'uses' => 'StatsController@ajaxAcquisitionPrevious']);
+Route::get('ajaxPlayByMonthPrevious/{username}/{page}', ['as' => 'ajaxPlayByMonthPrevious', 'uses' => 'StatsController@ajaxPlayByMonthPrevious', 'middleware' => 'app.auth']);
+Route::get('ajaxMostPlayedPrevious/{username}/{page}', ['as' => 'ajaxMostPlayedPrevious', 'uses' => 'StatsController@ajaxMostPlayedPrevious', 'middleware' => 'app.auth']);
+Route::get('ajaxAcquisitionPrevious/{username}/{page}', ['as' => 'ajaxAcquisitionPrevious', 'uses' => 'StatsController@ajaxAcquisitionPrevious', 'middleware' => 'app.auth']);
 
 // Routes for getting URL in ajax
-Route::get('ajaxPlayByMonthGetUrl/{username}/{page}/{label}', ['as' => 'ajaxPlayByMonthGetUrl', 'uses' => 'StatsController@ajaxPlayByMonthGetUrl']);
-Route::get('ajaxMostPlayedGetUrl/{username}/{page}/{label}', ['as' => 'ajaxMostPlayedGetUrl', 'uses' => 'StatsController@ajaxMostPlayedGetUrl']);
-Route::get('ajaxAcquisitionByMonthGetUrl/{username}/{page}/{label}', ['as' => 'ajaxAcquisitionByMonthGetUrl', 'uses' => 'StatsController@ajaxAcquisitionByMonthGetUrl']);
+Route::get('ajaxPlayByMonthGetUrl/{username}/{page}/{label}', ['as' => 'ajaxPlayByMonthGetUrl', 'uses' => 'StatsController@ajaxPlayByMonthGetUrl', 'middleware' => 'app.auth']);
+Route::get('ajaxMostPlayedGetUrl/{username}/{page}/{label}', ['as' => 'ajaxMostPlayedGetUrl', 'uses' => 'StatsController@ajaxMostPlayedGetUrl', 'middleware' => 'app.auth']);
+Route::get('ajaxAcquisitionByMonthGetUrl/{username}/{page}/{label}', ['as' => 'ajaxAcquisitionByMonthGetUrl', 'uses' => 'StatsController@ajaxAcquisitionByMonthGetUrl', 'middleware' => 'app.auth']);

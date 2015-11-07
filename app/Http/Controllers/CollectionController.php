@@ -9,12 +9,14 @@ use App\Lib\SessionManager;
 
 class CollectionController extends Controller
 {
-    public function home($username = '')
+    public function home()
     {
-        SessionManager::guestConnexion($username);
         $paramsMenu = Page::getMenuParams();
 
         $arrayRawGamesOwned = BGGData::getGamesOwned();
+        $arrayRawUserInfos = BGGData::getUserInfos();
+        $arrayUserInfos = \App\Lib\UserInfos::getUserInformations($arrayRawUserInfos);
+        $params['userinfo'] = $arrayUserInfos;
 
         $arrayGames = [];
         foreach($arrayRawGamesOwned['item'] as $gameProperties) {

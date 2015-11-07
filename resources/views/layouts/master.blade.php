@@ -19,13 +19,15 @@
             </div>
             <div>
                 <ul class="nav navbar-nav">
-                    <li class="{{ \App\Helpers\Helper::set_active('/') }}"><a href="/">Accueil</a></li>
-                    @if(isset($username))
-                        <li class="{{ \App\Helpers\Helper::set_active('stats') }}"><a href="/stats/{{ $username }}">Statistiques</a></li>
-                        <li class="{{ \App\Helpers\Helper::set_active('collection') }}"><a href="/collection/{{ $username }}">Collection</a></li>
+                    @if(isset($GLOBALS['parameters']['general']['username']))
+                        <li class="{{ \App\Helpers\Helper::set_active('home') }}"><a href="/home/{{ $GLOBALS['parameters']['general']['username'] }}">Accueil</a></li>
+                        <li class="{{ \App\Helpers\Helper::set_active('stats') }}"><a href="/stats/{{ $GLOBALS['parameters']['general']['username'] }}">Statistiques</a></li>
+                        <li class="{{ \App\Helpers\Helper::set_active('collection') }}"><a href="/collection/{{ $GLOBALS['parameters']['general']['username'] }}">Collection</a></li>
                     @endif
                     <li><a href="http://boardgamegeek.com/" target="_blank">Site BGG</a></li>
-                    <li><a href="/logout">Se déconnecter</a></li>
+                    @if(Auth::check())
+                        <li><a href="/logout">Se déconnecter</a></li>
+                    @endif
                 </ul>
             </div>
         </div>
