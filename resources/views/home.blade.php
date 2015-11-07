@@ -6,6 +6,7 @@
 
     @include('partials.userInfo')
 
+    <h2>Navigation</h2>
     <div class="list-group">
         <a href="/stats/{{ $GLOBALS['parameters']['general']['username'] }}" class="list-group-item">
             <h3 class="list-group-item-heading">Statistiques</h3>
@@ -17,8 +18,16 @@
         </a>
     </div>
 
-    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+    <h2>Raccourcis vers BoardGameGeek</h2>
+    <div class="list-group">
+        <a class="list-group-item" target="_blank" href="http://boardgamegeek.com/user/{{$GLOBALS['parameters']['general']['username']}}">Votre page sur BGG</a>
+        <a class="list-group-item" target="_blank" href="http://boardgamegeek.com/plays/bydate/user/{{$GLOBALS['parameters']['general']['username']}}/subtype/boardgame">Derniers jeux joués</a>
+        <a class="list-group-item" target="_blank" href="http://boardgamegeek.com/collection/user/{{$GLOBALS['parameters']['general']['username']}}?sort=rating&sortdir=desc&rankobjecttype=subtype&rankobjectid=1&columns=title%7Cstatus%7Cversion%7Crating%7Cbggrating%7Cplays%7Ccomment%7Ccommands&geekranks=Board+Game+Rank&excludesubtype=boardgameexpansion&rated=1&ff=1&subtype=boardgame">Jeux les mieux évalués</a>
+        <a class="list-group-item" target="_blank" href="http://boardgamegeek.com/collection/user/{{$GLOBALS['parameters']['general']['username']}}?sort=rating&sortdir=desc&rankobjecttype=subtype&rankobjectid=1&columns=title%7Cstatus%7Cversion%7Crating%7Cbggrating%7Cplays%7Ccomment%7Ccommands&geekranks=%0A%09%09%09%09%09%09%09%09%09Board+Game+Rank%0A%09%09%09%09%09%09%09%09&excludesubtype=boardgameexpansion&rated=0&played=1&ff=1&subtype=boardgame">Jeux joués non évalués</a>
+    </div>
 
+    <h2>Information sur l'utilisateur</h2>
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
         <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="heading2">
                 <h2>

@@ -20,6 +20,7 @@ class CollectionController extends Controller
 
         $arrayGames = [];
         foreach($arrayRawGamesOwned['item'] as $gameProperties) {
+
             $arrayGame = [];
             $classes = [];
 
@@ -31,6 +32,7 @@ class CollectionController extends Controller
             $arrayGame['minplayers'] = isset($gameProperties['stats']['@attributes']['minplayers']) ? $gameProperties['stats']['@attributes']['minplayers'] : 0;
             $arrayGame['maxplayers'] = isset($gameProperties['stats']['@attributes']['maxplayers']) ? $gameProperties['stats']['@attributes']['maxplayers'] : 0;
             $arrayGame['numplays'] = $gameProperties['numplays'];
+            $arrayGame['rating'] = $gameProperties['stats']['rating']['@attributes']['value'];
 
             if($arrayGame['playingtime'] >= 60) {
                 $classes[] = 'longgame';
@@ -42,6 +44,7 @@ class CollectionController extends Controller
 
             $arrayGame['tooltip'] = 'Nb partie joué : ' . $arrayGame['numplays'];
             $arrayGame['tooltip'] .= '<br>Durée d\'une partie : ' . $arrayGame['playingtime'] . ' minutes';
+            $arrayGame['tooltip'] .= '<br>Classification : ' . $arrayGame['rating'] . ' / 10';
 
             $arrayGames[$idGame] = $arrayGame;
         }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Lib\BGGData;
 use App\Lib\Page;
+use App\Lib\UserInfos;
 
 class HomeController extends Controller
 {
@@ -15,9 +16,9 @@ class HomeController extends Controller
     {
         $arrayRawUserInfos = BGGData::getUserInfos();
 
-        $arrayBuddies = \App\Lib\UserInfos::formatArrayUserInfo($arrayRawUserInfos, 'buddies', 'buddy');
-        $arrayGamesTop = \App\Lib\UserInfos::formatArrayUserInfo($arrayRawUserInfos, 'top', 'item');
-        $arrayUserInfos = \App\Lib\UserInfos::getUserInformations($arrayRawUserInfos);
+        $arrayBuddies = UserInfos::formatArrayUserInfo($arrayRawUserInfos, 'buddies', 'buddy');
+        $arrayGamesTop = UserInfos::formatArrayUserInfo($arrayRawUserInfos, 'top', 'item');
+        $arrayUserInfos = UserInfos::getUserInformations($arrayRawUserInfos);
 
         $params['userinfo'] = $arrayUserInfos;
         $params['userinfo']['lists']['buddies'] = $arrayBuddies;

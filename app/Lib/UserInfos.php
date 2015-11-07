@@ -16,7 +16,8 @@ class UserInfos
             'firstname' => $arrayRawUserInfos['firstname']['@attributes']['value'],
             'lastname' => $arrayRawUserInfos['lastname']['@attributes']['value'],
             'stateorprovince' => $arrayRawUserInfos['stateorprovince']['@attributes']['value'],
-            'country' => $arrayRawUserInfos['country']['@attributes']['value']
+            'country' => $arrayRawUserInfos['country']['@attributes']['value'],
+            'yearregistered' => $arrayRawUserInfos['yearregistered']['@attributes']['value']
         ];
         return $arrayInfo;
     }
