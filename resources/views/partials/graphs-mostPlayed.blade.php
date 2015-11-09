@@ -16,10 +16,6 @@
         };
         window.mostPlayedOptions = {
             barValueSpacing : 10,
-            scaleOverride: true,
-            scaleStartValue: 0,
-            scaleStepWidth: 1,
-            scaleSteps: {{ $graphs['mostPlayed']['scaleMax'] }},
             showTooltips: false,
             onAnimationComplete: function () {
                 var ctx = this.chart.ctx;

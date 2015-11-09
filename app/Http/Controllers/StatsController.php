@@ -10,9 +10,6 @@ use App\Lib\Stats;
 
 class StatsController extends Controller
 {
-    /**
-     * @return mixed
-     */
     public function home()
     {
         $paramsMenu = Page::getMenuParams();
@@ -36,12 +33,12 @@ class StatsController extends Controller
         $params['stats']['nbPlaysDifferentGame'] = count($GLOBALS['data']['arrayTotalPlays']);
         $params['stats']['averagePlayByMonth'] = round($GLOBALS['data']['countAllPlays'] / count($GLOBALS['data']['arrayPlaysByMonth']));
         $params['stats']['hindex'] = $GLOBALS['data']['hindex'];
-        if(SessionManager::ifLogin()) {
+        if (SessionManager::ifLogin()) {
             $params['stats']['averageAcquisitionByMonth'] = round($GLOBALS['data']['totalWithAcquisitionDate'] / count($GLOBALS['data']['acquisitionsByMonth']));
         } else {
             $params['stats']['averageAcquisitionByMonth'] = '';
         }
-        if(SessionManager::ifLogin()) {
+        if (SessionManager::ifLogin()) {
             $params['stats']['averageValueGames'] = \App\Lib\Utility::displayMoney($GLOBALS['data']['totalGamesValue'] / count($GLOBALS['data']['arrayValuesGames']));
             $params['stats']['totalValueGames'] = \App\Lib\Utility::displayMoney($GLOBALS['data']['totalGamesValue']);
         } else {

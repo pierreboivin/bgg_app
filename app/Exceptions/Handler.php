@@ -2,6 +2,9 @@
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 
 class Handler extends ExceptionHandler {
 
@@ -24,7 +27,8 @@ class Handler extends ExceptionHandler {
 	 */
 	public function report(Exception $e)
 	{
-		return parent::report($e);
+		Log::error($e->getMessage());
+		Session::flash('error', 'Réessayez un peu plus tard.');
 	}
 
 	/**
@@ -36,7 +40,11 @@ class Handler extends ExceptionHandler {
 	 */
 	public function render($request, Exception $e)
 	{
-		return parent::render($request, $e);
+		if(!Config::get('app.debug')) {
+			return redirect('home');
+		} else {
+			return parent::render($request, $e);
+		}
 	}
 
 }

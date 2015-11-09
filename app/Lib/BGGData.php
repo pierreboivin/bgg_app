@@ -64,14 +64,20 @@ class BGGData
             if (Cache::has($keyCache)) {
                 $contentUrl = Cache::get($keyCache);
             } else {
-                if ($mode == 'curl') {
-                    $ch = curl_init();
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    curl_setopt($ch, CURLOPT_COOKIE, $parameter['cookie']);
-                    curl_setopt($ch, CURLOPT_URL, $url);
-                    $contentUrl = curl_exec($ch);
-                } else {
-                    $contentUrl = file_get_contents($url);
+                try {
+                    if ($mode == 'curl') {
+                        $ch = curl_init();
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                        curl_setopt($ch, CURLOPT_COOKIE, $parameter['cookie']);
+                        curl_setopt($ch, CURLOPT_URL, $url);
+                        $contentUrl = curl_exec($ch);
+                    } else {
+                        $contentUrl = file_get_contents($url);
+                    }
+                } catch(\Exception $e) {
+                    Log::error('Can\'t get url '. $url . ' : ' . $e->getMessage());
+                    Session::flash('error', 'Réessayez un peu plus tard.');
+                    return redirect('home');
                 }
                 Cache::put($keyCache, $contentUrl, 1440);
             }
@@ -85,11 +91,12 @@ class BGGData
         $arrayData = json_decode(json_encode($simpleXmlObject), true);
 
         if(isset($arrayData[0]) && strpos($arrayData[0], 'will be processed') !== false) {
-            if($numTry < 8) {
+            if($numTry < 5) {
                 Cache::forget($keyCache);
+                sleep($numTry);
                 self::getBGGUrl($url, $mode, $parameter, $numTry);
             } else {
-                echo 'Error : ' . $url;
+                throw new \Exception('Can\'t get url ' . $url . ' after ' . $numTry . ' try.');
             }
         }
 

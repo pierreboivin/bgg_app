@@ -6,17 +6,11 @@
 
     <div class="jumbotron login vertical-center">
         <div class="container">
-            @if(Session::has('success'))
-                <div class="alert alert-success">
-                    {{ Session::get('success') }}
-                </div>
-            @endif
             <h2>Connectez-vous</h2>
 
             {!! Form::open(array('url' => '/userLogin')) !!}
 
             <div class="form-group">
-                <!-- if there are login errors, show them here -->
                 @foreach ($errors->all() as $message)
                     <div class="alert alert-danger">
                         {{ $message }}

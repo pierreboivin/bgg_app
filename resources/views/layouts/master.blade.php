@@ -23,6 +23,7 @@
                         <li class="{{ \App\Helpers\Helper::set_active('home') }}"><a href="/home/{{ $GLOBALS['parameters']['general']['username'] }}">Accueil</a></li>
                         <li class="{{ \App\Helpers\Helper::set_active('stats') }}"><a href="/stats/{{ $GLOBALS['parameters']['general']['username'] }}">Statistiques</a></li>
                         <li class="{{ \App\Helpers\Helper::set_active('collection') }}"><a href="/collection/{{ $GLOBALS['parameters']['general']['username'] }}">Collection</a></li>
+                        <li class="{{ \App\Helpers\Helper::set_active('rapports') }}"><a href="/rapports/{{ $GLOBALS['parameters']['general']['username'] }}">Rapport</a></li>
                     @endif
                     <li><a href="http://boardgamegeek.com/" target="_blank">Site BGG</a></li>
                     @if(Auth::check())
@@ -36,6 +37,13 @@
     </nav>
 
     <div class="container-fluid">
+        @if (Session::has('error'))
+            <div class="alert alert-danger">{{ Session::get('error') }}</div>
+        @endif
+        @if (Session::has('success'))
+            <div class="alert alert-success">{{ Session::get('success') }}</div>
+        @endif
+
         @yield('content')
     </div>
 </body>

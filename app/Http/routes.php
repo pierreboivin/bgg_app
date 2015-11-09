@@ -16,8 +16,8 @@ Route::get('/', function()
     return redirect('/home');
 });
 
-Route::get('/home', ['uses' => 'HomeController@home', 'middleware' => 'app.auth']);
-Route::get('/home/{username}', ['uses' => 'HomeController@home', 'middleware' => 'app.auth']);
+Route::get('/home', ['as' => 'home', 'uses' => 'HomeController@home', 'middleware' => 'app.auth']);
+Route::get('/home/{username}', ['as' => 'home', 'uses' => 'HomeController@home', 'middleware' => 'app.auth']);
 Route::get('/login', ['uses' => 'LoginController@login']);
 Route::post('/userLogin', ['uses' => 'LoginController@userLogin']);
 Route::post('/guestLogin', ['uses' => 'LoginController@guestLogin']);
@@ -27,6 +27,7 @@ Route::get('/tools/flushCaches', ['uses' => 'ToolsController@flushCaches']);
 
 Route::get('/stats/{username}', ['as' => 'stats', 'uses' => 'StatsController@home', 'middleware' => 'app.auth']);
 Route::get('/collection/{username}', ['as' => 'collection', 'uses' => 'CollectionController@home', 'middleware' => 'app.auth']);
+Route::get('/rapports/{username}', ['as' => 'rapports', 'uses' => 'RapportsController@home', 'middleware' => 'app.auth']);
 
 // Routes for getting previous pages
 Route::get('ajaxPlayByMonthPrevious/{username}/{page}', ['as' => 'ajaxPlayByMonthPrevious', 'uses' => 'StatsController@ajaxPlayByMonthPrevious', 'middleware' => 'app.auth']);
