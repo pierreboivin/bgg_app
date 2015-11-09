@@ -21,7 +21,7 @@ class App {
         Carbon::setLocale('fr');
 
         $GLOBALS['debugMode'] = false;
-        //$GLOBALS['debugMode'] = 'getDebug';
+        //$GLOBALS['debugMode'] = 'writeDebug';
 
         return $next($request);
     }

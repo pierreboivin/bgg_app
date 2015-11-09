@@ -29,7 +29,10 @@
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <div class="btn-group sort-by-button-group" role="group">
                             <button type="button" class="navbar-btn btn btn-default active" data-sort-by="original-order">Alphabétique</button>
-                            <button type="button" class="navbar-btn btn btn-default" data-sort-by="rating">Classification</button>
+                            <button type="button" class="navbar-btn btn btn-default" data-sort-by="rating" date-sort-direction="desc">Classification</button>
+                            @if(\App\Helpers\Helper::ifLogin())
+                                <button type="button" class="navbar-btn btn btn-default" data-sort-by="acquisitiondate" date-sort-direction="desc">Date d'acquisition</button>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -43,7 +46,10 @@
                 <a href="http://boardgamegeek.com/boardgame/{{ $idGame }}" target="_blank">
                     <div class="name">{{ $game['name'] }}</div>
                     <div class="image">{!! HTML::image($game['image']) !!}</div>
-                    <span class="hidden rating">{{ 10 - $game['rating'] }}</span>
+                    <span class="hidden rating">{{ $game['rating'] }}</span>
+                    @if(\App\Helpers\Helper::ifLogin())
+                        <span class="hidden acquisitiondate">{{ $game['acquisitiondate'] }}</span>
+                    @endif
                 </a>
             </div>
         @endforeach

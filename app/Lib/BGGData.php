@@ -51,7 +51,7 @@ class BGGData
 
     private static function getBGGUrl($url, $mode = 'url', $parameter = [], $numTry = 0)
     {
-        $pathFileDebug = app_path() . '/debug/' . md5($url) . '.txt';
+        $pathFileDebug = app_path() . '/Debug/' . md5($url) . '.txt';
         $keyCache = 'url_' . $url . '_' . $GLOBALS['parameters']['typeLogin'];
 
         if ($GLOBALS['debugMode'] == 'getDebug') {

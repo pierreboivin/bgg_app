@@ -96,6 +96,7 @@ class StatsController extends Controller
     }
 
     /**
+     * @param $username
      * @param $page
      */
     public function ajaxMostPlayedPrevious($username, $page)
@@ -132,6 +133,7 @@ class StatsController extends Controller
 
 
     /**
+     * @param $username
      * @param $page
      */
     public function ajaxAcquisitionPrevious($username, $page)
@@ -142,6 +144,7 @@ class StatsController extends Controller
     }
 
     /**
+     * @param $username
      * @param $page
      * @param $label
      */

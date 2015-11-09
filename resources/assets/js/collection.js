@@ -5,7 +5,8 @@ $( function() {
             itemSelector: '.element-item',
             layoutMode: 'fitRows',
             getSortData: {
-                rating: '.rating'
+                rating: '.rating',
+                acquisitiondate: '.acquisitiondate'
             }
         });
         // bind filter button click
@@ -20,7 +21,8 @@ $( function() {
             $(this).parent().find('button').removeClass('active');
             $(this).addClass('active');
             var sortByValue = $(this).attr('data-sort-by');
-            $grid.isotope({ sortBy: sortByValue });
+            var sortDirection = $(this).attr('date-sort-direction') ? 0 : 1;
+            $grid.isotope({ sortBy: sortByValue, sortAscending: sortDirection });
         });
         // change is-checked class on buttons
         $('.button-group').each(function (i, buttonGroup) {
