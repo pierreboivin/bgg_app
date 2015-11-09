@@ -50,6 +50,7 @@ class StatsController extends Controller
         }
 
         $params['graphs']['byMonth'] = Graphs::getPlayByMonth();
+        $params['graphs']['byDayWeek'] = Graphs::getPlayByDayWeek();
         $params['graphs']['mostPlayed'] = Graphs::getMostPlayed();
         $params['graphs']['ownedTimePlayed'] = Graphs::getOwnedTimePlayed();
         $params['graphs']['nbPlayer'] = Graphs::getNbPlayerCollection();
@@ -63,7 +64,7 @@ class StatsController extends Controller
     /**
      * @param $page
      */
-    public function ajaxPlayByMonthPrevious($page)
+    public function ajaxPlayByMonthPrevious($username, $page)
     {
         $monthArray = $this->getMonthArray($page);
 
@@ -74,7 +75,7 @@ class StatsController extends Controller
      * @param $page
      * @param $label
      */
-    public function ajaxPlayByMonthGetUrl($page, $label)
+    public function ajaxPlayByMonthGetUrl($username, $page, $label)
     {
         $monthArray = $this->getMonthArray($page);
 
@@ -97,7 +98,7 @@ class StatsController extends Controller
     /**
      * @param $page
      */
-    public function ajaxMostPlayedPrevious($page)
+    public function ajaxMostPlayedPrevious($username, $page)
     {
         $mostPlayedArray = $this->getMostPlayedArray($page);
 
@@ -108,7 +109,7 @@ class StatsController extends Controller
      * @param $page
      * @param $label
      */
-    public function ajaxMostPlayedGetUrl($page, $label)
+    public function ajaxMostPlayedGetUrl($username, $page, $label)
     {
         $mostPlayedArray = $this->getMostPlayedArray($page);
 
@@ -133,7 +134,7 @@ class StatsController extends Controller
     /**
      * @param $page
      */
-    public function ajaxAcquisitionPrevious($page)
+    public function ajaxAcquisitionPrevious($username, $page)
     {
         $acquisitionArray = $this->getAcquisitionByMonthArray($page);
 
@@ -144,7 +145,7 @@ class StatsController extends Controller
      * @param $page
      * @param $label
      */
-    public function ajaxAcquisitionByMonthGetUrl($page, $label)
+    public function ajaxAcquisitionByMonthGetUrl($username, $page, $label)
     {
         $acquisitionArray = $this->getAcquisitionByMonthArray($page);
 

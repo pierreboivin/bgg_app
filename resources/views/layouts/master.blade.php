@@ -27,6 +27,8 @@
                     <li><a href="http://boardgamegeek.com/" target="_blank">Site BGG</a></li>
                     @if(Auth::check())
                         <li><a href="/logout">Se déconnecter</a></li>
+                    @else
+                        <li><a href="/login">Se connecter</a></li>
                     @endif
                 </ul>
             </div>

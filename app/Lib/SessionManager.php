@@ -12,6 +12,7 @@ class SessionManager {
             $GLOBALS['parameters']['typeLogin'] = 'login';
         } else {
             $GLOBALS['parameters']['typeLogin'] = 'guest';
+            $GLOBALS['parameters']['login']['password'] = '';
         }
         if($username) {
             $GLOBALS['parameters']['general']['username'] = $username;

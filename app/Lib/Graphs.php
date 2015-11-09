@@ -205,4 +205,21 @@ class Graphs
         ];
     }
 
+    public static function getPlayByDayWeek()
+    {
+        // Build differents stats array
+        $arrayPlayByDayWeek = [];
+
+        foreach ($GLOBALS['data']['arrayPlaysByDayWeek'] as $dayWeek => $nbPlay) {
+            $labelWeekDay = Carbon::createFromTimestamp(strtotime("Sunday +{$dayWeek} days"))->formatLocalized('%A');
+            $arrayPlayByDayWeek[$labelWeekDay] = $nbPlay;
+        }
+
+        // Return labels and series
+        return [
+            'labels' => Utility::implodeWrap(array_keys($arrayPlayByDayWeek)),
+            'serie1' => Utility::implodeWrap(array_values($arrayPlayByDayWeek))
+        ];
+    }
+
 }

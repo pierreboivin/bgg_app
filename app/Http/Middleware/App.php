@@ -17,6 +17,7 @@ class App {
      */
     public function handle($request, Closure $next)
     {
+        setlocale(LC_TIME, config('app.locale'));
         Carbon::setLocale('fr');
 
         $GLOBALS['debugMode'] = false;

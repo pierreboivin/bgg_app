@@ -72,6 +72,10 @@
                         @include('partials.graphs-mostPlayed')
                     </div>
                     <hr>
+                    <div class="chart-container">
+                        @include('partials.graphs-playByDayWeek')
+                    </div>
+                    <hr>
                     <div class="table-container">
                         <div class="row">
                             <div class="col-md-6">

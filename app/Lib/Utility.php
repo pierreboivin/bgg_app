@@ -63,6 +63,15 @@ class Utility
         $timestampDate = $dateFromDate->timestamp;
         return $timestampDate;
     }
+    /**
+     * @param $dateEnglishFormat Example 2015-05-01
+     * @return int
+     */
+    public static function dateToDayWeek($dateEnglishFormat)
+    {
+        $dateTStamp = strtotime($dateEnglishFormat);
+        return date("N", $dateTStamp);
+    }
 
     /**
      * @param $dateEnglishFormat Example 2015-05-01
