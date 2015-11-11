@@ -9,7 +9,7 @@
 
     <h2>Mensuel</h2>
 
-    {!! Form::open(array('url' => '/rapports')) !!}
+    {!! Form::open(array('url' => Request::fullUrl())) !!}
     <div class="form-group">
         <p>
         {!! Form::label('month', 'Mois') !!}
