@@ -87,13 +87,16 @@ class BGGData
             }
         }
 
-        $simpleXmlObject = simplexml_load_string($contentUrl);
+        @$simpleXmlObject = simplexml_load_string($contentUrl);
+        if(!$simpleXmlObject) {
+            Cache::forget($keyCache);
+        }
         $arrayData = json_decode(json_encode($simpleXmlObject), true);
 
         if(isset($arrayData[0]) && strpos($arrayData[0], 'will be processed') !== false) {
             if($numTry < 5) {
                 Cache::forget($keyCache);
-                sleep($numTry);
+                sleep($numTry + 2);
                 self::getBGGUrl($url, $mode, $parameter, $numTry);
             } else {
                 throw new \Exception('Can\'t get url ' . $url . ' after ' . $numTry . ' try.');

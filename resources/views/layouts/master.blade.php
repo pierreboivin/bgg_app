@@ -12,7 +12,7 @@
     <link rel="stylesheet" type="text/css" href="/assets/css/app.min.css" />
 </head>
 <body class="@yield('class')">
-    <nav class="navbar navbar-default navbar-fixed-top">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container-fluid">
             <div class="navbar-header">
                 <span class="navbar-brand">BGG App</span>
@@ -26,12 +26,23 @@
                         <li class="{{ \App\Helpers\Helper::set_active('rapports') }}"><a href="/rapports/{{ $GLOBALS['parameters']['general']['username'] }}">Rapport</a></li>
                     @endif
                     <li><a href="http://boardgamegeek.com/" target="_blank">Site BGG</a></li>
-                    @if(Auth::check())
-                        <li><a href="/logout">Se déconnecter</a></li>
-                    @else
-                        <li><a href="/login">Se connecter</a></li>
-                    @endif
                 </ul>
+                @if(Auth::check())
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Connecté en tant que {{ $GLOBALS['parameters']['login']['username'] }} <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/home/{{ $GLOBALS['parameters']['login']['username'] }}">Retour à votre page d'accueil</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="/logout">Se déconnecter</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                @else
+               <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/login">Se connecter</a></li>
+               </ul>
+                @endif
             </div>
         </div>
     </nav>
