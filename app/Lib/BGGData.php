@@ -94,10 +94,10 @@ class BGGData
         $arrayData = json_decode(json_encode($simpleXmlObject), true);
 
         if(isset($arrayData[0]) && strpos($arrayData[0], 'will be processed') !== false) {
-            if($numTry < 5) {
+            if($numTry < 3) {
                 Cache::forget($keyCache);
-                sleep($numTry + 2);
-                self::getBGGUrl($url, $mode, $parameter, $numTry);
+                sleep($numTry * 10);
+                self::getBGGUrl($url, $mode, $parameter, ++$numTry);
             } else {
                 throw new \Exception('Can\'t get url ' . $url . ' after ' . $numTry . ' try.');
             }
