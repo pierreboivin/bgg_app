@@ -8,7 +8,6 @@ use App\Lib\Page;
 use App\Lib\Stats;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Request;
 
 class RapportsController extends Controller
 {
@@ -17,44 +16,63 @@ class RapportsController extends Controller
         $paramsMenu = Page::getMenuParams();
 
         $arrayRawUserInfos = BGGData::getUserInfos();
+        $arrayRawGamesAndExpansionsOwned = BGGData::getGamesAndExpansionsOwned();
         $arrayUserInfos = \App\Lib\UserInfos::getUserInformations($arrayRawUserInfos);
         $arrayRawGamesPlays = BGGData::getPlays();
 
         Stats::getPlaysRelatedArrays($arrayRawGamesPlays);
+        Stats::getAcquisitionRelatedArrays($arrayRawGamesAndExpansionsOwned);
 
         $params['listMonth'] = [];
 
         krsort($GLOBALS['data']['arrayPlaysByMonth']);
-        foreach($GLOBALS['data']['arrayPlaysByMonth'] as $monthTstamp => $monthStats) {
+        foreach ($GLOBALS['data']['arrayPlaysByMonth'] as $monthTstamp => $monthStats) {
             $monthYear = Carbon::create(date("Y", $monthTstamp), date("n", $monthTstamp), 1, 0, 0, 0);
             $params['listMonth'][$monthYear->format('Y')][$monthTstamp] = $monthYear->formatLocalized('%B %Y');
         }
 
         $params['userinfo'] = $arrayUserInfos;
 
-        if (Request::isMethod('post')) {
+        $monthSelected = '';
+        $params['playsThisMonth'] = '';
+        $params['acquisitionsThisMonth'] = '';
+        $newGames = 0;
+        $allPlays = 0;
+
+        if (Input::get('month')) {
             $monthSelected = Input::get('month');
 
-            foreach($GLOBALS['data']['arrayPlaysByMonth'][$monthSelected] as $idGame => $gameInfo) {
-                $otherInformationsGame = $GLOBALS['data']['arrayTotalPlays'][$idGame];
-                $addClass = '';
-                if($gameInfo['nbPlayed'] == $otherInformationsGame['nbPlayed']) {
-                    $addClass = 'success';
+            if (isset($GLOBALS['data']['arrayPlaysByMonth'][$monthSelected])) {
+                foreach ($GLOBALS['data']['arrayPlaysByMonth'][$monthSelected] as $idGame => $gameInfo) {
+                    $otherInformationsGame = $GLOBALS['data']['arrayTotalPlays'][$idGame];
+                    $dtoGames[$idGame] = [
+                        'nbPlayedThisMonth' => $gameInfo['nbPlayed'],
+                        'otherInfo' => $otherInformationsGame,
+                        'newGame' => false
+                    ];
+                    if ($gameInfo['nbPlayed'] == $otherInformationsGame['nbPlayed']) {
+                        $dtoGames[$idGame]['newGame'] = 'true';
+                        $newGames++;
+                    }
+                    $allPlays += $gameInfo['nbPlayed'];
                 }
-                $dtoGames[$idGame] = ['nbPlayedThisMonth' => $gameInfo['nbPlayed'], 'otherInfo' => $otherInformationsGame, 'addClass' => $addClass];
+
+                uasort($dtoGames, 'self::compareOrder');
+
+                $params['playsThisMonth'] = $dtoGames;
             }
 
-            uasort($dtoGames, 'self::compareOrder');
+            if (isset($GLOBALS['data']['acquisitionsByMonth'][$monthSelected])) {
+                $params['acquisitionsThisMonth'] = $GLOBALS['data']['acquisitionsByMonth'][$monthSelected];
+            }
 
-            $params['playsThisMonth'] = $dtoGames;
-
-            $params['currentMonth'] = Carbon::create(date("Y", $monthSelected), date("n", $monthSelected), 1, 0, 0, 0)->formatLocalized('%B %Y');
-        } else {
-            $monthSelected = '';
-            $params['playsThisMonth'] = '';
+            $params['currentMonth'] = Carbon::create(date("Y", $monthSelected), date("n", $monthSelected), 1, 0, 0,
+                0)->formatLocalized('%B %Y');
         }
 
         $params['monthSelected'] = $monthSelected;
+        $params['stats'] = ['playNewGames' => $newGames, 'playTotal' => $allPlays];
+
         $params = array_merge($paramsMenu, $params);
 
         return \View::make('rapports', $params);
