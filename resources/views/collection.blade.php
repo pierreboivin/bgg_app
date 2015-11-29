@@ -13,8 +13,13 @@
                 <div class="col-md-6">
                     <div class="navbar-header">
                         <span class="navbar-brand">Filtrer</span>
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#nav-filtrer">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
                     </div>
-                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <div class="collapse navbar-collapse" id="nav-filtrer">
                         <div class="btn-group filter-playingtime" role="group">
                             <button type="button" class="navbar-btn btn btn-default active" data-filter="*">Tous</button>
                             <button type="button" class="navbar-btn btn btn-default" data-filter=".shortgame">Jeu court (30 min. et -)</button>
@@ -25,8 +30,13 @@
                 <div class="col-md-6">
                     <div class="navbar-header">
                         <span class="navbar-brand">Trier</span>
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#nav-trier">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
                     </div>
-                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <div class="collapse navbar-collapse" id="nav-trier">
                         <div class="btn-group sort-by-button-group" role="group">
                             <button type="button" class="navbar-btn btn btn-default active" data-sort-by="original-order">Alphabétique</button>
                             <button type="button" class="navbar-btn btn btn-default" data-sort-by="rating" date-sort-direction="desc">Classification</button>

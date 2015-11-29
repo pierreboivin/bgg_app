@@ -4,7 +4,6 @@ namespace App\Lib;
 
 class Stats
 {
-
     /**
      * @param $arrayGamesPlays
      * @return array
@@ -33,7 +32,10 @@ class Stats
 
             Utility::arrayIncrementValue($arrayTotalPlays, $idGame, $quantityPlay, 'nbPlayed');
             $arrayTotalPlays[$idGame]['name'] = $play['item']['@attributes']['name'];
-            $arrayTotalPlays[$idGame]['plays'][] = ['date' => Utility::dateToTimestamp($datePlay), 'quantity' => $quantityPlay];
+            $arrayTotalPlays[$idGame]['plays'][] = [
+                'date' => Utility::dateToTimestamp($datePlay),
+                'quantity' => $quantityPlay
+            ];
         }
 
         arsort($arrayTotalPlays);
@@ -84,14 +86,11 @@ class Stats
         $GLOBALS['data']['totalGamesValue'] = $totalGamesValue;
     }
 
-    /**
-     * @param $arrayTotalPlays
-     */
     private static function getHIndex($arrayTotalPlays)
     {
         $i = 0;
         foreach ($arrayTotalPlays as $game) {
-            if ($game['nbPlayed'] >= $i) {
+            if ($game['nbPlayed'] > $i) {
                 $i++;
             } else {
                 break;

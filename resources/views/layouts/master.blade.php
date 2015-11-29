@@ -15,9 +15,14 @@
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container-fluid">
             <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation-bar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
                 <span class="navbar-brand">BGG App</span>
             </div>
-            <div>
+            <div class="collapse navbar-collapse" id="navigation-bar">
                 <ul class="nav navbar-nav">
                     @if(isset($GLOBALS['parameters']['general']['username']))
                         <li class="{{ \App\Helpers\Helper::set_active('home') }}"><a href="/home/{{ $GLOBALS['parameters']['general']['username'] }}">Accueil</a></li>

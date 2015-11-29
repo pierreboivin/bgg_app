@@ -3,6 +3,7 @@
 namespace App\Lib;
 
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class BGGData
 {
@@ -93,8 +94,16 @@ class BGGData
         }
         $arrayData = json_decode(json_encode($simpleXmlObject), true);
 
+        Log::error('DEBUG BGG DATA');
+        if($arrayData) {
+            Log::error($arrayData);
+        } else {
+            Log::error('ArrayData empty');
+        }
+
         if(isset($arrayData[0]) && strpos($arrayData[0], 'will be processed') !== false) {
             if($numTry < 3) {
+                Log::error('Num try : ' . $numTry);
                 Cache::forget($keyCache);
                 sleep($numTry * 10);
                 self::getBGGUrl($url, $mode, $parameter, ++$numTry);
