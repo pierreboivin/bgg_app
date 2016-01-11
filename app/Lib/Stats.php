@@ -13,6 +13,7 @@ class Stats
         $arrayTotalPlays = [];
         $arrayPlaysByMonth = [];
         $arrayPlaysByDayWeek = [];
+        $allDatesPlayed = [];
         $countAllPlays = 0;
         foreach ($arrayGamesPlays as $play) {
             $idGame = $play['item']['@attributes']['objectid'];
@@ -20,10 +21,10 @@ class Stats
             $datePlay = $play['@attributes']['date'];
 
             if ($datePlay != '0000-00-00') {
+                $allDatesPlayed[] = $datePlay;
                 $timestampDate = Utility::dateToYearMonthTimestamp($datePlay);
                 Utility::arrayIncrementValue($arrayPlaysByMonth[$timestampDate], $idGame, $quantityPlay, 'nbPlayed');
-            }
-            if ($datePlay != '0000-00-00') {
+
                 $timestampDate = Utility::dateToDayWeek($datePlay);
                 Utility::arrayIncrementValue($arrayPlaysByDayWeek, $timestampDate, $quantityPlay);
             }
@@ -38,6 +39,7 @@ class Stats
             ];
         }
 
+        arsort($allDatesPlayed);
         arsort($arrayTotalPlays);
         ksort($arrayPlaysByMonth);
         ksort($arrayPlaysByDayWeek);
@@ -49,6 +51,11 @@ class Stats
         $GLOBALS['data']['arrayPlaysByDayWeek'] = $arrayPlaysByDayWeek;
         $GLOBALS['data']['countAllPlays'] = $countAllPlays;
         $GLOBALS['data']['hindex'] = $hindex;
+
+        if(count($allDatesPlayed) > 0) {
+            $GLOBALS['data']['firstDatePlayRecorded'] = Utility::dateStrToCarbon(last($allDatesPlayed));
+            $GLOBALS['data']['nbDaysSinceFirstPlay'] = $GLOBALS['data']['firstDatePlayRecorded']->diffInDays();
+        }
     }
 
     /**

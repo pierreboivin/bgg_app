@@ -17,7 +17,7 @@ $( function() {
             $grid.isotope({filter: filterValue});
         });
         // bind sort by button click
-        $('.sort-by-button-group').on( 'click', 'button', function() {
+        $('.sort-by-button-group').on('click', 'button', function() {
             $(this).parent().find('button').removeClass('active');
             $(this).addClass('active');
             var sortByValue = $(this).attr('data-sort-by');

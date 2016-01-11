@@ -15,8 +15,6 @@
         Chart.defaults.global.tooltipTemplate = "<%if (label){%><%=label%> : <%}%><%= value %>";
     </script>
 
-    <input type="hidden" id="username" value="{{ $userinfo['username'] }}">
-
     @include('partials.userInfo')
 
     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
@@ -36,13 +34,16 @@
                             <p>Nb de partie joué total : {{ $stats['nbPlaysTotal'] }}</p>
                             <p>Nb de jeu différent joué : {{ $stats['nbPlaysDifferentGame'] }}</p>
                             <p>Moyenne de parties par mois : {{ $stats['averagePlayByMonth'] }}</p>
+                            <p>Moyenne de nouveaux jeux par mois : {{ $stats['averagePlayDifferentByMonth'] }}</p>
+                            <p>Nombre de parties par jour : {{ $stats['nbPlayAverageByDay'] }}</p>
+                            <p>Nombre de jeu différent par jour : {{ $stats['nbPlayDifferentAverageByDay'] }}</p>
                             <p>H-index : {{ $stats['hindex'] }}</p>
                         </div>
                         <div class="col-md-4">
                             <h3>Jeux possédés</h3>
                             <p>Nombre d'acquisition moyennes par mois : {!! \App\Helpers\Helper::ifEmptyToolTip($stats['averageAcquisitionByMonth']) !!}</p>
-                            <p>Nombre de jeu possédé (sans expansion) : {{ $stats['nbGamesOwned'] }}</p>
-                            <p>Nb de jeu possédé (avec expansion) : {{ $stats['nbGamesAndExpansionsOwned'] }}</p>
+                            <p>Nombre de jeu possédés (sans extension) : {{ $stats['nbGamesOwned'] }}</p>
+                            <p>Nombre de jeu possédés (avec extension) : {{ $stats['nbGamesAndExpansionsOwned'] }}</p>
                         </div>
                         <div class="col-md-4">
                             <h3>Valeur collection</h3>

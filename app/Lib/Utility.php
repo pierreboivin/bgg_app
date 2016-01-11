@@ -63,6 +63,15 @@ class Utility
         $timestampDate = $dateFromDate->timestamp;
         return $timestampDate;
     }
+
+    /**
+     * @param $dateEnglishFormat Example 2015-05-01
+     * @return Carbon Date
+     */
+    public static function dateStrToCarbon($dateEnglishFormat)
+    {
+        return Carbon::createFromTimestamp(strtotime($dateEnglishFormat));
+    }
     /**
      * @param $dateEnglishFormat Example 2015-05-01
      * @return int

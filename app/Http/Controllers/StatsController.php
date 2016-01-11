@@ -7,6 +7,8 @@ use App\Lib\Graphs;
 use App\Lib\Page;
 use App\Lib\SessionManager;
 use App\Lib\Stats;
+use App\Lib\UserInfos;
+use App\Lib\Utility;
 
 class StatsController extends Controller
 {
@@ -23,7 +25,7 @@ class StatsController extends Controller
         Stats::getAcquisitionRelatedArrays($arrayRawGamesAndExpansionsOwned);
         Stats::getCollectionArrays($arrayRawGamesOwned);
 
-        $arrayUserInfos = \App\Lib\UserInfos::getUserInformations($arrayRawUserInfos);
+        $arrayUserInfos = UserInfos::getUserInformations($arrayRawUserInfos);
 
         $params['userinfo'] = $arrayUserInfos;
 
@@ -32,6 +34,7 @@ class StatsController extends Controller
         $params['stats']['nbPlaysTotal'] = $GLOBALS['data']['countAllPlays'];
         $params['stats']['nbPlaysDifferentGame'] = count($GLOBALS['data']['arrayTotalPlays']);
         $params['stats']['averagePlayByMonth'] = round($GLOBALS['data']['countAllPlays'] / count($GLOBALS['data']['arrayPlaysByMonth']));
+        $params['stats']['averagePlayDifferentByMonth'] = round(count($GLOBALS['data']['arrayTotalPlays']) / count($GLOBALS['data']['arrayPlaysByMonth']));
         $params['stats']['hindex'] = $GLOBALS['data']['hindex'];
         if (SessionManager::ifLogin()) {
             $params['stats']['averageAcquisitionByMonth'] = round($GLOBALS['data']['totalWithAcquisitionDate'] / count($GLOBALS['data']['acquisitionsByMonth']));
@@ -39,12 +42,16 @@ class StatsController extends Controller
             $params['stats']['averageAcquisitionByMonth'] = '';
         }
         if (SessionManager::ifLogin()) {
-            $params['stats']['averageValueGames'] = \App\Lib\Utility::displayMoney($GLOBALS['data']['totalGamesValue'] / count($GLOBALS['data']['arrayValuesGames']));
-            $params['stats']['totalValueGames'] = \App\Lib\Utility::displayMoney($GLOBALS['data']['totalGamesValue']);
+            $params['stats']['averageValueGames'] = Utility::displayMoney($GLOBALS['data']['totalGamesValue'] / count($GLOBALS['data']['arrayValuesGames']));
+            $params['stats']['totalValueGames'] = Utility::displayMoney($GLOBALS['data']['totalGamesValue']);
         } else {
             $params['stats']['averageValueGames'] = '';
             $params['stats']['totalValueGames'] = '';
         }
+
+        $params['stats']['nbPlayAverageByDay'] = round($GLOBALS['data']['countAllPlays'] / $GLOBALS['data']['nbDaysSinceFirstPlay'], 2);
+        $params['stats']['nbPlayDifferentAverageByDay'] = round(count($GLOBALS['data']['arrayTotalPlays']) / $GLOBALS['data']['nbDaysSinceFirstPlay'], 2);
+
 
         $params['graphs']['byMonth'] = Graphs::getPlayByMonth();
         $params['graphs']['byDayWeek'] = Graphs::getPlayByDayWeek();

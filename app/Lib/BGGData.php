@@ -4,12 +4,15 @@ namespace App\Lib;
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 
 class BGGData
 {
+    const CACHE_TIME_IN_MINUTES = 1440;
+
     public static function getGamesOwned()
     {
-        $urlBGG = 'http://www.boardgamegeek.com/xmlapi2/collection?own=1&excludesubtype=boardgameexpansion&stats=1&showprivate=1&username=' . $GLOBALS['parameters']['general']['username'];
+        $urlBGG = BGGUrls::getGamesOwned();
 
         return self::getBGGUrl($urlBGG, 'curl',
             ['cookie' => 'bggusername=' . $GLOBALS['parameters']['general']['username'] . '; bggpassword=' . $GLOBALS['parameters']['login']['password']]);
@@ -17,7 +20,7 @@ class BGGData
 
     public static function getGamesAndExpansionsOwned()
     {
-        $urlBGG = 'http://www.boardgamegeek.com/xmlapi2/collection?own=1&stats=1&showprivate=1&username=' . $GLOBALS['parameters']['general']['username'];
+        $urlBGG = BGGUrls::getGamesAndExpansionsOwned();
 
         return self::getBGGUrl($urlBGG, 'curl',
             ['cookie' => 'bggusername=' . $GLOBALS['parameters']['general']['username'] . '; bggpassword=' . $GLOBALS['parameters']['login']['password']]);
@@ -25,7 +28,7 @@ class BGGData
 
     public static function getUserInfos()
     {
-        $urlBGG = 'http://www.boardgamegeek.com/xmlapi2/user?buddies=1&hot=1&top=1&name=' . $GLOBALS['parameters']['general']['username'];
+        $urlBGG = BGGUrls::getUserInfos();
 
         return self::getBGGUrl($urlBGG);
     }
@@ -35,19 +38,46 @@ class BGGData
         $arrayAllPlay = array();
         $i = 1;
         while ($i < 100) {
-            $urlBGG = 'http://www.boardgamegeek.com/xmlapi2/plays?username=' . $GLOBALS['parameters']['general']['username'] . '&page=' . $i;
+            $urlBGG = BGGUrls::getPlays($i);
 
             $arrayPlay = self::getBGGUrl($urlBGG);
 
             if (isset($arrayPlay['play'])) {
                 $arrayAllPlay = array_merge($arrayAllPlay, $arrayPlay['play']);
             } else {
+                Cache::put('url_plays_' . $GLOBALS['parameters']['general']['username'] . '_' . $GLOBALS['parameters']['typeLogin'], true, self::CACHE_TIME_IN_MINUTES);
                 break;
             }
 
             $i++;
         }
         return $arrayAllPlay;
+    }
+
+    public static function getCurrentDataInCache()
+    {
+        $progression = 0;
+        if(self::dataExistInCache(BGGUrls::getUserInfos())) {
+            $progression += 10;
+        }
+        if(self::dataExistInCache(BGGUrls::getGamesOwned())) {
+            $progression += 25;
+        }
+        if(self::dataExistInCache(BGGUrls::getGamesAndExpansionsOwned())) {
+            $progression += 25;
+        }
+        if(Cache::has('url_plays_' . $GLOBALS['parameters']['general']['username'] . '_' . $GLOBALS['parameters']['typeLogin'])) {
+            $progression += 40;
+        }
+        return $progression;
+    }
+
+    private static function dataExistInCache($url) {
+        if (Cache::has('url_' . $url . '_' . $GLOBALS['parameters']['typeLogin'])) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private static function getBGGUrl($url, $mode = 'url', $parameter = [], $numTry = 0)
@@ -75,12 +105,11 @@ class BGGData
                     } else {
                         $contentUrl = file_get_contents($url);
                     }
-                } catch(\Exception $e) {
-                    Log::error('Can\'t get url '. $url . ' : ' . $e->getMessage());
+                } catch (\Exception $e) {
                     Session::flash('error', 'Réessayez un peu plus tard.');
                     return redirect('home');
                 }
-                Cache::put($keyCache, $contentUrl, 1440);
+                Cache::put($keyCache, $contentUrl, self::CACHE_TIME_IN_MINUTES);
             }
 
             if ($GLOBALS['debugMode'] == 'writeDebug') {
@@ -89,30 +118,30 @@ class BGGData
         }
 
         @$simpleXmlObject = simplexml_load_string($contentUrl);
-        if(!$simpleXmlObject) {
+        if (!$simpleXmlObject) {
             Cache::forget($keyCache);
         }
         $arrayData = json_decode(json_encode($simpleXmlObject), true);
 
-        Log::error('DEBUG BGG DATA');
-        if($arrayData) {
-            Log::error($arrayData);
-        } else {
-            Log::error('ArrayData empty');
-        }
-
-        if(isset($arrayData[0]) && strpos($arrayData[0], 'will be processed') !== false) {
-            if($numTry < 3) {
-                Log::error('Num try : ' . $numTry);
+        if (self::dataInvalid($arrayData)) {
+            if ($numTry < 3) {
                 Cache::forget($keyCache);
                 sleep($numTry * 10);
-                self::getBGGUrl($url, $mode, $parameter, ++$numTry);
+                $arrayData = self::getBGGUrl($url, $mode, $parameter, ++$numTry);
             } else {
                 throw new \Exception('Can\'t get url ' . $url . ' after ' . $numTry . ' try.');
             }
         }
 
         return $arrayData;
+    }
+
+    private static function dataInvalid($arrayData)
+    {
+        if (isset($arrayData[0]) && strpos($arrayData[0], 'will be processed') !== false) {
+            return true;
+        }
+        return false;
     }
 
 }

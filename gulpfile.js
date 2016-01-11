@@ -38,6 +38,7 @@ gulp.task('js', function(){
   paths.dev.bower+'isotope/dist/isotope.pkgd.js',
   paths.dev.js+'general.js',
   paths.dev.js+'collection.js',
+  paths.dev.js+'home.js',
   paths.dev.js+'chart.js'
  ])
      .pipe(concat('app.min.js'))

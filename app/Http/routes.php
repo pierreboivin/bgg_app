@@ -18,6 +18,8 @@ Route::get('/', function()
 
 Route::get('/home', ['as' => 'home', 'uses' => 'HomeController@home', 'middleware' => 'app.auth']);
 Route::get('/home/{username}', ['as' => 'home', 'uses' => 'HomeController@home', 'middleware' => 'app.auth']);
+Route::get('/check_loading/{username}', ['as' => 'check_loading', 'uses' => 'HomeController@check_loading', 'middleware' => 'app.auth']);
+Route::get('/load/{username}', ['as' => 'load', 'uses' => 'HomeController@load', 'middleware' => 'app.auth']);
 Route::get('/login', ['uses' => 'LoginController@login']);
 Route::post('/userLogin', ['uses' => 'LoginController@userLogin']);
 Route::post('/guestLogin', ['uses' => 'LoginController@guestLogin']);

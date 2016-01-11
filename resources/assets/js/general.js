@@ -12,4 +12,3 @@ $(function () {
 function is_page(className) {
     return $("body").hasClass(className);
 }
-
