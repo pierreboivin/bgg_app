@@ -28,9 +28,14 @@
                         <li class="{{ \App\Helpers\Helper::set_active('home') }}"><a href="/home/{{ $GLOBALS['parameters']['general']['username'] }}">Accueil</a></li>
                         <li class="{{ \App\Helpers\Helper::set_active('stats') }}"><a class="desactivate-if-not-loaded" href="/stats/{{ $GLOBALS['parameters']['general']['username'] }}">Statistiques</a></li>
                         <li class="{{ \App\Helpers\Helper::set_active('collection') }}"><a class="desactivate-if-not-loaded" href="/collection/{{ $GLOBALS['parameters']['general']['username'] }}">Collection</a></li>
-                        <li class="{{ \App\Helpers\Helper::set_active('rapports') }}"><a class="desactivate-if-not-loaded" href="/rapports/{{ $GLOBALS['parameters']['general']['username'] }}">Rapport</a></li>
+                        <li class="{{ \App\Helpers\Helper::set_active('rapports') }} dropdown">
+                            <a href="#" class="dropdown-toggle desactivate-if-not-loaded" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Rapport <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/rapports/mensuel/{{ $GLOBALS['parameters']['general']['username'] }}">Mensuel</a></li>
+                                <li><a href="/rapports/annuel/{{ $GLOBALS['parameters']['general']['username'] }}">Annuel</a></li>
+                            </ul>
+                        </li>
                     @endif
-                    <li><a href="http://boardgamegeek.com/" target="_blank">Site BGG</a></li>
                 </ul>
                 @if(Auth::check())
                 <ul class="nav navbar-nav navbar-right">

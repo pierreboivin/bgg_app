@@ -46,5 +46,4 @@ class HomeController extends Controller
         BGGData::getGamesAndExpansionsOwned();
         BGGData::getPlays();
     }
-
 }

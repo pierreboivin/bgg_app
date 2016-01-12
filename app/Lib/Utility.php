@@ -66,6 +66,16 @@ class Utility
 
     /**
      * @param $dateEnglishFormat Example 2015-05-01
+     * @return int
+     */
+    public static function dateToYear($dateEnglishFormat)
+    {
+        $yearMonth = substr($dateEnglishFormat, 0, 4);
+        return $yearMonth;
+    }
+
+    /**
+     * @param $dateEnglishFormat Example 2015-05-01
      * @return Carbon Date
      */
     public static function dateStrToCarbon($dateEnglishFormat)

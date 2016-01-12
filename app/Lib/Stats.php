@@ -12,6 +12,7 @@ class Stats
     {
         $arrayTotalPlays = [];
         $arrayPlaysByMonth = [];
+        $arrayPlaysByYear = [];
         $arrayPlaysByDayWeek = [];
         $allDatesPlayed = [];
         $countAllPlays = 0;
@@ -27,6 +28,9 @@ class Stats
 
                 $timestampDate = Utility::dateToDayWeek($datePlay);
                 Utility::arrayIncrementValue($arrayPlaysByDayWeek, $timestampDate, $quantityPlay);
+
+                $timestampDate = Utility::dateToYear($datePlay);
+                Utility::arrayIncrementValue($arrayPlaysByYear[$timestampDate], $idGame, $quantityPlay, 'nbPlayed');
             }
 
             $countAllPlays += $quantityPlay;
@@ -41,6 +45,7 @@ class Stats
 
         arsort($allDatesPlayed);
         arsort($arrayTotalPlays);
+        ksort($arrayPlaysByYear);
         ksort($arrayPlaysByMonth);
         ksort($arrayPlaysByDayWeek);
 
@@ -48,6 +53,7 @@ class Stats
 
         $GLOBALS['data']['arrayTotalPlays'] = $arrayTotalPlays;
         $GLOBALS['data']['arrayPlaysByMonth'] = $arrayPlaysByMonth;
+        $GLOBALS['data']['arrayPlaysByYear'] = $arrayPlaysByYear;
         $GLOBALS['data']['arrayPlaysByDayWeek'] = $arrayPlaysByDayWeek;
         $GLOBALS['data']['countAllPlays'] = $countAllPlays;
         $GLOBALS['data']['hindex'] = $hindex;

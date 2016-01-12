@@ -28,8 +28,9 @@ Route::get('/logout', ['uses' => 'LoginController@logout']);
 Route::get('/tools/flushCaches', ['uses' => 'ToolsController@flushCaches']);
 
 Route::get('/stats/{username}', ['as' => 'stats', 'uses' => 'StatsController@home', 'middleware' => 'app.auth']);
-Route::get('/collection/{username}', ['as' => 'collection', 'uses' => 'CollectionController@home', 'middleware' => 'app.auth']);
-Route::match(['get', 'post'], '/rapports/{username}', ['as' => 'rapports', 'uses' => 'RapportsController@home', 'middleware' => 'app.auth']);
+Route::get('/collection/{username}', ['as' => 'collection', 'uses' => 'Collect  ionController@home', 'middleware' => 'app.auth']);
+Route::match(['get', 'post'], '/rapports/mensuel/{username}', ['as' => 'rapports', 'uses' => 'RapportsController@mensuel', 'middleware' => 'app.auth']);
+Route::match(['get', 'post'], '/rapports/annuel/{username}', ['as' => 'rapports', 'uses' => 'RapportsController@annuel', 'middleware' => 'app.auth']);
 
 // Routes for getting previous pages
 Route::get('ajaxPlayByMonthPrevious/{username}/{page}', ['as' => 'ajaxPlayByMonthPrevious', 'uses' => 'StatsController@ajaxPlayByMonthPrevious', 'middleware' => 'app.auth']);
@@ -40,3 +41,12 @@ Route::get('ajaxAcquisitionPrevious/{username}/{page}', ['as' => 'ajaxAcquisitio
 Route::get('ajaxPlayByMonthGetUrl/{username}/{page}/{label}', ['as' => 'ajaxPlayByMonthGetUrl', 'uses' => 'StatsController@ajaxPlayByMonthGetUrl', 'middleware' => 'app.auth']);
 Route::get('ajaxMostPlayedGetUrl/{username}/{page}/{label}', ['as' => 'ajaxMostPlayedGetUrl', 'uses' => 'StatsController@ajaxMostPlayedGetUrl', 'middleware' => 'app.auth']);
 Route::get('ajaxAcquisitionByMonthGetUrl/{username}/{page}/{label}', ['as' => 'ajaxAcquisitionByMonthGetUrl', 'uses' => 'StatsController@ajaxAcquisitionByMonthGetUrl', 'middleware' => 'app.auth']);
+
+
+
+
+// TEST
+Route::get('/test', function()
+{
+    return 'Test simple routes !';
+});

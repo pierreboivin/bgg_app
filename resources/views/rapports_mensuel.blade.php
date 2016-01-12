@@ -1,13 +1,13 @@
 @extends('layouts.master')
 
-@section('title', 'Rapports')
+@section('title', 'Rapports mensuel')
 @section('class', 'rapports')
 
 @section('content')
 
     @include('partials.userInfo')
 
-    <h2>Mensuel</h2>
+    <h2>Rapport mensuel</h2>
 
     {!! Form::open(array('url' => Request::fullUrl(), 'method' => 'get')) !!}
     <div class="form-group">
@@ -18,7 +18,6 @@
         <p>{!! Form::submit('Afficher le rapport', ['class' => 'btn btn-mini btn-primary']) !!}</p>
     </div>
     {!! Form::close() !!}
-
 
     @if($playsThisMonth)
         <div class="well">
@@ -44,7 +43,7 @@
                                 <span class="label label-success">Nouveau jeu</span>
                             @endif
                         </td>
-                        <td>{{ $gameInfos['nbPlayedThisMonth'] }}</td>
+                        <td>{{ $gameInfos['nbPlayed'] }}</td>
                     </tr>
                 @endforeach
                 </tbody>
