@@ -29,10 +29,10 @@
                         <li class="{{ \App\Helpers\Helper::set_active('stats') }}"><a class="desactivate-if-not-loaded" href="/stats/{{ $GLOBALS['parameters']['general']['username'] }}">Statistiques</a></li>
                         <li class="{{ \App\Helpers\Helper::set_active('collection') }}"><a class="desactivate-if-not-loaded" href="/collection/{{ $GLOBALS['parameters']['general']['username'] }}">Collection</a></li>
                         <li class="{{ \App\Helpers\Helper::set_active('rapports') }} dropdown">
-                            <a href="#" class="dropdown-toggle desactivate-if-not-loaded" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Rapport <span class="caret"></span></a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Rapport <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="/rapports/mensuel/{{ $GLOBALS['parameters']['general']['username'] }}">Mensuel</a></li>
-                                <li><a href="/rapports/annuel/{{ $GLOBALS['parameters']['general']['username'] }}">Annuel</a></li>
+                                <li><a class="desactivate-if-not-loaded" href="/rapports/mensuel/{{ $GLOBALS['parameters']['general']['username'] }}">Mensuel</a></li>
+                                <li><a class="desactivate-if-not-loaded" href="/rapports/annuel/{{ $GLOBALS['parameters']['general']['username'] }}">Annuel</a></li>
                             </ul>
                         </li>
                     @endif
@@ -57,7 +57,9 @@
         </div>
     </nav>
 
-    <input type="hidden" id="username" value="{{ $userinfo['username'] }}">
+    @if (isset($userinfo))
+        <input type="hidden" id="username" value="{{ $userinfo['username'] }}">
+    @endif
 
     <div class="container-fluid">
         @if (Session::has('error'))

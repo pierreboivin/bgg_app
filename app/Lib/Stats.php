@@ -43,6 +43,13 @@ class Stats
             ];
         }
 
+        // Get first play of each game
+        foreach($arrayTotalPlays as $idGame => $game) {
+            uasort($game['plays'], 'self::compareDate');
+            $firstPlay = last($game['plays']);
+            $arrayTotalPlays[$idGame]['firstPlay'] = $firstPlay['date'];
+        }
+
         arsort($allDatesPlayed);
         arsort($arrayTotalPlays);
         ksort($arrayPlaysByYear);
@@ -62,6 +69,11 @@ class Stats
             $GLOBALS['data']['firstDatePlayRecorded'] = Utility::dateStrToCarbon(last($allDatesPlayed));
             $GLOBALS['data']['nbDaysSinceFirstPlay'] = $GLOBALS['data']['firstDatePlayRecorded']->diffInDays();
         }
+    }
+
+    private static function compareDate($a, $b)
+    {
+        return $b['date'] - $a['date'];
     }
 
     /**
@@ -126,6 +138,32 @@ class Stats
         }
 
         $GLOBALS['data']['gamesCollection'] = $arrayGameCollection;
+    }
+
+    public static function getRatedRelatedArrays($arrayRawGamesRated)
+    {
+        $arrayGameRated = [];
+        foreach ($arrayRawGamesRated['item'] as $game) {
+            if (isset($game['stats']['rating']['@attributes']['value']) && $game['stats']['rating']['@attributes']['value'] != 'N/A') {
+                $rating = $game['stats']['rating']['@attributes']['value'];
+            } else {
+                $rating = 0;
+            }
+            $thumbnail = isset($game['thumbnail']) ? $game['thumbnail'] : '';
+            $minplayers = isset($game['minplayers']) ? $game['minplayers'] : '';
+            $maxplayers = isset($game['maxplayers']) ? $game['maxplayers'] : '';
+
+            $arrayGameRated[$game['@attributes']['objectid']] = [
+                'name' => $game['name'],
+                'thumbnail' => $thumbnail,
+                'minplayer' => $minplayers,
+                'maxplayer' => $maxplayers,
+                'playingtime' => isset($game['stats']['@attributes']['playingtime']) ? $game['stats']['@attributes']['playingtime'] : 0,
+                'rating' => $rating
+            ];
+        }
+
+        $GLOBALS['data']['gamesRated'] = $arrayGameRated;
     }
 
 }

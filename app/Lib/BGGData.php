@@ -33,6 +33,13 @@ class BGGData
         return self::getBGGUrl($urlBGG);
     }
 
+    public static function getGamesRated()
+    {
+        $urlBGG = BGGUrls::getGamesRated();
+
+        return self::getBGGUrl($urlBGG);
+    }
+
     public static function getPlays()
     {
         $arrayAllPlay = array();
@@ -66,8 +73,11 @@ class BGGData
         if(self::dataExistInCache(BGGUrls::getGamesAndExpansionsOwned())) {
             $progression += 25;
         }
+        if(self::dataExistInCache(BGGUrls::getGamesRated())) {
+            $progression += 10;
+        }
         if(Cache::has('url_plays_' . $GLOBALS['parameters']['general']['username'] . '_' . $GLOBALS['parameters']['typeLogin'])) {
-            $progression += 40;
+            $progression += 30;
         }
         return $progression;
     }
@@ -106,6 +116,7 @@ class BGGData
                         $contentUrl = file_get_contents($url);
                     }
                 } catch (\Exception $e) {
+                    Log::error($e);
                     Session::flash('error', 'Réessayez un peu plus tard.');
                     return redirect('home');
                 }

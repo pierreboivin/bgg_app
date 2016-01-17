@@ -19,13 +19,14 @@
     </div>
     {!! Form::close() !!}
 
-    @if($playsThisYear)
+    @if($table['mostPlaysThisYear'])
         <div class="well">
             <p>Nombre de parties joués: {{$stats['playTotal']}}</p>
+            <p>Pourcentage de la collection joué au moins une fois: {{$stats['percentGameCollectionPlayed']}}%</p>
         </div>
         <hr>
         <div class="panel panel-default">
-            <div class="panel-heading">Jeux les plus joués de l'année {{ $currentYear }}</div>
+            <div class="panel-heading">Jeux les plus joués de l'année {{ $yearSelected }}</div>
             <table class="table table-hover table-condensed">
                 <thead>
                 <tr>
@@ -34,12 +35,35 @@
                 </tr>
                 </thead>
                 <tbody>
-                @foreach($playsThisYear as $idGame => $gameInfos)
+                @foreach($table['mostPlaysThisYear'] as $idGame => $gameInfos)
                     <tr>
                         <td>
                             <a href="http://boardgamegeek.com/boardgame/{{ $idGame }}" target="_blank">{{ $gameInfos['otherInfo']['name'] }}</a>
                         </td>
                         <td>{{ $gameInfos['nbPlayed'] }}</td>
+                    </tr>
+                @endforeach
+                </tbody>
+
+            </table>
+        </div>
+        <hr>
+        <div class="panel panel-default">
+            <div class="panel-heading">Découvertes de l'année {{ $yearSelected }}</div>
+            <table class="table table-hover table-condensed">
+                <thead>
+                <tr>
+                    <th>Jeu</th>
+                    <th>Classification</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach($table['firstTryAndGoodRated'] as $idGame => $gameInfos)
+                    <tr>
+                        <td>
+                            <a href="http://boardgamegeek.com/boardgame/{{ $idGame }}" target="_blank">{{ $gameInfos['name'] }}</a>
+                        </td>
+                        <td>{{ $gameInfos['rating'] }}</td>
                     </tr>
                 @endforeach
                 </tbody>

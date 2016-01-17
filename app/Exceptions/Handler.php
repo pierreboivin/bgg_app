@@ -40,8 +40,10 @@ class Handler extends ExceptionHandler {
 	 */
 	public function render($request, Exception $e)
 	{
+		return parent::render($request, $e);
+
 		if(!Config::get('app.debug')) {
-			return redirect('home');
+			return redirect('error');
 		} else {
 			return parent::render($request, $e);
 		}

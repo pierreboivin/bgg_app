@@ -83,20 +83,32 @@ class RapportsController extends Controller
         return $b['nbPlayed'] - $a['nbPlayed'];
     }
 
+    private static function compareOrderRating($a, $b)
+    {
+        return floatval($b['rating']) > floatval($a['rating']);
+    }
+
     public function annuel()
     {
         $paramsMenu = Page::getMenuParams();
 
         $arrayRawUserInfos = BGGData::getUserInfos();
         $arrayRawGamesAndExpansionsOwned = BGGData::getGamesAndExpansionsOwned();
+        $arrayRawGamesOwned = BGGData::getGamesOwned();
         $arrayUserInfos = \App\Lib\UserInfos::getUserInformations($arrayRawUserInfos);
         $arrayRawGamesPlays = BGGData::getPlays();
+        $arrayRawGamesRated = BGGData::getGamesRated();
 
         Stats::getPlaysRelatedArrays($arrayRawGamesPlays);
         Stats::getAcquisitionRelatedArrays($arrayRawGamesAndExpansionsOwned);
+        Stats::getRatedRelatedArrays($arrayRawGamesRated);
+        Stats::getCollectionArrays($arrayRawGamesOwned);
 
         $params['listYear'] = [];
         $allPlays = 0;
+        $params['yearSelected'] = '';
+        $params['playsThisYear'] = '';
+        $params['percentGameCollectionPlayed'] = '';
 
         $firstYear = (int) $GLOBALS['data']['firstDatePlayRecorded']->format('Y');
 
@@ -110,6 +122,7 @@ class RapportsController extends Controller
             $yearSelected = Input::get('year');
 
             if (isset($GLOBALS['data']['arrayPlaysByYear'][$yearSelected])) {
+                $gamesFirstTryAndRated = [];
                 foreach ($GLOBALS['data']['arrayPlaysByYear'][$yearSelected] as $idGame => $gameInfo) {
                     $otherInformationsGame = $GLOBALS['data']['arrayTotalPlays'][$idGame];
                     $dtoGames[$idGame] = [
@@ -117,22 +130,39 @@ class RapportsController extends Controller
                         'otherInfo' => $otherInformationsGame
                     ];
                     $allPlays += $gameInfo['nbPlayed'];
+
+                    if(isset($GLOBALS['data']['gamesRated'][$idGame])) {
+                        if(date('Y', $GLOBALS['data']['arrayTotalPlays'][$idGame]['firstPlay']) == $yearSelected) {
+                            $gamesFirstTryAndRated[$idGame] = $GLOBALS['data']['gamesRated'][$idGame];
+                        }
+                    }
                 }
 
                 uasort($dtoGames, 'self::compareOrder');
+                uasort($gamesFirstTryAndRated, 'self::compareOrderRating');
 
                 $dtoGames = array_slice($dtoGames, 0, 30, true);
 
-                $params['playsThisYear'] = $dtoGames;
+                $gamesFirstTryAndRated = array_slice($gamesFirstTryAndRated, 0, 20, true);
+
+                $params['table']['firstTryAndGoodRated'] = $gamesFirstTryAndRated;
+                $params['table']['mostPlaysThisYear'] = $dtoGames;
+                $params['stats']['playTotal'] = $allPlays;
             }
 
-            $params['currentYear'] = $yearSelected;
+            $gameCollectionPlayAtLeastOnce = 0;
+            foreach ($arrayRawGamesOwned['item'] as $game) {
+                $idGameOwned = $game['@attributes']['objectid'];
+                if(isset($GLOBALS['data']['arrayPlaysByYear'][$yearSelected][$idGameOwned])) {
+                    $gameCollectionPlayAtLeastOnce++;
+                }
+            }
+
+            $params['stats']['percentGameCollectionPlayed'] = round($gameCollectionPlayAtLeastOnce / count($arrayRawGamesOwned['item']) * 100);
+
+
+            $params['yearSelected'] = $yearSelected;
         }
-
-
-        $params['yearSelected'] = $yearSelected;
-
-        $params['stats'] = ['playTotal' => $allPlays];
 
         $params = array_merge($paramsMenu, $params);
 

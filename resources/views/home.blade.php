@@ -7,7 +7,7 @@
 
     @include('partials.userInfo')
 
-    <div id="progression-message-warning" class="alert alert-warning" role="alert">Attendez que vos données soient chargés. Cette étape peut nécessiter quelques minutes.</div>
+    <div id="progression-message-warning" class="alert alert-warning" role="alert">Attendez que vos données soient chargées. Cette étape peut nécessiter quelques minutes.</div>
     <div id="progression-message-success" class="alert alert-success" role="alert">Vos données ont été chargés. Vous pouvez les consulter ici par les options ci-dessous ou par le menu.</div>
     <div id="progression" class="progress">
         <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" style="width: 0%"></div>

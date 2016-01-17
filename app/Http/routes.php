@@ -42,11 +42,8 @@ Route::get('ajaxPlayByMonthGetUrl/{username}/{page}/{label}', ['as' => 'ajaxPlay
 Route::get('ajaxMostPlayedGetUrl/{username}/{page}/{label}', ['as' => 'ajaxMostPlayedGetUrl', 'uses' => 'StatsController@ajaxMostPlayedGetUrl', 'middleware' => 'app.auth']);
 Route::get('ajaxAcquisitionByMonthGetUrl/{username}/{page}/{label}', ['as' => 'ajaxAcquisitionByMonthGetUrl', 'uses' => 'StatsController@ajaxAcquisitionByMonthGetUrl', 'middleware' => 'app.auth']);
 
-
-
-
-// TEST
-Route::get('/test', function()
+// Gestion d'erreur critique
+Route::get('/error', function()
 {
-    return 'Test simple routes !';
+    return 'Une erreur s\'est produite. Consultez l\'administrateur du site.';
 });
