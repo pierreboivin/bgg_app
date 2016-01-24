@@ -28,7 +28,7 @@ Route::get('/logout', ['uses' => 'LoginController@logout']);
 Route::get('/tools/flushCaches', ['uses' => 'ToolsController@flushCaches']);
 
 Route::get('/stats/{username}', ['as' => 'stats', 'uses' => 'StatsController@home', 'middleware' => 'app.auth']);
-Route::get('/collection/{username}', ['as' => 'collection', 'uses' => 'Collect  ionController@home', 'middleware' => 'app.auth']);
+Route::get('/collection/{username}', ['as' => 'collection', 'uses' => 'CollectionController@home', 'middleware' => 'app.auth']);
 Route::match(['get', 'post'], '/rapports/mensuel/{username}', ['as' => 'rapports', 'uses' => 'RapportsController@mensuel', 'middleware' => 'app.auth']);
 Route::match(['get', 'post'], '/rapports/annuel/{username}', ['as' => 'rapports', 'uses' => 'RapportsController@annuel', 'middleware' => 'app.auth']);
 
