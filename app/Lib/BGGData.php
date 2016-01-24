@@ -40,6 +40,30 @@ class BGGData
         return self::getBGGUrl($urlBGG);
     }
 
+    public static function getDetailOwned(&$arrayRawGamesOwned)
+    {
+        $arrayGamesDetails = [];
+        if(isset($arrayRawGamesOwned['item'])) {
+            foreach ($arrayRawGamesOwned['item'] as $key => $game) {
+                $arrayId[] = $game['@attributes']['objectid'];
+                $arrayRawGamesOwned['item'][$key]['detail'] = [];
+            }
+        }
+
+        $arrayChunk = array_chunk($arrayId, 40, true);
+        foreach($arrayChunk as $key => $arrayIds) {
+            $strIds = implode(',', $arrayIds);
+
+            $urlBGG = BGGUrls::getDetail($strIds);
+
+            $fromBGG = self::getBGGUrl($urlBGG);
+            foreach($fromBGG['item'] as $gameDetail) {
+                $arrayGamesDetails[$gameDetail['@attributes']['id']] = $gameDetail;
+            }
+        }
+        return $arrayGamesDetails;
+    }
+
     public static function getPlays()
     {
         $arrayAllPlay = array();
@@ -68,10 +92,10 @@ class BGGData
             $progression += 10;
         }
         if(self::dataExistInCache(BGGUrls::getGamesOwned())) {
-            $progression += 25;
+            $progression += 30;
         }
         if(self::dataExistInCache(BGGUrls::getGamesAndExpansionsOwned())) {
-            $progression += 25;
+            $progression += 20;
         }
         if(self::dataExistInCache(BGGUrls::getGamesRated())) {
             $progression += 10;
@@ -83,7 +107,7 @@ class BGGData
     }
 
     private static function dataExistInCache($url) {
-        if (Cache::has('url_' . $url . '_' . $GLOBALS['parameters']['typeLogin'])) {
+        if (Cache::has('url_' . md5($url) . '_' . $GLOBALS['parameters']['typeLogin'])) {
             return true;
         } else {
             return false;
@@ -93,7 +117,7 @@ class BGGData
     private static function getBGGUrl($url, $mode = 'url', $parameter = [], $numTry = 0)
     {
         $pathFileDebug = app_path() . '/Debug/' . md5($url) . '.txt';
-        $keyCache = 'url_' . $url . '_' . $GLOBALS['parameters']['typeLogin'];
+        $keyCache = 'url_' . md5($url) . '_' . $GLOBALS['parameters']['typeLogin'];
 
         if ($GLOBALS['debugMode'] == 'getDebug') {
             if (file_exists($pathFileDebug)) {
@@ -106,6 +130,7 @@ class BGGData
                 $contentUrl = Cache::get($keyCache);
             } else {
                 try {
+                    Log::info('Get info from bgg : ' . $url);
                     if ($mode == 'curl') {
                         $ch = curl_init();
                         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -154,5 +179,6 @@ class BGGData
         }
         return false;
     }
+
 
 }

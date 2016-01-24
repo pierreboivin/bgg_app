@@ -222,4 +222,31 @@ class Graphs
         ];
     }
 
+    private static function compareOwned($a, $b)
+    {
+        return $b['nbOwned'] - $a['nbOwned'];
+    }
+
+    public static function getMostDesignerOwned()
+    {
+        $arrayDesignerFrequency = [];
+
+        foreach($GLOBALS['data']['gamesCollection'] as $gameId => $game) {
+            if (isset($game['detail']['boardgamedesigner'])) {
+                $designerArray = $game['detail']['boardgamedesigner'];
+                foreach ($designerArray as $designer) {
+                    if ($designer['value'] != '(Uncredited)') {
+                        $arrayDesignerFrequency[$designer['id']]['name'] = $designer['value'];
+                        $arrayDesignerFrequency[$designer['id']]['games'][$gameId] = $game['name'];
+
+                        Utility::arrayIncrementValue($arrayDesignerFrequency, $designer['id'], 1, 'nbOwned');
+                    }
+                }
+            }
+        }
+
+        uasort($arrayDesignerFrequency, 'self::compareOwned');
+        return array_slice($arrayDesignerFrequency, 0, 20, true);
+    }
+
 }

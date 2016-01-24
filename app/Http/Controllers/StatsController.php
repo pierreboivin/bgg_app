@@ -18,12 +18,14 @@ class StatsController extends Controller
 
         $arrayRawUserInfos = BGGData::getUserInfos();
         $arrayRawGamesOwned = BGGData::getGamesOwned();
+        $arrayGamesDetails = BGGData::getDetailOwned($arrayRawGamesOwned);
         $arrayRawGamesAndExpansionsOwned = BGGData::getGamesAndExpansionsOwned();
         $arrayRawGamesPlays = BGGData::getPlays();
 
         Stats::getPlaysRelatedArrays($arrayRawGamesPlays);
         Stats::getAcquisitionRelatedArrays($arrayRawGamesAndExpansionsOwned);
         Stats::getCollectionArrays($arrayRawGamesOwned);
+        Stats::getOwnedRelatedArrays($arrayGamesDetails);
 
         $arrayUserInfos = UserInfos::getUserInformations($arrayRawUserInfos);
 
@@ -52,13 +54,14 @@ class StatsController extends Controller
         $params['stats']['nbPlayAverageByDay'] = round($GLOBALS['data']['countAllPlays'] / $GLOBALS['data']['nbDaysSinceFirstPlay'], 2);
         $params['stats']['nbPlayDifferentAverageByDay'] = round(count($GLOBALS['data']['arrayTotalPlays']) / $GLOBALS['data']['nbDaysSinceFirstPlay'], 2);
 
-
         $params['graphs']['byMonth'] = Graphs::getPlayByMonth();
         $params['graphs']['byDayWeek'] = Graphs::getPlayByDayWeek();
         $params['graphs']['mostPlayed'] = Graphs::getMostPlayed();
-        $params['graphs']['ownedTimePlayed'] = Graphs::getOwnedTimePlayed();
         $params['graphs']['nbPlayer'] = Graphs::getNbPlayerCollection();
         $params['graphs']['acquisitionByMonth'] = Graphs::getAcquisitionByMonth();
+
+        $params['table']['ownedTimePlayed'] = Graphs::getOwnedTimePlayed();
+        $params['table']['mostDesigner'] = Graphs::getMostDesignerOwned();
 
         $params = array_merge($params, $paramsMenu);
 

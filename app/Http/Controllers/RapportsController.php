@@ -104,11 +104,11 @@ class RapportsController extends Controller
         Stats::getRatedRelatedArrays($arrayRawGamesRated);
         Stats::getCollectionArrays($arrayRawGamesOwned);
 
-        $params['listYear'] = [];
         $allPlays = 0;
         $params['yearSelected'] = '';
-        $params['playsThisYear'] = '';
-        $params['percentGameCollectionPlayed'] = '';
+        $params['listYear'] = [];
+        $params['table'] = [];
+        $params['stats'] = [];
 
         $firstYear = (int) $GLOBALS['data']['firstDatePlayRecorded']->format('Y');
 
@@ -120,6 +120,7 @@ class RapportsController extends Controller
 
         if (Input::get('year')) {
             $yearSelected = Input::get('year');
+            $firstTryGame = 0;
 
             if (isset($GLOBALS['data']['arrayPlaysByYear'][$yearSelected])) {
                 $gamesFirstTryAndRated = [];
@@ -131,10 +132,11 @@ class RapportsController extends Controller
                     ];
                     $allPlays += $gameInfo['nbPlayed'];
 
-                    if(isset($GLOBALS['data']['gamesRated'][$idGame])) {
-                        if(date('Y', $GLOBALS['data']['arrayTotalPlays'][$idGame]['firstPlay']) == $yearSelected) {
+                    if(date('Y', $GLOBALS['data']['arrayTotalPlays'][$idGame]['firstPlay']) == $yearSelected) {
+                        if(isset($GLOBALS['data']['gamesRated'][$idGame])) {
                             $gamesFirstTryAndRated[$idGame] = $GLOBALS['data']['gamesRated'][$idGame];
                         }
+                        $firstTryGame++;
                     }
                 }
 
@@ -148,6 +150,8 @@ class RapportsController extends Controller
                 $params['table']['firstTryAndGoodRated'] = $gamesFirstTryAndRated;
                 $params['table']['mostPlaysThisYear'] = $dtoGames;
                 $params['stats']['playTotal'] = $allPlays;
+                $params['stats']['percentNewGame'] = round($firstTryGame / count($GLOBALS['data']['arrayPlaysByYear'][$yearSelected]) * 100) . ' % (' . $firstTryGame . ' / ' . count($GLOBALS['data']['arrayPlaysByYear'][$yearSelected]) . ')';
+                $params['stats']['playDifferentTotal'] = count($GLOBALS['data']['arrayPlaysByYear'][$yearSelected]);
             }
 
             $gameCollectionPlayAtLeastOnce = 0;

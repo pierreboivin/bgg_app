@@ -71,6 +71,16 @@ class Stats
         }
     }
 
+    public static function getOwnedRelatedArrays($arrayGamesDetails)
+    {
+        foreach($GLOBALS['data']['gamesCollection'] as $gameId => $game) {
+            $gameDetail = $arrayGamesDetails[$gameId];
+            foreach($gameDetail['link'] as $link) {
+                $GLOBALS['data']['gamesCollection'][$gameId]['detail'][$link['@attributes']['type']][] = ['value' => $link['@attributes']['value'], 'id' => $link['@attributes']['id']];
+            }
+        }
+    }
+
     private static function compareDate($a, $b)
     {
         return $b['date'] - $a['date'];

@@ -44,7 +44,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading" role="tab" id="heading2">
                         <h2>
-                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse2" aria-expanded="false" aria-controls="collapse2">
+                            <a role="button" data-toggle="collapse" href="#collapse2" aria-expanded="false" aria-controls="collapse2">
                                 Amis
                             </a>
                         </h2>
@@ -62,7 +62,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading" role="tab" id="heading3">
                         <h2>
-                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse3" aria-expanded="false" aria-controls="collapse3">
+                            <a role="button" data-toggle="collapse" href="#collapse3" aria-expanded="false" aria-controls="collapse3">
                                 Jeux préférés
                             </a>
                         </h2>

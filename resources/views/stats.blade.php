@@ -21,7 +21,7 @@
         <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="heading1">
                 <h2>
-                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse1" aria-expanded="true" aria-controls="collapse1">
+                    <a class="collapsed" role="button" data-toggle="collapse" href="#collapse1" aria-expanded="true" aria-controls="collapse1">
                         Statistiques générales
                     </a>
                 </h2>
@@ -58,7 +58,7 @@
         <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="heading4">
                 <h2>
-                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse4" aria-expanded="yes" aria-controls="collapse4">
+                    <a role="button" data-toggle="collapse" href="#collapse4" aria-expanded="yes" aria-controls="collapse4">
                         Statisques sur les parties joués
                     </a>
                 </h2>
@@ -94,7 +94,7 @@
         <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="heading5">
                 <h2>
-                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse5" aria-expanded="yes" aria-controls="collapse5">
+                    <a role="button" data-toggle="collapse" href="#collapse5" aria-expanded="yes" aria-controls="collapse5">
                         Statisques sur la collection
                     </a>
                 </h2>
@@ -103,6 +103,10 @@
                 <div class="panel-body">
                     <div class="chart-container">
                         @include('partials.graphs-nbplayer')
+                    </div>
+                    <hr>
+                    <div class="table-container">
+                        @include('partials.table-owned-mostdesigner')
                     </div>
                     <hr>
                     @if(\App\Helpers\Helper::ifLogin())

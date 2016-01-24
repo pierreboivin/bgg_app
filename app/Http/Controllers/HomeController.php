@@ -42,7 +42,8 @@ class HomeController extends Controller
 
     public function load() {
         BGGData::getUserInfos();
-        BGGData::getGamesOwned();
+        $arrayRawGamesOwned = BGGData::getGamesOwned();
+        BGGData::getDetailOwned($arrayRawGamesOwned);
         BGGData::getGamesAndExpansionsOwned();
         BGGData::getGamesRated();
         BGGData::getPlays();

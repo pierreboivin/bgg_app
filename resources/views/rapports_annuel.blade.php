@@ -19,10 +19,12 @@
     </div>
     {!! Form::close() !!}
 
-    @if($table['mostPlaysThisYear'])
+    @if(isset($table['mostPlaysThisYear']))
         <div class="well">
-            <p>Nombre de parties joués: {{$stats['playTotal']}}</p>
-            <p>Pourcentage de la collection joué au moins une fois: {{$stats['percentGameCollectionPlayed']}}%</p>
+            <p>Nombre de parties joués : {{$stats['playTotal']}}</p>
+            <p>Nombre de jeux joués : {{$stats['playDifferentTotal']}}</p>
+            <p>Pourcentage de la collection joué au moins une fois : {{$stats['percentGameCollectionPlayed']}}%</p>
+            <p>Pourcentage de nouveaux jeux joués : {{$stats['percentNewGame']}}</p>
         </div>
         <hr>
         <div class="panel panel-default">

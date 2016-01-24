@@ -26,7 +26,7 @@
 
                 this.datasets.forEach(function (dataset) {
                     dataset.bars.forEach(function (bar) {
-                        ctx.fillText(bar.value, bar.x, bar.y - 5);
+                        ctx.fillText(bar.value, bar.x, bar.y);
                     });
                 })
             }

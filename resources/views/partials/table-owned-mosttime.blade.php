@@ -8,7 +8,7 @@
                 <tr><th>Jeu</th><th>Parties jouées total</th><th>Date de la dernière partie</th></tr>
             </thead>
             <tbody>
-            @foreach ($graphs['ownedTimePlayed']['mostTime'] as $id => $game)
+            @foreach ($table['ownedTimePlayed']['mostTime'] as $id => $game)
                 <tr>
                     <td><a href="{{ $game['url'] }}" target="_blank">{{ $game['name'] }}</a></td>
                     <td>{{ $game['totalPlays'] }}</td>

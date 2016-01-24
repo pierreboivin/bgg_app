@@ -28,4 +28,9 @@ class BGGUrls {
     {
         return 'http://www.boardgamegeek.com/xmlapi2/plays?username=' . $GLOBALS['parameters']['general']['username'] . '&page=' . $i;
     }
+
+    public static function getDetail($i)
+    {
+        return 'http://boardgamegeek.com/xmlapi2/thing?id=' . $i;
+    }
 }
