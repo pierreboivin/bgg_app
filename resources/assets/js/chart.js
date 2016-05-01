@@ -20,25 +20,19 @@ $(function() {
                 window.playByMonthChartData['datasets'][1].data = arrayData['serie2'].split(',');
                 window.playByMonthChartData['datasets'][2].data = arrayData['serie3'].split(',');
 
-                var playByMonthCtx = document.getElementById("plays-by-month").getContext("2d");
-                var playByMonthChart = new Chart(playByMonthCtx).Line(window.playByMonthChartData, window.playByMonthOptions);
+                var playByMonthChart = new Chart($('#plays-by-month').get(0).getContext("2d")).Line(window.playByMonthChartData, window.playByMonthOptions);
 
                 setPlayByMonthHolder(playByMonthChart);
             });
 
             return false;
         });
-        function setPlayByMonthHolder(playByMonthChart) {
-
-            var holder = document.getElementById('plays-by-month');
-
-            holder.onclick = function (evt) {
-                var activePoints = playByMonthChart.getPointsAtEvent(evt);
-
-                var currentNumPage = parseInt($("#plays-by-month-previous-months").attr('data-page')) - 1;
+        function setPlayByMonthHolder(chart) {
+            $('plays-by-month').onclick = function (evt) {
+                var activePoints = chart.getPointsAtEvent(evt);
 
                 $.ajax({
-                    url: '/ajaxPlayByMonthGetUrl/' + $("#username").val() + '/' + currentNumPage + '/' + activePoints[0]['label']
+                    url: '/ajaxPlayByMonthGetUrl/' + $("#username").val() + '/' + (parseInt($("#plays-by-month-previous-months").attr('data-page')) - 1) + '/' + activePoints[0]['label']
                 }).done(function (ajaxReturn) {
                     window.open(ajaxReturn);
                 });
@@ -64,8 +58,7 @@ $(function() {
                 window.mostPlayedChartData['labels'] = arrayData['labels'].split(',');
                 window.mostPlayedChartData['datasets'][0].data = arrayData['serie1'].split(',');
 
-                var mostPlayedCtx = document.getElementById("chart-most-played").getContext("2d");
-                var mostPlayedChart = new Chart(mostPlayedCtx).Bar(window.mostPlayedChartData, window.mostPlayedOptions);
+                var mostPlayedChart = new Chart($('#chart-most-played').get(0).getContext("2d")).Bar(window.mostPlayedChartData, window.mostPlayedOptions);
 
                 setMostPlayedHolder(mostPlayedChart);
             });
@@ -73,17 +66,12 @@ $(function() {
             return false;
         });
 
-        function setMostPlayedHolder(mostPlayedChart) {
-
-            var holder = document.getElementById('chart-most-played');
-
-            holder.onclick = function (evt) {
-                var activePoints = mostPlayedChart.getBarsAtEvent(evt);
-
-                var currentNumPage = parseInt($("#chart-most-played-previous-games").attr('data-page')) - 1;
+        function setMostPlayedHolder(chart) {
+            $('chart-most-played').onclick = function (evt) {
+                var activePoints = chart.getBarsAtEvent(evt);
 
                 $.ajax({
-                    url: '/ajaxMostPlayedGetUrl/' + $("#username").val() + '/' + currentNumPage + '/' + activePoints[0]['label']
+                    url: '/ajaxMostPlayedGetUrl/' + $("#username").val() + '/' + (parseInt($("#chart-most-played-previous-games").attr('data-page')) - 1) + '/' + activePoints[0]['label']
                 }).done(function (ajaxReturn) {
                     window.open(ajaxReturn);
                 });
@@ -109,8 +97,7 @@ $(function() {
                 window.acquisitionByMonthChartData['labels'] = arrayData['labels'].split(',');
                 window.acquisitionByMonthChartData['datasets'][0].data = arrayData['serie1'].split(',');
 
-                var acquisitionByMonthCtx = document.getElementById("chart-acquisitionByMonth").getContext("2d");
-                var acquisitionByMonthChart = new Chart(acquisitionByMonthCtx).Bar(window.acquisitionByMonthChartData, window.acquisitionByMonthOptions);
+                var acquisitionByMonthChart = new Chart($('#chart-acquisitionByMonth').get(0).getContext("2d")).Bar(window.acquisitionByMonthChartData, window.acquisitionByMonthOptions);
 
                 setAcquisitionByMonthHolder(acquisitionByMonthChart);
             });
@@ -118,17 +105,12 @@ $(function() {
             return false;
         });
 
-        function setAcquisitionByMonthHolder(acquisitionByMonthChart) {
-
-            var holder = document.getElementById('chart-acquisitionByMonth');
-
-            holder.onclick = function (evt) {
-                var activePoints = acquisitionByMonthChart.getBarsAtEvent(evt);
-
-                var currentNumPage = parseInt($("#chart-acquisition-previous-month").attr('data-page')) - 1;
+        function setAcquisitionByMonthHolder(chart) {
+            $('chart-acquisitionByMonth').onclick = function (evt) {
+                var activePoints = chart.getBarsAtEvent(evt);
 
                 $.ajax({
-                    url: '/ajaxAcquisitionByMonthGetUrl/' + $("#username").val() + '/' + currentNumPage + '/' + activePoints[0]['label']
+                    url: '/ajaxAcquisitionByMonthGetUrl/' + $("#username").val() + '/' + (parseInt($("#chart-acquisition-previous-month").attr('data-page')) - 1) + '/' + activePoints[0]['label']
                 }).done(function (ajaxReturn) {
                     window.open(ajaxReturn);
                 });

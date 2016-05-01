@@ -38,17 +38,19 @@ class StatsController extends Controller
         $params['stats']['averagePlayByMonth'] = round($GLOBALS['data']['countAllPlays'] / count($GLOBALS['data']['arrayPlaysByMonth']));
         $params['stats']['averagePlayDifferentByMonth'] = round(count($GLOBALS['data']['arrayTotalPlays']) / count($GLOBALS['data']['arrayPlaysByMonth']));
         $params['stats']['hindex'] = $GLOBALS['data']['hindex'];
+        $params['stats']['averageAcquisitionByMonth'] = '';
         if (SessionManager::ifLogin()) {
-            $params['stats']['averageAcquisitionByMonth'] = round($GLOBALS['data']['totalWithAcquisitionDate'] / count($GLOBALS['data']['acquisitionsByMonth']));
-        } else {
-            $params['stats']['averageAcquisitionByMonth'] = '';
+            if(count($GLOBALS['data']['acquisitionsByMonth']) > 0) {
+                $params['stats']['averageAcquisitionByMonth'] = round($GLOBALS['data']['totalWithAcquisitionDate'] / count($GLOBALS['data']['acquisitionsByMonth']));
+            }
         }
+        $params['stats']['averageValueGames'] = '';
+        $params['stats']['totalValueGames'] = '';
         if (SessionManager::ifLogin()) {
-            $params['stats']['averageValueGames'] = Utility::displayMoney($GLOBALS['data']['totalGamesValue'] / count($GLOBALS['data']['arrayValuesGames']));
+            if(count($GLOBALS['data']['arrayValuesGames']) > 0) {
+                $params['stats']['averageValueGames'] = Utility::displayMoney($GLOBALS['data']['totalGamesValue'] / count($GLOBALS['data']['arrayValuesGames']));
+            }
             $params['stats']['totalValueGames'] = Utility::displayMoney($GLOBALS['data']['totalGamesValue']);
-        } else {
-            $params['stats']['averageValueGames'] = '';
-            $params['stats']['totalValueGames'] = '';
         }
 
         $params['stats']['nbPlayAverageByDay'] = round($GLOBALS['data']['countAllPlays'] / $GLOBALS['data']['nbDaysSinceFirstPlay'], 2);
