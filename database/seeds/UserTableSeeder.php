@@ -16,7 +16,7 @@ class UserTableSeeder extends Seeder
             'email'    => 'pierreboivin85@gmail.com',
             'password' => Hash::make('test'),
             'bggusername' => 'pboivin',
-            'bggpassword' => 'jaup103w5s68lzocjr10im5v10r32eq2sx10'
+            'bggpassword' => 'tzxbtt66kp1jb4sf5fnappf18x6tw6st'
         ));
     }
 
