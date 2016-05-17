@@ -124,6 +124,7 @@ class RapportsController extends Controller
 
             if (isset($GLOBALS['data']['arrayPlaysByYear'][$yearSelected])) {
                 $gamesFirstTryAndRated = [];
+                $gamesCollectionNotPlayed = [];
                 foreach ($GLOBALS['data']['arrayPlaysByYear'][$yearSelected] as $idGame => $gameInfo) {
                     $otherInformationsGame = $GLOBALS['data']['arrayTotalPlays'][$idGame];
                     $dtoGames[$idGame] = [
@@ -139,31 +140,35 @@ class RapportsController extends Controller
                         $firstTryGame++;
                     }
                 }
+                foreach($GLOBALS['data']['gamesCollection'] as $idGame => $gameInfo) {
+                    if(!isset($GLOBALS['data']['arrayPlaysByYear'][$yearSelected][$idGame])) {
+                        $gamesCollectionNotPlayed[$idGame] = $gameInfo;
+                        $gamesCollectionNotPlayed[$idGame]['rating'] = '';
+                        if(isset($GLOBALS['data']['gamesRated'][$idGame])) {
+                            $gamesCollectionNotPlayed[$idGame]['rating'] = $GLOBALS['data']['gamesRated'][$idGame]['rating'];
+                        }
+                    }
+                }
 
-                uasort($dtoGames, 'self::compareOrder');
+                $nbGameCollectionPlayAtLeastOnce = count($GLOBALS['data']['gamesCollection']) - count($gamesCollectionNotPlayed);
+
+                // First try and rated
                 uasort($gamesFirstTryAndRated, 'self::compareOrderRating');
-
-                $dtoGames = array_slice($dtoGames, 0, 30, true);
-
                 $gamesFirstTryAndRated = array_slice($gamesFirstTryAndRated, 0, 20, true);
+
+                // Most plays this year
+                uasort($dtoGames, 'self::compareOrder');
+                $dtoGames = array_slice($dtoGames, 0, 30, true);
 
                 $params['table']['firstTryAndGoodRated'] = $gamesFirstTryAndRated;
                 $params['table']['mostPlaysThisYear'] = $dtoGames;
+                $params['table']['gameCollectionNotPlayed'] = $gamesCollectionNotPlayed;
                 $params['stats']['playTotal'] = $allPlays;
                 $params['stats']['percentNewGame'] = round($firstTryGame / count($GLOBALS['data']['arrayPlaysByYear'][$yearSelected]) * 100) . ' % (' . $firstTryGame . ' / ' . count($GLOBALS['data']['arrayPlaysByYear'][$yearSelected]) . ')';
                 $params['stats']['playDifferentTotal'] = count($GLOBALS['data']['arrayPlaysByYear'][$yearSelected]);
             }
 
-            $gameCollectionPlayAtLeastOnce = 0;
-            foreach ($arrayRawGamesOwned['item'] as $game) {
-                $idGameOwned = $game['@attributes']['objectid'];
-                if(isset($GLOBALS['data']['arrayPlaysByYear'][$yearSelected][$idGameOwned])) {
-                    $gameCollectionPlayAtLeastOnce++;
-                }
-            }
-
-            $params['stats']['percentGameCollectionPlayed'] = round($gameCollectionPlayAtLeastOnce / count($arrayRawGamesOwned['item']) * 100);
-
+            $params['stats']['percentGameCollectionPlayed'] = round($nbGameCollectionPlayAtLeastOnce / count($arrayRawGamesOwned['item']) * 100);
 
             $params['yearSelected'] = $yearSelected;
         }

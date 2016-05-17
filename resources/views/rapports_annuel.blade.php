@@ -72,6 +72,29 @@
 
             </table>
         </div>
+        <hr>
+        <div class="panel panel-default">
+            <div class="panel-heading">Jeux de la collection pas joué dans l'année {{ $yearSelected }}</div>
+            <table class="table table-hover table-condensed">
+                <thead>
+                <tr>
+                    <th>Jeu</th>
+                    <th>Classification</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach($table['gameCollectionNotPlayed'] as $idGame => $gameInfos)
+                    <tr>
+                        <td>
+                            <a href="http://boardgamegeek.com/boardgame/{{ $idGame }}" target="_blank">{{ $gameInfos['name'] }}</a>
+                        </td>
+                        <td>{{ $gameInfos['rating'] }}</td>
+                    </tr>
+                @endforeach
+                </tbody>
+
+            </table>
+        </div>
     @endif
 
 @endsection
