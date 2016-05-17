@@ -29,6 +29,13 @@ class StatsController extends Controller
 
         $arrayUserInfos = UserInfos::getUserInformations($arrayRawUserInfos);
 
+        $totalPlayGameCollection = 0;
+        foreach($GLOBALS['data']['gamesCollection'] as $idGame => $game) {
+            if(isset($GLOBALS['data']['arrayTotalPlays'][$idGame])) {
+                $totalPlayGameCollection += $GLOBALS['data']['arrayTotalPlays'][$idGame]['nbPlayed'];
+            }
+        }
+
         $params['userinfo'] = $arrayUserInfos;
 
         $params['stats']['nbGamesOwned'] = $arrayRawGamesOwned['@attributes']['totalitems'];
@@ -53,6 +60,7 @@ class StatsController extends Controller
             $params['stats']['totalValueGames'] = Utility::displayMoney($GLOBALS['data']['totalGamesValue']);
         }
 
+        $params['stats']['nbPlayAveragePlayCollectionGame'] = round($totalPlayGameCollection / count($GLOBALS['data']['gamesCollection']), 2);
         $params['stats']['nbPlayAverageByDay'] = round($GLOBALS['data']['countAllPlays'] / $GLOBALS['data']['nbDaysSinceFirstPlay'], 2);
         $params['stats']['nbPlayDifferentAverageByDay'] = round(count($GLOBALS['data']['arrayTotalPlays']) / $GLOBALS['data']['nbDaysSinceFirstPlay'], 2);
 

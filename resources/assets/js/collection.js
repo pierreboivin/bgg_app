@@ -9,12 +9,15 @@ $( function() {
                 acquisitiondate: '.acquisitiondate'
             }
         });
+        var filters = {};
+
         // bind filter button click
         $('.filter-playingtime').on('click', 'button', function () {
-            $(this).parent().find('button').removeClass('active');
-            $(this).addClass('active');
-            var filterValue = $(this).attr('data-filter');
-            $grid.isotope({filter: filterValue});
+            filterGrid($(this));
+        });
+        // bind filter button click
+        $('.filter-players').on('click', 'button', function () {
+            filterGrid($(this));
         });
         // bind sort by button click
         $('.sort-by-button-group').on('click', 'button', function() {
@@ -32,6 +35,21 @@ $( function() {
                 $(this).addClass('is-checked');
             });
         });
+
+        filterGrid = function(cObj) {
+            cObj.parent().find('button').removeClass('active');
+            cObj.addClass('active');
+            var $optionSet = cObj.parent('.option-set');
+            var group = $optionSet.attr('data-filter-group');
+            filters[ group ] = cObj.attr('data-filter-value');
+            // convert object into array
+            var isoFilters = [];
+            for ( var prop in filters ) {
+                isoFilters.push( filters[ prop ] )
+            }
+            var selector = isoFilters.join('');
+            $grid.isotope({filter: selector});
+        }
     }
 
 });

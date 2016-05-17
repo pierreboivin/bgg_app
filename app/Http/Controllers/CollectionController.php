@@ -48,6 +48,21 @@ class CollectionController extends Controller
                 $classes[] = 'shortgame';
             }
 
+            if($arrayGame['minplayers'] && $arrayGame['maxplayers']) {
+                $begin = (int)$arrayGame['minplayers'];
+                $end = (int)$arrayGame['maxplayers'];
+
+                if ($begin == 1) {
+                    $classes[] = 'players_solo';
+                }
+                if ($end >= 7) {
+                    $classes[] = 'players_plus';
+                }
+                for ($i = $begin; $i <= $end; $i++) {
+                    $classes[] = 'players_' . $i;
+                }
+            }
+
             $arrayGame['class'] = implode(' ', $classes);
 
             $arrayGame['tooltip'] = 'Nb partie joué : ' . $arrayGame['numplays'];

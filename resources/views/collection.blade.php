@@ -10,7 +10,7 @@
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="navbar-header">
                         <span class="navbar-brand">Filtrer</span>
                         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#nav-filtrer">
@@ -20,14 +20,36 @@
                         </button>
                     </div>
                     <div class="collapse navbar-collapse" id="nav-filtrer">
-                        <div class="btn-group filter-playingtime" role="group">
-                            <button type="button" class="navbar-btn btn btn-default active" data-filter="*">Tous</button>
-                            <button type="button" class="navbar-btn btn btn-default" data-filter=".shortgame">Jeu court (30 min. et -)</button>
-                            <button type="button" class="navbar-btn btn btn-default" data-filter=".longgame">Jeu long (60 min. et +)</button>
+                        <div class="btn-group option-set filter-playingtime" role="group" data-filter-group="type-game">
+                            <button type="button" class="navbar-btn btn btn-default active" data-filter-value="">Tous</button>
+                            <button type="button" class="navbar-btn btn btn-default" data-filter-value=".shortgame">Jeu court (30 min. et -)</button>
+                            <button type="button" class="navbar-btn btn btn-default" data-filter-value=".longgame">Jeu long (60 min. et +)</button>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
+                    <div class="navbar-header">
+                        <span class="navbar-brand">Joueurs</span>
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#nav-joueurs">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
+                    <div class="collapse navbar-collapse" id="nav-joueurs">
+                        <div class="btn-group option-set filter-players" role="group" data-filter-group="players">
+                            <button type="button" class="navbar-btn btn btn-default active" data-filter-value="">Tous</button>
+                            <button type="button" class="navbar-btn btn btn-default" data-filter-value=".players_solo">Solo</button>
+                            <button type="button" class="navbar-btn btn btn-default" data-filter-value=".players_2">2</button>
+                            <button type="button" class="navbar-btn btn btn-default" data-filter-value=".players_3">3</button>
+                            <button type="button" class="navbar-btn btn btn-default" data-filter-value=".players_4">4</button>
+                            <button type="button" class="navbar-btn btn btn-default" data-filter-value=".players_5">5</button>
+                            <button type="button" class="navbar-btn btn btn-default" data-filter-value=".players_6">6</button>
+                            <button type="button" class="navbar-btn btn btn-default" data-filter-value=".players_plus">7 et plus</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
                     <div class="navbar-header">
                         <span class="navbar-brand">Trier</span>
                         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#nav-trier">

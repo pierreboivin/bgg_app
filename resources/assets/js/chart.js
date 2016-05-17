@@ -28,7 +28,7 @@ $(function() {
             return false;
         });
         function setPlayByMonthHolder(chart) {
-            $('plays-by-month').onclick = function (evt) {
+            document.getElementById('plays-by-month').onclick = function (evt) {
                 var activePoints = chart.getPointsAtEvent(evt);
 
                 $.ajax({
@@ -67,7 +67,7 @@ $(function() {
         });
 
         function setMostPlayedHolder(chart) {
-            $('chart-most-played').onclick = function (evt) {
+            document.getElementById('chart-most-played').onclick = function (evt) {
                 var activePoints = chart.getBarsAtEvent(evt);
 
                 $.ajax({
@@ -106,7 +106,7 @@ $(function() {
         });
 
         function setAcquisitionByMonthHolder(chart) {
-            $('chart-acquisitionByMonth').onclick = function (evt) {
+            document.getElementById('chart-acquisitionByMonth').onclick = function (evt) {
                 var activePoints = chart.getBarsAtEvent(evt);
 
                 $.ajax({
