@@ -5,7 +5,7 @@
     <div class="panel-body">
         <table class="table table-hover table-condensed table-stats less-time">
             <thead>
-                <tr><th>Jeu</th><th>Parties jouées total</th><th>Date de la dernière partie</th></tr>
+                <tr><th>Jeu</th><th>Parties jouées totales</th><th>Date de la dernière partie</th></tr>
             </thead>
             <tbody>
             @foreach ($table['ownedTimePlayed']['lessTime'] as $id => $game)

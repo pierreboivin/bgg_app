@@ -6,6 +6,18 @@
 
     <div class="jumbotron login vertical-center">
         <div class="container">
+            <h2>Visitez le site en tant qu'invité</h2>
+
+            {!! Form::open(array('url' => '/guestLogin')) !!}
+            <div class="form-group">
+                <p>
+                    {!! Form::label('username', 'Nom d\'utilisateur BGG') !!}
+                    {!! Form::text('username', Input::old('username'), ['class' => 'form-control']) !!}
+                </p>
+                <p>{!! Form::submit('Visiter', ['class' => 'btn btn-mini btn-primary', 'id' => 'btnGuestLogin', 'data-loading-text' => 'Chargement en cours...']) !!}</p>
+            </div>
+            {!! Form::close() !!}
+
             <h2>Connectez-vous</h2>
 
             {!! Form::open(array('url' => '/userLogin')) !!}
@@ -32,17 +44,6 @@
             {!! Form::close() !!}
 
 
-            <h2>Visitez le site en tant qu'invité</h2>
-
-            {!! Form::open(array('url' => '/guestLogin')) !!}
-            <div class="form-group">
-                <p>
-                    {!! Form::label('username', 'Nom d\'utilisateur BGG') !!}
-                    {!! Form::text('username', Input::old('username'), ['class' => 'form-control']) !!}
-                </p>
-                <p>{!! Form::submit('Visiter', ['class' => 'btn btn-mini btn-primary', 'id' => 'btnGuestLogin', 'data-loading-text' => 'Chargement en cours...']) !!}</p>
-            </div>
-            {!! Form::close() !!}
         </div>
     </div>
 

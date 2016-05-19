@@ -21,7 +21,7 @@
 
     @if($playsThisMonth)
         <div class="well">
-            <p>Nombre de parties joués: {{$stats['playTotal']}}</p>
+            <p>Nombre de parties jouées: {{$stats['playTotal']}}</p>
             <p>Nouveaux jeux essayés : {{$stats['playNewGames']}}</p>
         </div>
         <hr>
@@ -31,7 +31,7 @@
                 <thead>
                     <tr>
                         <th>Jeu</th>
-                        <th>Partie joué</th>
+                        <th>Parties jouées</th>
                     </tr>
                 </thead>
                 <tbody>

@@ -8,7 +8,7 @@
     @include('partials.userInfo')
 
     <div id="progression-message-warning" class="alert alert-warning" role="alert">Attendez que vos données soient chargées. Cette étape peut nécessiter quelques minutes.</div>
-    <div id="progression-message-success" class="alert alert-success" role="alert">Vos données ont été chargés. Vous pouvez les consulter ici par les options ci-dessous ou par le menu.</div>
+    <div id="progression-message-success" class="alert alert-success" role="alert">Vos données ont été chargées. Vous pouvez les consulter ici par les options ci-dessous ou par le menu.</div>
     <div id="progression" class="progress">
         <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" style="width: 0%"></div>
     </div>
@@ -16,11 +16,11 @@
     <div class="list-group">
         <a href="/stats/{{ $GLOBALS['parameters']['general']['username'] }}" class="list-group-item desactivate-if-not-loaded">
             <h3 class="list-group-item-heading">Statistiques</h3>
-            <p class="list-group-item-text">Consulter des graphiques sur vos parties joués, vos jeux préférés et plus encore.</p>
+            <p class="list-group-item-text">Consultez des graphiques sur vos parties joués, vos jeux préférés et plus encore.</p>
         </a>
         <a href="/collection/{{ $GLOBALS['parameters']['general']['username'] }}" class="list-group-item desactivate-if-not-loaded">
             <h3 class="list-group-item-heading">Collection</h3>
-            <p class="list-group-item-text">Consulter votre collection de jeux.</p>
+            <p class="list-group-item-text">Consultez votre collection de jeux.</p>
         </a>
         <a href="/rapports/{{ $GLOBALS['parameters']['general']['username'] }}" class="list-group-item desactivate-if-not-loaded">
             <h3 class="list-group-item-heading">Rapports</h3>

@@ -1,4 +1,4 @@
-<h3>Nombre de joueur</h3>
+<h3>Nombre de joueurs</h3>
 <div style="width: calc(100% - 20px);">
     <canvas id="chart-nb-player" width="400" height="100"></canvas>
     <script>
@@ -6,7 +6,7 @@
             labels: [{!! $graphs['nbPlayer']['labels'] !!}],
             datasets: [
                 {
-                    label: "Nombre de joueur",
+                    label: "Nombre de joueurs",
                     fillColor: "#B7C3D3",
                     strokeColor: "#A0AAB7",
                     data: [{!! $graphs['nbPlayer']['serie1'] !!}]

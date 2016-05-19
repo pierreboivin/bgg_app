@@ -7,7 +7,7 @@
             labels: [{!! $graphs['mostPlayed']['labels'] !!}],
             datasets: [
                 {
-                    label: "Parties joués",
+                    label: "Parties jouées",
                     fillColor: "#B7C3D3",
                     strokeColor: "#A0AAB7",
                     data: [{!! $graphs['mostPlayed']['serie1'] !!}]

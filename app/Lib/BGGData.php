@@ -119,6 +119,14 @@ class BGGData
         $pathFileDebug = app_path() . '/Debug/' . md5($url) . '.txt';
         $keyCache = 'url_' . md5($url) . '_' . $GLOBALS['parameters']['typeLogin'];
 
+        // Si on est pas connecté, mais qu'il existe une cache pour l'utilisateur connecté, on obtient cette dernière
+        if($GLOBALS['parameters']['typeLogin'] == 'guest') {
+            $tempKeyCache = 'url_' . md5($url) . '_login';
+            if (Cache::has($tempKeyCache)) {
+                $keyCache = $tempKeyCache;
+            }
+        }
+
         if ($GLOBALS['debugMode'] == 'getDebug') {
             if (file_exists($pathFileDebug)) {
                 $contentUrl = file_get_contents($pathFileDebug);

@@ -61,7 +61,7 @@
                     <div class="collapse navbar-collapse" id="nav-trier">
                         <div class="btn-group sort-by-button-group" role="group">
                             <button type="button" class="navbar-btn btn btn-default active" data-sort-by="original-order">Alphabétique</button>
-                            <button type="button" class="navbar-btn btn btn-default" data-sort-by="rating" date-sort-direction="desc">Classification</button>
+                            <button type="button" class="navbar-btn btn btn-default" data-sort-by="rating" date-sort-direction="desc">Évaluation</button>
                             @if(\App\Helpers\Helper::ifLogin())
                                 <button type="button" class="navbar-btn btn btn-default" data-sort-by="acquisitiondate" date-sort-direction="desc">Date d'acquisition</button>
                             @endif
