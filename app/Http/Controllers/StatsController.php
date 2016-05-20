@@ -81,6 +81,36 @@ class StatsController extends Controller
     /**
      * @param $page
      */
+    public function ajaxTableLessTimePrevious($username, $page)
+    {
+        $arrayRawGamesOwned = BGGData::getGamesOwned();
+        $arrayRawGamesPlays = BGGData::getPlays();
+        Stats::getPlaysRelatedArrays($arrayRawGamesPlays);
+        Stats::getCollectionArrays($arrayRawGamesOwned);
+
+        $params['table']['ownedTimePlayed'] = Graphs::getOwnedTimePlayed($page);
+
+        return \View::make('partials.lines-table-owned-lesstime', $params);
+    }
+
+    /**
+     * @param $page
+     */
+    public function ajaxTableMostTimePrevious($username, $page)
+    {
+        $arrayRawGamesOwned = BGGData::getGamesOwned();
+        $arrayRawGamesPlays = BGGData::getPlays();
+        Stats::getPlaysRelatedArrays($arrayRawGamesPlays);
+        Stats::getCollectionArrays($arrayRawGamesOwned);
+
+        $params['table']['ownedTimePlayed'] = Graphs::getOwnedTimePlayed($page);
+
+        return \View::make('partials.lines-table-owned-mosttime', $params);
+    }
+
+    /**
+     * @param $page
+     */
     public function ajaxPlayByMonthPrevious($username, $page)
     {
         $monthArray = $this->getMonthArray($page);

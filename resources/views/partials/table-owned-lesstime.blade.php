@@ -8,14 +8,9 @@
                 <tr><th>Jeu</th><th>Parties jouées totales</th><th>Date de la dernière partie</th></tr>
             </thead>
             <tbody>
-            @foreach ($table['ownedTimePlayed']['lessTime'] as $id => $game)
-                <tr>
-                    <td><a href="{{ $game['url'] }}" target="_blank">{{ $game['name'] }}</a></td>
-                    <td>{{ $game['totalPlays'] }}</td>
-                    <td><span class="hidden-xs">{{ $game['dateFormated'] }} (</span>{{ $game['since'] }}<span class="hidden-xs">)</span></td>
-                </tr>
-            @endforeach
+                @include('partials.lines-table-owned-lesstime')
             </tbody>
         </table>
+        <button id="table-less-time-previous" data-page="2" data-replace="table.less-time tbody" data-href="{{ url('ajaxTableLessTimePrevious/' . $GLOBALS['parameters']['general']['username']) }}" class="btn btn-primary">Plus</button>
     </div>
 </div>

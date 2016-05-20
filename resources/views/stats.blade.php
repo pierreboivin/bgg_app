@@ -31,7 +31,7 @@
                     <div class="row">
                         <div class="col-md-4">
                             <h3>Partie joués</h3>
-                            <p>Nombre de parties jouées total : {{ $stats['nbPlaysTotal'] }}</p>
+                            <p>Nombre de parties jouées totales : {{ $stats['nbPlaysTotal'] }}</p>
                             <p>Nombre de jeux différents joués : {{ $stats['nbPlaysDifferentGame'] }}</p>
                             <p>Moyenne de parties par mois : {{ $stats['averagePlayByMonth'] }}</p>
                             <p>Moyenne de nouveaux jeux par mois : {{ $stats['averagePlayDifferentByMonth'] }}</p>

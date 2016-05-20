@@ -103,7 +103,7 @@ class Graphs
         ];
     }
 
-    public static function getOwnedTimePlayed()
+    public static function getOwnedTimePlayed($page = 1)
     {
         $gameLessTimePlayed = [];
         foreach ($GLOBALS['data']['gamesCollection'] as $gameId => $gameProperties) {
@@ -143,8 +143,8 @@ class Graphs
         });
 
         return [
-            'mostTime' => array_slice($gameLessTimePlayed, 0, self::TABLE_TIME_SINCE_PLAY_SLICE),
-            'lessTime' => array_reverse(array_slice($gameLessTimePlayed, count($gameLessTimePlayed) - self::TABLE_TIME_SINCE_PLAY_SLICE))
+            'mostTime' => array_slice($gameLessTimePlayed, 0, self::TABLE_TIME_SINCE_PLAY_SLICE * $page),
+            'lessTime' => array_reverse(array_slice($gameLessTimePlayed, count($gameLessTimePlayed) - self::TABLE_TIME_SINCE_PLAY_SLICE * $page))
         ];
     }
 
