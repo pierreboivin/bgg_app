@@ -33,11 +33,7 @@ class HomeController extends Controller
     }
 
     public function check_loading() {
-        $progression = BGGData::getCurrentDataInCache();
-
-        return Response::json(array(
-            'progress' => $progression,
-        ));
+        return Response::json(BGGData::getCurrentDataInCache());
     }
 
     public function load() {

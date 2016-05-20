@@ -16,7 +16,7 @@
     <div class="list-group">
         <a href="/stats/{{ $GLOBALS['parameters']['general']['username'] }}" class="list-group-item desactivate-if-not-loaded">
             <h3 class="list-group-item-heading">Statistiques</h3>
-            <p class="list-group-item-text">Consultez des graphiques sur vos parties joués, vos jeux préférés et plus encore.</p>
+            <p class="list-group-item-text">Consultez des graphiques sur vos parties jouées, vos jeux préférés et plus encore.</p>
         </a>
         <a href="/collection/{{ $GLOBALS['parameters']['general']['username'] }}" class="list-group-item desactivate-if-not-loaded">
             <h3 class="list-group-item-heading">Collection</h3>
@@ -39,7 +39,7 @@
             </div>
         </div>
         <div class="col-md-6">
-            <h2>Information sur l'utilisateur</h2>
+            <h2>Informations sur l'utilisateur</h2>
             <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                 <div class="panel panel-default">
                     <div class="panel-heading" role="tab" id="heading2">

@@ -43,7 +43,7 @@ class BGGData
     public static function getDetailOwned(&$arrayRawGamesOwned)
     {
         $arrayGamesDetails = [];
-        if(isset($arrayRawGamesOwned['item'])) {
+        if (isset($arrayRawGamesOwned['item'])) {
             foreach ($arrayRawGamesOwned['item'] as $key => $game) {
                 $arrayId[] = $game['@attributes']['objectid'];
                 $arrayRawGamesOwned['item'][$key]['detail'] = [];
@@ -51,13 +51,13 @@ class BGGData
         }
 
         $arrayChunk = array_chunk($arrayId, 40, true);
-        foreach($arrayChunk as $key => $arrayIds) {
+        foreach ($arrayChunk as $key => $arrayIds) {
             $strIds = implode(',', $arrayIds);
 
             $urlBGG = BGGUrls::getDetail($strIds);
 
             $fromBGG = self::getBGGUrl($urlBGG);
-            foreach($fromBGG['item'] as $gameDetail) {
+            foreach ($fromBGG['item'] as $gameDetail) {
                 $arrayGamesDetails[$gameDetail['@attributes']['id']] = $gameDetail;
             }
         }
@@ -76,7 +76,8 @@ class BGGData
             if (isset($arrayPlay['play'])) {
                 $arrayAllPlay = array_merge($arrayAllPlay, $arrayPlay['play']);
             } else {
-                Cache::put('url_plays_' . $GLOBALS['parameters']['general']['username'] . '_' . $GLOBALS['parameters']['typeLogin'], true, self::CACHE_TIME_IN_MINUTES);
+                Cache::put('url_plays_' . $GLOBALS['parameters']['general']['username'] . '_' . $GLOBALS['parameters']['typeLogin'],
+                    true, self::CACHE_TIME_IN_MINUTES);
                 break;
             }
 
@@ -88,25 +89,39 @@ class BGGData
     public static function getCurrentDataInCache()
     {
         $progression = 0;
-        if(self::dataExistInCache(BGGUrls::getUserInfos())) {
+        $message = 'Chargement des informations utilisateurs';
+        if (self::dataExistInCache(BGGUrls::getUserInfos())) {
+            $message = 'Chargement des jeux de la collection';
             $progression += 10;
         }
-        if(self::dataExistInCache(BGGUrls::getGamesOwned())) {
+        if (self::dataExistInCache(BGGUrls::getGamesOwned())) {
+            $message = 'Chargement des extensions de la collection';
             $progression += 30;
         }
-        if(self::dataExistInCache(BGGUrls::getGamesAndExpansionsOwned())) {
+        if (self::dataExistInCache(BGGUrls::getGamesAndExpansionsOwned())) {
+            $message = 'Chargement des jeux évalués';
             $progression += 20;
         }
-        if(self::dataExistInCache(BGGUrls::getGamesRated())) {
+        if (self::dataExistInCache(BGGUrls::getGamesRated())) {
+            $message = 'Chargement des jeux joués';
             $progression += 10;
         }
-        if(Cache::has('url_plays_' . $GLOBALS['parameters']['general']['username'] . '_' . $GLOBALS['parameters']['typeLogin'])) {
+        if (Cache::has('url_plays_' . $GLOBALS['parameters']['general']['username'] . '_' . $GLOBALS['parameters']['typeLogin'])
+            || Cache::has('url_plays_' . $GLOBALS['parameters']['general']['username'] . '_login')
+        ) {
             $progression += 30;
         }
-        return $progression;
+        return array('progress' => $progression, 'message' => $message);
     }
 
-    private static function dataExistInCache($url) {
+    private static function dataExistInCache($url)
+    {
+        if ($GLOBALS['parameters']['typeLogin'] == 'guest') {
+            $tempKeyCache = 'url_' . md5($url) . '_login';
+            if (Cache::has($tempKeyCache)) {
+                return true;
+            }
+        }
         if (Cache::has('url_' . md5($url) . '_' . $GLOBALS['parameters']['typeLogin'])) {
             return true;
         } else {
@@ -120,7 +135,7 @@ class BGGData
         $keyCache = 'url_' . md5($url) . '_' . $GLOBALS['parameters']['typeLogin'];
 
         // Si on est pas connecté, mais qu'il existe une cache pour l'utilisateur connecté, on obtient cette dernière
-        if($GLOBALS['parameters']['typeLogin'] == 'guest') {
+        if ($GLOBALS['parameters']['typeLogin'] == 'guest') {
             $tempKeyCache = 'url_' . md5($url) . '_login';
             if (Cache::has($tempKeyCache)) {
                 $keyCache = $tempKeyCache;
