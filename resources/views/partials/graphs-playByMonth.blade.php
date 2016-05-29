@@ -1,4 +1,4 @@
-<h3>Parties par mois</h3>
+<h3>Nombre de parties par mois</h3>
 <div style="width: calc(100% - 20px);">
     <button id="plays-by-month-previous-months" data-page="2" data-href="{{ url('ajaxPlayByMonthPrevious/' . $GLOBALS['parameters']['general']['username']) }}" class="btn btn-primary">Mois précédent</button>
     <canvas id="plays-by-month" width="400" height="100"></canvas>
@@ -8,7 +8,7 @@
             labels: [{!! $graphs['byMonth']['labels'] !!}],
             datasets: [
                 {
-                    label: "Parties totales",
+                    label: "Nombre de parties",
                     fillColor: "rgba(220,220,220,0.2)",
                     strokeColor: "#D3B78F",
                     pointColor: "#BA9E75",
@@ -16,7 +16,7 @@
                     data: [{!! $graphs['byMonth']['serie1'] !!}]
                 },
                 {
-                    label: "Jeux différents",
+                    label: "Nombre de jeux joués",
                     fillColor: "rgba(220,220,220,0.2)",
                     strokeColor: "#61799A",
                     pointColor: "#576271",
@@ -24,7 +24,7 @@
                     data: [{!! $graphs['byMonth']['serie2'] !!}]
                 },
                 {
-                    label: "Nouveaux jeux essayés",
+                    label: "Nombre de nouveaux jeux essayés",
                     fillColor: "rgba(220,220,220,0.2)",
                     strokeColor: "#B7C3D3",
                     pointColor: "#A0AAB7",

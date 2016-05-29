@@ -1,4 +1,4 @@
-<h3>Parties par jour de la semaine</h3>
+<h3>Nombre de parties totales par jour de la semaine</h3>
 <div style="width: calc(100% - 20px);">
     <canvas id="plays-by-dayweek" width="400" height="100"></canvas>
     <div id="plays-by-dayweek-legend" class="legend"></div>

@@ -12,7 +12,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="navbar-header">
-                        <span class="navbar-brand">Filtrer</span>
+                        <span class="navbar-brand">Types de jeux</span>
                         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#nav-filtrer">
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
@@ -22,14 +22,14 @@
                     <div class="collapse navbar-collapse" id="nav-filtrer">
                         <div class="btn-group option-set filter-playingtime" role="group" data-filter-group="type-game">
                             <button type="button" class="navbar-btn btn btn-default active" data-filter-value="">Tous</button>
-                            <button type="button" class="navbar-btn btn btn-default" data-filter-value=".shortgame">Jeu court (30 min. et -)</button>
-                            <button type="button" class="navbar-btn btn btn-default" data-filter-value=".longgame">Jeu long (60 min. et +)</button>
+                            <button type="button" class="navbar-btn btn btn-default" data-filter-value=".shortgame">Jeux courts (30 min. et -)</button>
+                            <button type="button" class="navbar-btn btn btn-default" data-filter-value=".longgame">Jeux longs (60 min. et +)</button>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="navbar-header">
-                        <span class="navbar-brand">Joueurs</span>
+                        <span class="navbar-brand">Nombre de joueurs</span>
                         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#nav-joueurs">
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>

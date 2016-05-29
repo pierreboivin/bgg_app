@@ -22,7 +22,7 @@
             <div class="panel-heading" role="tab" id="heading1">
                 <h2>
                     <a class="collapsed" role="button" data-toggle="collapse" href="#collapse1" aria-expanded="true" aria-controls="collapse1">
-                        Statistiques générales
+                        Statistiques totales
                     </a>
                 </h2>
             </div>
@@ -30,7 +30,7 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-md-4">
-                            <h3>Partie joués</h3>
+                            <h3>Parties jouées</h3>
                             <p>Nombre de parties jouées totales : {{ $stats['nbPlaysTotal'] }}</p>
                             <p>Nombre de jeux différents joués : {{ $stats['nbPlaysDifferentGame'] }}</p>
                             <p>Moyenne de parties par mois : {{ $stats['averagePlayByMonth'] }}</p>

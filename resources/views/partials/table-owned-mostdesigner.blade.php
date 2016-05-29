@@ -1,6 +1,6 @@
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h3 class="panel-title">Auteur le plus possédés dans les jeux</h3>
+        <h3 class="panel-title">Auteurs les plus possédés dans les jeux</h3>
     </div>
     <div class="panel-body">
         <table class="table table-hover table-condensed table-stats">
