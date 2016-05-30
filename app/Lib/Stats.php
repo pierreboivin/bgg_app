@@ -143,8 +143,18 @@ class Stats
                 'thumbnail' => $game['thumbnail'],
                 'minplayer' => $game['stats']['@attributes']['minplayers'],
                 'maxplayer' => $game['stats']['@attributes']['maxplayers'],
-                'playingtime' => isset($game['stats']['@attributes']['playingtime']) ? $game['stats']['@attributes']['playingtime'] : 0
+                'playingtime' => isset($game['stats']['@attributes']['playingtime']) ? $game['stats']['@attributes']['playingtime'] : 0,
+                'numplays' => isset($game['numplays']) ? $game['numplays'] : 0
             ];
+            if (isset($game['stats']['rating']['@attributes']['value']) && $game['stats']['rating']['@attributes']['value'] != 'N/A') {
+                $rating = $game['stats']['rating']['@attributes']['value'];
+            } else {
+                $rating = 0;
+            }
+            $arrayGameCollection[$game['@attributes']['objectid']]['rating'] = $rating;
+            if(isset($game['privateinfo'])) {
+                $arrayGameCollection[$game['@attributes']['objectid']]['private'] = $game['privateinfo'];
+            }
         }
 
         $GLOBALS['data']['gamesCollection'] = $arrayGameCollection;

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests;
 use App\Lib\BGGData;
 use App\Lib\Page;
+use App\Lib\Stats;
 
 class CollectionController extends Controller
 {
@@ -16,31 +17,25 @@ class CollectionController extends Controller
         $arrayGamesDetails = BGGData::getDetailOwned($arrayRawGamesOwned);
         $arrayRawUserInfos = BGGData::getUserInfos();
         $arrayUserInfos = \App\Lib\UserInfos::getUserInformations($arrayRawUserInfos);
+        Stats::getCollectionArrays($arrayRawGamesOwned);
+        Stats::getOwnedRelatedArrays($arrayGamesDetails);
         $params['userinfo'] = $arrayUserInfos;
         $allMechanics = [];
 
         $arrayGames = [];
-        foreach ($arrayRawGamesOwned['item'] as $gameProperties) {
+        foreach ($GLOBALS['data']['gamesCollection'] as $idGame => $gameProperties) {
 
             $arrayGame = [];
             $classes = [];
-            $mechanics = [];
-
-            $idGame = $gameProperties['@attributes']['objectid'];
-
-            $gameDetails = $arrayGamesDetails[$idGame];
 
             $arrayGame['name'] = $gameProperties['name'];
             $arrayGame['image'] = 'http://' . $gameProperties['thumbnail'];
-            $arrayGame['playingtime'] = isset($gameProperties['stats']['@attributes']['playingtime']) ? $gameProperties['stats']['@attributes']['playingtime'] : 0;
-            $arrayGame['minplayers'] = isset($gameProperties['stats']['@attributes']['minplayers']) ? $gameProperties['stats']['@attributes']['minplayers'] : 0;
-            $arrayGame['maxplayers'] = isset($gameProperties['stats']['@attributes']['maxplayers']) ? $gameProperties['stats']['@attributes']['maxplayers'] : 0;
+            $arrayGame['playingtime'] = isset($gameProperties['playingtime']) ? $gameProperties['playingtime'] : 0;
+            $arrayGame['minplayer'] = isset($gameProperties['minplayer']) ? $gameProperties['minplayer'] : 0;
+            $arrayGame['maxplayer'] = isset($gameProperties['maxplayer']) ? $gameProperties['maxplayer'] : 0;
             $arrayGame['numplays'] = $gameProperties['numplays'];
-            if (isset($gameProperties['stats']['rating']['@attributes']['value']) && $gameProperties['stats']['rating']['@attributes']['value'] != 'N/A') {
-                $arrayGame['rating'] = $gameProperties['stats']['rating']['@attributes']['value'];
-            } else {
-                $arrayGame['rating'] = 0;
-            }
+            $arrayGame['rating'] = $gameProperties['rating'];
+
             if (isset($gameProperties['privateinfo']['@attributes']['acquisitiondate'])) {
                 $arrayGame['acquisitiondate'] = $gameProperties['privateinfo']['@attributes']['acquisitiondate'];
             } else {
@@ -53,19 +48,16 @@ class CollectionController extends Controller
                 $classes[] = 'shortgame';
             }
 
-            if($gameDetails['link']) {
-                foreach($gameDetails['link'] as $link) {
-                    $attributes = $link['@attributes'];
-                    if($link['@attributes']['type'] == 'boardgamemechanic') {
-                        $classes[] = str_slug($attributes['value']);
-                        $allMechanics[] = $attributes['value'];
-                    }
+            if(isset($gameProperties['detail']['boardgamemechanic'])) {
+                foreach($gameProperties['detail']['boardgamemechanic'] as $mechanic) {
+                    $classes[] = str_slug($mechanic['value']);
+                    $allMechanics[] = $mechanic['value'];
                 }
             }
 
-            if($arrayGame['minplayers'] && $arrayGame['maxplayers']) {
-                $begin = (int)$arrayGame['minplayers'];
-                $end = (int)$arrayGame['maxplayers'];
+            if($arrayGame['minplayer'] && $arrayGame['maxplayer']) {
+                $begin = (int)$arrayGame['minplayer'];
+                $end = (int)$arrayGame['maxplayer'];
 
                 if ($begin == 1) {
                     $classes[] = 'players_solo';
@@ -81,11 +73,11 @@ class CollectionController extends Controller
             $arrayGame['class'] = implode(' ', $classes);
 
             $arrayGame['tooltip'] = 'Nombre de parties joués : ' . $arrayGame['numplays'];
-            if($arrayGame['minplayers'] > 0 && $arrayGame['maxplayers'] > 0) {
-                $arrayGame['tooltip'] .= '<br>Nombre de joueurs : ' . $arrayGame['minplayers'] . ' à ' . $arrayGame['maxplayers'];
+            if($arrayGame['minplayer'] > 0 && $arrayGame['maxplayer'] > 0) {
+                $arrayGame['tooltip'] .= '<br>Nombre de joueurs : ' . $arrayGame['minplayer'] . ' à ' . $arrayGame['maxplayer'];
             }
             $arrayGame['tooltip'] .= '<br>Durée d\'une partie : ' . $arrayGame['playingtime'] . ' minutes';
-            $arrayGame['tooltip'] .= '<br>Évaluation : ' . $gameProperties['stats']['rating']['@attributes']['value'] . ' / 10';
+            $arrayGame['tooltip'] .= '<br>Évaluation : ' . $gameProperties['rating'] . ' / 10';
             if (isset($gameProperties['privateinfo']['@attributes']['acquisitiondate'])) {
                 $arrayGame['tooltip'] .= '<br>Date d\'acquisition : ' . $gameProperties['privateinfo']['@attributes']['acquisitiondate'];
             }

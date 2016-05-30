@@ -61,6 +61,7 @@ class BGGData
                 $arrayGamesDetails[$gameDetail['@attributes']['id']] = $gameDetail;
             }
         }
+
         return $arrayGamesDetails;
     }
 
