@@ -49,7 +49,30 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
+                    <div class="navbar-header">
+                        <span class="navbar-brand">Mécaniques</span>
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#nav-mechanics">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
+                    <div class="collapse navbar-collapse" id="nav-filtrer">
+                        <div class="btn-group option-set" role="group">
+                            <select class="filter-mechanics form-control">
+                                <option value="">Tous</option>
+                                @foreach($mechanics as $slugMechanics => $mechanic)
+                                    <option value="{{ $slugMechanics }}">{{ $mechanic }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-3">
                     <div class="navbar-header">
                         <span class="navbar-brand">Trier</span>
                         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#nav-trier">
@@ -66,6 +89,11 @@
                                 <button type="button" class="navbar-btn btn btn-default" data-sort-by="acquisitiondate" date-sort-direction="desc">Date d'acquisition</button>
                             @endif
                         </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="navbar-header">
+                        <span class="navbar-brand">Nombre de jeux : {{ count($games) }}</span>
                     </div>
                 </div>
             </div>

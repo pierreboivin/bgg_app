@@ -11,15 +11,24 @@ $( function() {
         });
         var filters = {};
 
-        // bind filter button click
+        // Filter mechanics
+        $('.filter-mechanics').on('change', function () {
+            if($(this).val()) {
+                filters['mechanics'] = '.' + $(this).val();
+            } else {
+                filters['mechanics'] = '';
+            }
+            filtersIsotope();
+        });
+        // Filter playing time
         $('.filter-playingtime').on('click', 'button', function () {
             filterGrid($(this));
         });
-        // bind filter button click
+        // Filter players
         $('.filter-players').on('click', 'button', function () {
             filterGrid($(this));
         });
-        // bind sort by button click
+        // Sort
         $('.sort-by-button-group').on('click', 'button', function() {
             $(this).parent().find('button').removeClass('active');
             $(this).addClass('active');
@@ -42,14 +51,16 @@ $( function() {
             var $optionSet = cObj.parent('.option-set');
             var group = $optionSet.attr('data-filter-group');
             filters[ group ] = cObj.attr('data-filter-value');
-            // convert object into array
+            filtersIsotope();
+        };
+        filtersIsotope = function() {
             var isoFilters = [];
             for ( var prop in filters ) {
                 isoFilters.push( filters[ prop ] )
             }
             var selector = isoFilters.join('');
             $grid.isotope({filter: selector});
-        }
+        };
     }
 
 });
