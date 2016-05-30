@@ -1,11 +1,17 @@
 <h3>Nombre de parties par mois</h3>
 <div style="width: calc(100% - 20px);">
-    <button id="plays-by-month-previous-months" data-page="2" data-href="{{ url('ajaxPlayByMonthPrevious/' . $GLOBALS['parameters']['general']['username']) }}" class="btn btn-primary">Mois précédent</button>
+    <button id="plays-by-month-previous-months" class="btn btn-primary">Mois précédent</button>
+    <button id="plays-by-month-next-months" class="btn btn-primary">Mois suivant</button>
+
     <canvas id="plays-by-month" width="400" height="100"></canvas>
+
+    <input type="hidden" id="plays-by-month-page" value="1">
+    <input type="hidden" id="plays-by-month-href" value="{{ url('ajaxPlayByMonth/' . $GLOBALS['parameters']['general']['username']) }}">
+
     <div id="plays-by-month-legend" class="legend"></div>
     <script>
         window.playByMonthChartData = {
-            labels: [{!! $graphs['byMonth']['labels'] !!}],
+            labels: '',
             datasets: [
                 {
                     label: "Nombre de parties",
@@ -13,7 +19,7 @@
                     strokeColor: "#D3B78F",
                     pointColor: "#BA9E75",
                     pointStrokeColor: "#fff",
-                    data: [{!! $graphs['byMonth']['serie1'] !!}]
+                    data: ''
                 },
                 {
                     label: "Nombre de jeux joués",
@@ -21,7 +27,7 @@
                     strokeColor: "#61799A",
                     pointColor: "#576271",
                     pointStrokeColor: "#fff",
-                    data: [{!! $graphs['byMonth']['serie2'] !!}]
+                    data: ''
                 },
                 {
                     label: "Nombre de nouveaux jeux essayés",
@@ -29,7 +35,7 @@
                     strokeColor: "#B7C3D3",
                     pointColor: "#A0AAB7",
                     pointStrokeColor: "#fff",
-                    data: [{!! $graphs['byMonth']['serie3'] !!}]
+                    data: ''
                 }
             ]
         };

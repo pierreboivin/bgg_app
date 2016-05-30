@@ -11,6 +11,11 @@ use Illuminate\Support\Facades\Input;
 
 class RapportsController extends Controller
 {
+    public function home()
+    {
+        return \View::make('rapports');
+    }
+
     public function mensuel()
     {
         $paramsMenu = Page::getMenuParams();

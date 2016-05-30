@@ -57,17 +57,12 @@ class Graphs
             }
         }
 
-        $wrap = '';
-        if ($numPage == 1) {
-            $wrap = '\'';
-        }
-
         // Return labels and series
         return [
-            'labels' => Utility::implodeWrap(array_keys($arrayPlayByMonth), ',', $wrap),
-            'serie1' => Utility::implodeWrap(array_values($arrayPlayByMonth), ',', $wrap),
-            'serie2' => Utility::implodeWrap(array_values($arrayPlayDifferentByMonth), ',', $wrap),
-            'serie3' => Utility::implodeWrap(array_values($arrayPlayNewByMonth), ',', $wrap),
+            'labels' => array_keys($arrayPlayByMonth),
+            'serie1' => array_values($arrayPlayByMonth),
+            'serie2' => array_values($arrayPlayDifferentByMonth),
+            'serie3' => array_values($arrayPlayNewByMonth),
             'urls' => $arrayUrls
         ];
     }
@@ -81,11 +76,6 @@ class Graphs
             (self::MOST_PLAYED_SLICE * $numPage) - self::MOST_PLAYED_SLICE,
             self::MOST_PLAYED_SLICE, true);
 
-        $wrap = '';
-        if ($numPage == 1) {
-            $wrap = '\'';
-        }
-
         $arrayLabels = [];
         $arrayQuantity = [];
         $arrayUrls = [];
@@ -96,8 +86,8 @@ class Graphs
         }
 
         return [
-            'labels' => Utility::implodeWrap(array_values($arrayLabels), ',', $wrap),
-            'serie1' => Utility::implodeWrap(array_values($arrayQuantity), ',', $wrap),
+            'labels' => array_values($arrayLabels),
+            'serie1' => array_values($arrayQuantity),
             'scaleMax' => $numMostPlayed,
             'urls' => $arrayUrls
         ];
@@ -193,14 +183,9 @@ class Graphs
             $arrayUrls[$label] = 'http://boardgamegeek.com/collection/user/' . $GLOBALS['parameters']['general']['username'] . '?sort=acquisitiondate&sortdir=desc&rankobjecttype=subtype&rankobjectid=1&columns=title%7Cstatus%7Cversion%7Cacquisitiondate%7Crating%7Cbggrating&geekranks=%0A%09%09%09%09%09%09%09%09%09Board+Game+Rank%0A%09%09%09%09%09%09%09%09&own=1&ff=1&subtype=boardgame&mindate=' . $date->firstOfMonth()->format('Y-m-d') . '&dateinput=' . $date->lastOfMonth()->format('Y-m-d') . '&maxdate=' . $date->lastOfMonth()->format('Y-m-d');
         }
 
-        $wrap = '';
-        if ($numPage == 1) {
-            $wrap = '\'';
-        }
-
         return [
-            'labels' => Utility::implodeWrap(array_keys($acquisitionByMonth), ',', $wrap),
-            'serie1' => Utility::implodeWrap(array_values($acquisitionByMonth), ',', $wrap),
+            'labels' => array_keys($acquisitionByMonth),
+            'serie1' => array_values($acquisitionByMonth),
             'urls' => $arrayUrls
         ];
     }

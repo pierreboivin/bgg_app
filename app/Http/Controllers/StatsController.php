@@ -111,7 +111,7 @@ class StatsController extends Controller
     /**
      * @param $page
      */
-    public function ajaxPlayByMonthPrevious($username, $page)
+    public function ajaxPlayByMonth($username, $page)
     {
         $monthArray = $this->getMonthArray($page);
 
