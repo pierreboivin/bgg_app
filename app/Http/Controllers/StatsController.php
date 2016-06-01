@@ -65,6 +65,7 @@ class StatsController extends Controller
         $params['stats']['nbPlayDifferentAverageByDay'] = round(count($GLOBALS['data']['arrayTotalPlays']) / $GLOBALS['data']['nbDaysSinceFirstPlay'], 2);
 
         $params['graphs']['byMonth'] = Graphs::getPlayByMonth();
+        $params['graphs']['byYear'] = Graphs::getPlayByYear();
         $params['graphs']['byDayWeek'] = Graphs::getPlayByDayWeek();
         $params['graphs']['mostPlayed'] = Graphs::getMostPlayed();
         $params['graphs']['nbPlayer'] = Graphs::getNbPlayerCollection();
@@ -107,6 +108,40 @@ class StatsController extends Controller
         $params['table']['ownedTimePlayed'] = Graphs::getOwnedTimePlayed($page);
 
         return \View::make('partials.lines-table-owned-mosttime', $params);
+    }
+
+    /**
+     * @param $page
+     */
+    public function ajaxPlayByYear($username, $page)
+    {
+        $yearArray = $this->getYearArray($page);
+
+        echo json_encode($yearArray);
+    }
+
+    /**
+     * @param $page
+     * @param $label
+     */
+    public function ajaxPlayByYearGetUrl($username, $page, $label)
+    {
+        $yearArray = $this->getYearArray($page);
+
+        echo $yearArray['urls'][$label];
+    }
+
+    /**
+     * @param $page
+     * @return array
+     */
+    private function getYearArray($page)
+    {
+        $arrayRawGamesPlays = BGGData::getPlays();
+
+        Stats::getPlaysRelatedArrays($arrayRawGamesPlays);
+
+        return Graphs::getPlayByYear($page);
     }
 
     /**

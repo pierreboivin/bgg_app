@@ -8,6 +8,8 @@ class Graphs
 {
     const PLAY_BY_MONTH_SLICE = 13;
 
+    const PLAY_BY_YEAR_SLICE = 10;
+
     const MOST_PLAYED_SLICE = 20;
 
     const MOST_TYPE_SLICE = 20;
@@ -65,6 +67,56 @@ class Graphs
             'serie1' => array_values($arrayPlayByMonth),
             'serie2' => array_values($arrayPlayDifferentByMonth),
             'serie3' => array_values($arrayPlayNewByMonth),
+            'urls' => $arrayUrls
+        ];
+    }
+
+    public static function getPlayByYear($numPage = 1)
+    {
+        // Define which plays are new
+        $gamesAlreadyPlayed = [];
+        foreach ($GLOBALS['data']['arrayPlaysByYear'] as $dateTstamp => $games) {
+            foreach ($games as $gameId => $properties) {
+                if (!in_array($gameId, $gamesAlreadyPlayed)) {
+                    $gamesAlreadyPlayed[] = $gameId;
+                    $GLOBALS['data']['arrayPlaysByYear'][$dateTstamp][$gameId]['new'] = true;
+                } else {
+                    $GLOBALS['data']['arrayPlaysByYear'][$dateTstamp][$gameId]['new'] = false;
+                }
+            }
+        }
+
+        if ((count($GLOBALS['data']['arrayPlaysByYear']) - (self::PLAY_BY_YEAR_SLICE * $numPage)) < 0) {
+            $arraySomeYears = array_slice($GLOBALS['data']['arrayPlaysByYear'], 0, self::PLAY_BY_YEAR_SLICE, true);
+        } else {
+            $arraySomeYears = array_slice($GLOBALS['data']['arrayPlaysByYear'],
+                count($GLOBALS['data']['arrayPlaysByYear']) - (self::PLAY_BY_YEAR_SLICE * $numPage),
+                self::PLAY_BY_YEAR_SLICE, true);
+        }
+
+        // Build differents stats array
+        $arrayPlayByYear = [];
+        $arrayPlayDifferentByYear = [];
+        $arrayPlayNewByYear = [];
+        $arrayUrls = [];
+
+        foreach ($arraySomeYears as $year => $games) {
+            foreach ($games as $gameId => $properties) {
+                Utility::arrayIncrementValue($arrayPlayByYear, $year, $properties['nbPlayed']);
+                Utility::arrayIncrementValue($arrayPlayDifferentByYear, $year, 1);
+                Utility::arrayIncrementValue($arrayPlayNewByYear, $year, $properties['new'] ? 1 : 0);
+
+                $dateString = 'start/' . Carbon::createFromDate($year)->startOfYear()->format('Y-m-d') . '/end/' . Carbon::createFromDate($year)->endOfYear()->format('Y-m-d');
+                $arrayUrls[$year] = 'http://boardgamegeek.com/plays/bydate/user/' . $GLOBALS['parameters']['general']['username'] . '/subtype/boardgame/' . $dateString;
+            }
+        }
+
+        // Return labels and series
+        return [
+            'labels' => array_keys($arrayPlayByYear),
+            'serie1' => array_values($arrayPlayByYear),
+            'serie2' => array_values($arrayPlayDifferentByYear),
+            'serie3' => array_values($arrayPlayNewByYear),
             'urls' => $arrayUrls
         ];
     }

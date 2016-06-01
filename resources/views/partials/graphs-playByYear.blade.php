@@ -1,16 +1,16 @@
-<h3>Nombre de parties par mois</h3>
+<h3>Nombre de parties par années</h3>
 <div style="width: calc(100% - 20px);">
-    <button id="plays-by-month-previous-months" class="btn btn-primary">Mois précédents</button>
-    <button id="plays-by-month-next-months" class="btn btn-primary">Mois suivants</button>
+    <button id="plays-by-year-previous-year" class="btn btn-primary">Années précédentes</button>
+    <button id="plays-by-year-next-year" class="btn btn-primary">Années suivantes</button>
 
-    <canvas id="plays-by-month" width="400" height="100"></canvas>
+    <canvas id="plays-by-year" width="400" height="100"></canvas>
 
-    <input type="hidden" id="plays-by-month-page" value="1">
-    <input type="hidden" id="plays-by-month-href" value="{{ url('ajaxPlayByMonth/' . $GLOBALS['parameters']['general']['username']) }}">
+    <input type="hidden" id="plays-by-year-page" value="1">
+    <input type="hidden" id="plays-by-year-href" value="{{ url('ajaxPlayByYear/' . $GLOBALS['parameters']['general']['username']) }}">
 
-    <div id="plays-by-month-legend" class="legend"></div>
+    <div id="plays-by-year-legend" class="legend"></div>
     <script>
-        window.playByMonthChartData = {
+        window.playByYearChartData = {
             labels: '',
             datasets: [
                 {
@@ -39,13 +39,13 @@
                 }
             ]
         };
-        window.playByMonthOptions = {
+        window.playByYearOptions = {
             bezierCurveTension : 0.3,
             pointDotRadius : 6
         };
-        var playByMonthCtx = document.getElementById("plays-by-month").getContext("2d");
-        var playByMonthChart = new Chart(playByMonthCtx).Line(window.playByMonthChartData, window.playByMonthOptions);
+        var playByYearCtx = document.getElementById("plays-by-year").getContext("2d");
+        var playByYearChart = new Chart(playByYearCtx).Line(window.playByYearChartData, window.playByYearOptions);
 
-        $('#plays-by-month-legend').append(playByMonthChart.generateLegend());
+        $('#plays-by-year-legend').append(playByYearChart.generateLegend());
     </script>
 </div>

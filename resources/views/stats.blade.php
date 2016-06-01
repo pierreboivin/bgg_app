@@ -71,6 +71,10 @@
                     </div>
                     <hr>
                     <div class="chart-container">
+                        @include('partials.graphs-playByYear')
+                    </div>
+                    <hr>
+                    <div class="chart-container">
                         @include('partials.graphs-mostPlayed')
                     </div>
                     <hr>
