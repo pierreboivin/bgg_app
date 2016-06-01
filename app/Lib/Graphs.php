@@ -10,6 +10,8 @@ class Graphs
 
     const MOST_PLAYED_SLICE = 20;
 
+    const MOST_TYPE_SLICE = 20;
+
     const TABLE_TIME_SINCE_PLAY_SLICE = 20;
 
     const ACQUISITION_BY_MONTH_SLICE = 13;
@@ -90,6 +92,29 @@ class Graphs
             'serie1' => array_values($arrayQuantity),
             'scaleMax' => $numMostPlayed,
             'urls' => $arrayUrls
+        ];
+    }
+
+    public static function getMostType($numPage = 1)
+    {
+        $mechanicsNumber = [];
+        foreach ($GLOBALS['data']['gamesCollection'] as $gameId => $gameProperties) {
+            if(isset($gameProperties['detail']['boardgamemechanic'])) {
+                foreach($gameProperties['detail']['boardgamemechanic'] as $mechanic) {
+                    Utility::arrayIncrementValue($mechanicsNumber, $mechanic['value'], 1);
+                }
+            }
+        }
+
+        arsort($mechanicsNumber);
+
+        $mechanicsNumber = array_slice($mechanicsNumber,
+            (self::MOST_TYPE_SLICE * $numPage) - self::MOST_TYPE_SLICE,
+            self::MOST_TYPE_SLICE, true);
+
+        return [
+            'labels' => array_keys($mechanicsNumber),
+            'serie1' => array_values($mechanicsNumber)
         ];
     }
 

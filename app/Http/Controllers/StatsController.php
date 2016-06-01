@@ -69,6 +69,7 @@ class StatsController extends Controller
         $params['graphs']['mostPlayed'] = Graphs::getMostPlayed();
         $params['graphs']['nbPlayer'] = Graphs::getNbPlayerCollection();
         $params['graphs']['acquisitionByMonth'] = Graphs::getAcquisitionByMonth();
+        $params['graphs']['mostType'] = Graphs::getMostType();
 
         $params['table']['ownedTimePlayed'] = Graphs::getOwnedTimePlayed();
         $params['table']['mostDesigner'] = Graphs::getMostDesignerOwned();
@@ -176,6 +177,23 @@ class StatsController extends Controller
 
         $mostPlayed = Graphs::getMostPlayed($page);
         return $mostPlayed;
+    }
+
+    /**
+     * @param $username
+     * @param $page
+     */
+    public function ajaxMostTypePrevious($username, $page)
+    {
+        $arrayRawGamesOwned = BGGData::getGamesOwned();
+        $arrayGamesDetails = BGGData::getDetailOwned($arrayRawGamesOwned);
+
+        Stats::getCollectionArrays($arrayRawGamesOwned);
+        Stats::getOwnedRelatedArrays($arrayGamesDetails);
+
+        $mostType = Graphs::getMostType($page);
+
+        echo json_encode($mostType);
     }
 
 

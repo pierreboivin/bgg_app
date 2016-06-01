@@ -1,26 +1,26 @@
-<h3>Nombre de parties par jeux joués (Jeux les plus joués)</h3>
+<h3>Nombre de jeux par type</h3>
 <div style="width: calc(100% - 20px);">
-    <button id="most-played-previous-games" class="btn btn-primary">Jeux précédents</button>
-    <button id="most-played-next-games" class="btn btn-primary">Jeux suivants</button>
+    <button id="most-type-previous-games" class="btn btn-primary">Types précédents</button>
+    <button id="most-type-next-games" class="btn btn-primary">Types suivants</button>
 
-    <canvas id="chart-most-played" width="400" height="200"></canvas>
+    <canvas id="chart-most-type" width="400" height="200"></canvas>
 
-    <input type="hidden" id="most-played-page" value="1">
-    <input type="hidden" id="most-played-href" value="{{ url('ajaxMostPlayedPrevious/' . $GLOBALS['parameters']['general']['username']) }}">
+    <input type="hidden" id="most-type-page" value="1">
+    <input type="hidden" id="most-type-href" value="{{ url('ajaxMostTypePrevious/' . $GLOBALS['parameters']['general']['username']) }}">
 
     <script>
-        window.mostPlayedChartData = {
+        window.mostTypeChartData = {
             labels: '',
             datasets: [
                 {
-                    label: "Parties jouées",
+                    label: "Nombre de jeux",
                     fillColor: "#B7C3D3",
                     strokeColor: "#A0AAB7",
                     data: ''
                 }
             ]
         };
-        window.mostPlayedOptions = {
+        window.mostTypeOptions = {
             barValueSpacing : 10,
             showTooltips: false,
             onAnimationComplete: function () {
@@ -37,7 +37,7 @@
                 })
             }
         };
-        var mostPlayedCtx = document.getElementById("chart-most-played").getContext("2d");
-        var mostPlayedChart = new Chart(mostPlayedCtx).Bar(window.mostPlayedChartData, window.mostPlayedOptions);
+        var mostTypeCtx = document.getElementById("chart-most-type").getContext("2d");
+        var mostTypeChart = new Chart(mostTypeCtx).Bar(window.mostTypeChartData, window.mostTypeOptions);
     </script>
 </div>

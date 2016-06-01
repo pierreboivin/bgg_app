@@ -41,10 +41,10 @@
                         </div>
                         <div class="col-md-4">
                             <h3>Jeux possédés</h3>
-                            <p>Nombre de parties jouées en moyenne dans les jeux possédés : {!! $stats['nbPlayAveragePlayCollectionGame'] !!}</p>
-                            <p>Nombre d'acquisitions moyennes par mois : {!! \App\Helpers\Helper::ifEmptyToolTip($stats['averageAcquisitionByMonth']) !!}</p>
                             <p>Nombre de jeux possédés (sans extension) : {{ $stats['nbGamesOwned'] }}</p>
                             <p>Nombre de jeux possédés (avec extension) : {{ $stats['nbGamesAndExpansionsOwned'] }}</p>
+                            <p>Nombre de parties jouées en moyenne dans les jeux possédés : {!! $stats['nbPlayAveragePlayCollectionGame'] !!}</p>
+                            <p>Nombre d'acquisitions moyennes par mois : {!! \App\Helpers\Helper::ifEmptyToolTip($stats['averageAcquisitionByMonth']) !!}</p>
                         </div>
                         <div class="col-md-4">
                             <h3>Valeur collection</h3>
@@ -108,6 +108,10 @@
                     <hr>
                     <div class="table-container">
                         @include('partials.table-owned-mostdesigner')
+                    </div>
+                    <hr>
+                    <div class="chart-container">
+                        @include('partials.graphs-mostType')
                     </div>
                     <hr>
                     @if(\App\Helpers\Helper::ifLogin())
