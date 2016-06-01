@@ -17,6 +17,8 @@ class Graphs
 
     const TABLE_TIME_SINCE_PLAY_SLICE = 20;
 
+    const TABLE_OWNED_RENTABLE_SLICE = 20;
+
     const ACQUISITION_BY_MONTH_SLICE = 13;
 
     const NB_PLAYER_MAX = 12;
@@ -316,10 +318,10 @@ class Graphs
 
     private static function compareRentabilite($a, $b)
     {
-        return $a['rentabilite'] - $b['rentabilite'];
+        return $b['rentabilite'] < $a['rentabilite'];
     }
 
-    public static function getOwnedRentable()
+    public static function getOwnedRentable($numPage = 1)
     {
         $arrayRentable = [];
 
@@ -346,7 +348,11 @@ class Graphs
 
         uasort($arrayRentable, 'self::compareRentabilite');
 
-        return array_slice($arrayRentable, 0, 20, true);
+        return [
+            'most' => array_slice($arrayRentable, 0, self::TABLE_OWNED_RENTABLE_SLICE * $numPage),
+            'less' => array_reverse(array_slice($arrayRentable,
+                count($arrayRentable) - self::TABLE_OWNED_RENTABLE_SLICE * $numPage))
+             ];
     }
 
 }

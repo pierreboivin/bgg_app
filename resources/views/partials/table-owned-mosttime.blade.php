@@ -11,6 +11,6 @@
                 @include('partials.lines-table-owned-mosttime')
             </tbody>
         </table>
-        <button id="table-most-time-previous" data-page="2" data-replace="table.most-time tbody" data-href="{{ url('ajaxTableMostTimePrevious/' . $GLOBALS['parameters']['general']['username']) }}" class="btn btn-primary">Plus</button>
+        <button data-page="2" data-replace="table.most-time tbody" data-href="{{ url('ajaxTableMostTimePrevious/' . $GLOBALS['parameters']['general']['username']) }}" class="btn btn-primary table-more-button">Plus</button>
     </div>
 </div>

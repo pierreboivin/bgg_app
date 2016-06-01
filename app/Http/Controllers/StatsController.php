@@ -114,6 +114,40 @@ class StatsController extends Controller
     /**
      * @param $page
      */
+    public function ajaxTableMostRentablePrevious($username, $page)
+    {
+        $arrayRawGamesOwned = BGGData::getGamesOwned();
+        $arrayRawGamesPlays = BGGData::getPlays();
+        $arrayRawGamesAndExpansionsOwned = BGGData::getGamesAndExpansionsOwned();
+        Stats::getPlaysRelatedArrays($arrayRawGamesPlays);
+        Stats::getCollectionArrays($arrayRawGamesOwned);
+        Stats::getAcquisitionRelatedArrays($arrayRawGamesAndExpansionsOwned);
+
+        $params['table']['ownedRentable'] = Graphs::getOwnedRentable($page);
+
+        return \View::make('partials.lines-table-most-rentable', $params);
+    }
+
+    /**
+     * @param $page
+     */
+    public function ajaxTableLessRentablePrevious($username, $page)
+    {
+        $arrayRawGamesOwned = BGGData::getGamesOwned();
+        $arrayRawGamesPlays = BGGData::getPlays();
+        $arrayRawGamesAndExpansionsOwned = BGGData::getGamesAndExpansionsOwned();
+        Stats::getPlaysRelatedArrays($arrayRawGamesPlays);
+        Stats::getCollectionArrays($arrayRawGamesOwned);
+        Stats::getAcquisitionRelatedArrays($arrayRawGamesAndExpansionsOwned);
+
+        $params['table']['ownedRentable'] = Graphs::getOwnedRentable($page);
+
+        return \View::make('partials.lines-table-less-rentable', $params);
+    }
+
+    /**
+     * @param $page
+     */
     public function ajaxPlayByYear($username, $page)
     {
         $yearArray = $this->getYearArray($page);

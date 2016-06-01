@@ -122,8 +122,16 @@
                     <div class="chart-container">
                         @include('partials.graphs-acquisitionByMonth')
                     </div>
-                    <div class="chart-container">
-                        @include('partials.table-owned-rentable')
+                    <hr>
+                    <div class="table-container">
+                        <div class="row">
+                            <div class="col-md-6">
+                                @include('partials.table-most-rentable')
+                            </div>
+                            <div class="col-md-6">
+                                @include('partials.table-less-rentable')
+                            </div>
+                        </div>
                     </div>
                     @endif
                 </div>

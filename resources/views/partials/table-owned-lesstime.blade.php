@@ -11,6 +11,6 @@
                 @include('partials.lines-table-owned-lesstime')
             </tbody>
         </table>
-        <button id="table-less-time-previous" data-page="2" data-replace="table.less-time tbody" data-href="{{ url('ajaxTableLessTimePrevious/' . $GLOBALS['parameters']['general']['username']) }}" class="btn btn-primary">Plus</button>
+        <button data-page="2" data-replace="table.less-time tbody" data-href="{{ url('ajaxTableLessTimePrevious/' . $GLOBALS['parameters']['general']['username']) }}" class="btn btn-primary table-more-button">Plus</button>
     </div>
 </div>
