@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Lib;
+
 use Carbon\Carbon;
 use Laravelrus\LocalizedCarbon\LocalizedCarbon;
 
@@ -151,8 +152,8 @@ class Graphs
     {
         $mechanicsNumber = [];
         foreach ($GLOBALS['data']['gamesCollection'] as $gameId => $gameProperties) {
-            if(isset($gameProperties['detail']['boardgamemechanic'])) {
-                foreach($gameProperties['detail']['boardgamemechanic'] as $mechanic) {
+            if (isset($gameProperties['detail']['boardgamemechanic'])) {
+                foreach ($gameProperties['detail']['boardgamemechanic'] as $mechanic) {
                     Utility::arrayIncrementValue($mechanicsNumber, $mechanic['value'], 1);
                 }
             }
@@ -211,7 +212,8 @@ class Graphs
 
         return [
             'mostTime' => array_slice($gameLessTimePlayed, 0, self::TABLE_TIME_SINCE_PLAY_SLICE * $page),
-            'lessTime' => array_reverse(array_slice($gameLessTimePlayed, count($gameLessTimePlayed) - self::TABLE_TIME_SINCE_PLAY_SLICE * $page))
+            'lessTime' => array_reverse(array_slice($gameLessTimePlayed,
+                count($gameLessTimePlayed) - self::TABLE_TIME_SINCE_PLAY_SLICE * $page))
         ];
     }
 
@@ -227,8 +229,8 @@ class Graphs
         ksort($arrayByNbPlayer);
 
         $arrayNbPlayer = [];
-        foreach($arrayByNbPlayer as $label => $value) {
-            if($label == 1) {
+        foreach ($arrayByNbPlayer as $label => $value) {
+            if ($label == 1) {
                 $arrayNbPlayer['solo'] = $value;
             } else {
                 $arrayNbPlayer[$label . ' joueurs'] = $value;
@@ -244,7 +246,8 @@ class Graphs
     public static function getAcquisitionByMonth($numPage = 1)
     {
         if ((count($GLOBALS['data']['acquisitionsByMonth']) - (self::ACQUISITION_BY_MONTH_SLICE * $numPage)) < 0) {
-            $arraySomeAcquisition = array_slice($GLOBALS['data']['acquisitionsByMonth'], 0, self::ACQUISITION_BY_MONTH_SLICE, true);
+            $arraySomeAcquisition = array_slice($GLOBALS['data']['acquisitionsByMonth'], 0,
+                self::ACQUISITION_BY_MONTH_SLICE, true);
         } else {
             $arraySomeAcquisition = array_slice($GLOBALS['data']['acquisitionsByMonth'],
                 count($GLOBALS['data']['acquisitionsByMonth']) - (self::ACQUISITION_BY_MONTH_SLICE * $numPage),
@@ -253,7 +256,7 @@ class Graphs
 
         $acquisitionByMonth = [];
         $arrayUrls = [];
-        foreach($arraySomeAcquisition as $dateTstamp => $arrayGames) {
+        foreach ($arraySomeAcquisition as $dateTstamp => $arrayGames) {
             $date = Carbon::createFromTimestamp($dateTstamp);
             $label = ucwords($date->formatLocalized('%b %Y'));
             $acquisitionByMonth[$label] = count($arrayGames);
@@ -293,7 +296,7 @@ class Graphs
     {
         $arrayDesignerFrequency = [];
 
-        foreach($GLOBALS['data']['gamesCollection'] as $gameId => $game) {
+        foreach ($GLOBALS['data']['gamesCollection'] as $gameId => $game) {
             if (isset($game['detail']['boardgamedesigner'])) {
                 $designerArray = $game['detail']['boardgamedesigner'];
                 foreach ($designerArray as $designer) {
@@ -309,6 +312,41 @@ class Graphs
 
         uasort($arrayDesignerFrequency, 'self::compareOwned');
         return array_slice($arrayDesignerFrequency, 0, 20, true);
+    }
+
+    private static function compareRentabilite($a, $b)
+    {
+        return $a['rentabilite'] - $b['rentabilite'];
+    }
+
+    public static function getOwnedRentable()
+    {
+        $arrayRentable = [];
+
+        foreach ($GLOBALS['data']['gamesCollection'] as $gameId => $game) {
+            if (isset($GLOBALS['data']['arrayValuesGames'][$gameId])) {
+
+                $gameValue = $GLOBALS['data']['arrayValuesGames'][$gameId];
+
+                if (intval($game['numplays']) > 0) {
+                    $rentabilite = $gameValue / intval($game['numplays']);
+                } else {
+                    $rentabilite = $gameValue;
+                }
+
+                $arrayRentable[$gameId] = [
+                    'value' => $gameValue,
+                    'rentabilite' => $rentabilite,
+                    'name' => $game['name'],
+                    'numplays' => intval($game['numplays']),
+                    'url' => Utility::urlToGame($gameId)
+                ];
+            }
+        }
+
+        uasort($arrayRentable, 'self::compareRentabilite');
+
+        return array_slice($arrayRentable, 0, 20, true);
     }
 
 }

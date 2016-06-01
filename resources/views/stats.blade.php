@@ -67,19 +67,19 @@
             <div id="collapse4" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading4">
                 <div class="panel-body">
                     <div class="chart-container">
-                        @include('partials.graphs-playByMonth')
-                    </div>
-                    <hr>
-                    <div class="chart-container">
                         @include('partials.graphs-playByYear')
                     </div>
                     <hr>
                     <div class="chart-container">
-                        @include('partials.graphs-mostPlayed')
+                        @include('partials.graphs-playByMonth')
                     </div>
                     <hr>
                     <div class="chart-container">
                         @include('partials.graphs-playByDayWeek')
+                    </div>
+                    <hr>
+                    <div class="chart-container">
+                        @include('partials.graphs-mostPlayed')
                     </div>
                     <hr>
                     <div class="table-container">
@@ -110,17 +110,20 @@
                         @include('partials.graphs-nbplayer')
                     </div>
                     <hr>
-                    <div class="table-container">
-                        @include('partials.table-owned-mostdesigner')
-                    </div>
-                    <hr>
                     <div class="chart-container">
                         @include('partials.graphs-mostType')
+                    </div>
+                    <hr>
+                    <div class="table-container">
+                        @include('partials.table-owned-mostdesigner')
                     </div>
                     <hr>
                     @if(\App\Helpers\Helper::ifLogin())
                     <div class="chart-container">
                         @include('partials.graphs-acquisitionByMonth')
+                    </div>
+                    <div class="chart-container">
+                        @include('partials.table-owned-rentable')
                     </div>
                     @endif
                 </div>

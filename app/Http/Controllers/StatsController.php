@@ -74,6 +74,7 @@ class StatsController extends Controller
 
         $params['table']['ownedTimePlayed'] = Graphs::getOwnedTimePlayed();
         $params['table']['mostDesigner'] = Graphs::getMostDesignerOwned();
+        $params['table']['ownedRentable'] = Graphs::getOwnedRentable();
 
         $params = array_merge($params, $paramsMenu);
 
