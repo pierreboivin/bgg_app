@@ -1,15 +1,19 @@
 <h3>Nombre de parties par jeux joués (Jeux les plus joués)</h3>
 <div style="width: calc(100% - 20px);">
-    <button id="most-played-previous-games" class="btn btn-primary">Jeux précédents</button>
-    <button id="most-played-next-games" class="btn btn-primary">Jeux suivants</button>
+    <button class="btn btn-primary graph-previous">Jeux précédents</button>
+    <button class="btn btn-primary graph-next">Jeux suivants</button>
 
-    <canvas id="chart-most-played" width="400" height="200"></canvas>
+    <canvas class="graph-handler" id="mostPlayed" width="400" height="200"></canvas>
 
-    <input type="hidden" id="most-played-page" value="1">
-    <input type="hidden" id="most-played-href" value="{{ url('ajaxMostPlayedPrevious/' . $GLOBALS['parameters']['general']['username']) }}">
+    <input type="hidden" class="type" value="bar">
+    <input type="hidden" class="width" value="400">
+    <input type="hidden" class="height" value="200">
+    <input type="hidden" class="page" value="1">
+    <input type="hidden" class="href" value="{{ url('ajaxMostPlayedPrevious/' . $GLOBALS['parameters']['general']['username']) }}">
+    <input type="hidden" class="href-url" value="{{ url('ajaxMostPlayedGetUrl/' . $GLOBALS['parameters']['general']['username']) }}">
 
     <script>
-        window.mostPlayedChartData = {
+        window.chartData['mostPlayed'] = {
             labels: '',
             datasets: [
                 {
@@ -20,7 +24,7 @@
                 }
             ]
         };
-        window.mostPlayedOptions = {
+        window.chartOptions['mostPlayed'] = {
             barValueSpacing : 10,
             showTooltips: false,
             onAnimationComplete: function () {
@@ -38,6 +42,6 @@
             }
         };
         var mostPlayedCtx = document.getElementById("chart-most-played").getContext("2d");
-        var mostPlayedChart = new Chart(mostPlayedCtx).Bar(window.mostPlayedChartData, window.mostPlayedOptions);
+        window.chartInstance['mostPlayed'] = new Chart(mostPlayedCtx).Bar(window.chartData['mostPlayed'], window.chartOptions['mostPlayed']);
     </script>
 </div>

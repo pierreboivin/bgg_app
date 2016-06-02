@@ -1,165 +1,63 @@
+window.chartData = {};
+window.chartOptions = {};
+window.chartInstance = {};
+window.fillGraph = {};
+
 $(function() {
 
     if(is_page('stats')) {
+
         // Buttons table more
         $(".table-more-button").click(function (event) {
             getReplaceTable($(this));
         });
 
-        // Chart plays by month
-        $("#plays-by-month-previous-months").click(function (event) {
-            getAjaxArrayData('plays-by-month', 'fillGraphPlaysByMonth', 'nextPage');
-        });
-        $("#plays-by-month-next-months").click(function (event) {
-            getAjaxArrayData('plays-by-month', 'fillGraphPlaysByMonth', 'previousPage');
-        });
-        function setPlayByMonthHolder(chart, page) {
-            document.getElementById('plays-by-month').onclick = function (evt) {
-                ajaxLinkTo('ajaxPlayByMonthGetUrl', page, chart.getPointsAtEvent(evt));
-            }
-        }
-        window.fillGraphPlaysByMonth = function(page, arrayData) {
-            $('#plays-by-month').replaceWith('<canvas id="plays-by-month" width="400" height="100"></canvas>');
+        // Graphs
+        $.each($('.graph-handler'), function(key, value) {
+            var parentObj = $(this).parent();
+            var getUrlAjax = parentObj.find('.href-url').val();
+            var idGraph = $(this).attr('id');
+            var type = parentObj.find('.type').val();
 
-            window.playByMonthChartData['labels'] = arrayData['labels'];
-            window.playByMonthChartData['datasets'][0].data = arrayData['serie1'];
-            window.playByMonthChartData['datasets'][1].data = arrayData['serie2'];
-            window.playByMonthChartData['datasets'][2].data = arrayData['serie3'];
-
-            disableEnableButtonPage($("#plays-by-month-next-months"), page);
-
-            setPlayByMonthHolder(
-                new Chart($('#plays-by-month').get(0).getContext("2d")).Line(window.playByMonthChartData, window.playByMonthOptions),
-                page
-            );
-        };
-        setPlayByMonthHolder(playByMonthChart, 1);
-        getAjaxArrayData('plays-by-month', 'fillGraphPlaysByMonth', 'currentPage');
-
-        // Chart plays by year
-        $("#plays-by-year-previous-year").click(function (event) {
-            getAjaxArrayData('plays-by-year', 'fillGraphPlaysByYear', 'nextPage');
-        });
-        $("#plays-by-year-next-year").click(function (event) {
-            getAjaxArrayData('plays-by-year', 'fillGraphPlaysByYear', 'previousPage');
-        });
-        function setPlayByYearHolder(chart, page) {
-            document.getElementById('plays-by-year').onclick = function (evt) {
-                ajaxLinkTo('ajaxPlayByYearGetUrl', page, chart.getPointsAtEvent(evt));
-            }
-        }
-        window.fillGraphPlaysByYear = function(page, arrayData) {
-            $('#plays-by-year').replaceWith('<canvas id="plays-by-year" width="400" height="100"></canvas>');
-
-            window.playByYearChartData['labels'] = arrayData['labels'];
-            window.playByYearChartData['datasets'][0].data = arrayData['serie1'];
-            window.playByYearChartData['datasets'][1].data = arrayData['serie2'];
-            window.playByYearChartData['datasets'][2].data = arrayData['serie3'];
-
-            disableEnableButtonPage($("#plays-by-year-next-year"), page);
-
-            setPlayByYearHolder(
-                new Chart($('#plays-by-year').get(0).getContext("2d")).Line(window.playByYearChartData, window.playByYearOptions),
-                page
-            );
-        };
-        setPlayByYearHolder(playByYearChart, 1);
-        getAjaxArrayData('plays-by-year', 'fillGraphPlaysByYear', 'currentPage');
-
-        // Chart most played
-        $("#most-played-previous-games").click(function (event) {
-            getAjaxArrayData('most-played', 'fillGraphMostPlayed', 'nextPage');
-        });
-        $("#most-played-next-games").click(function (event) {
-            getAjaxArrayData('most-played', 'fillGraphMostPlayed', 'previousPage');
-        });
-        function setMostPlayedHolder(chart, page) {
-            document.getElementById('chart-most-played').onclick = function (evt) {
-                ajaxLinkTo('ajaxMostPlayedGetUrl', page, chart.getBarsAtEvent(evt));
-            }
-        }
-        window.fillGraphMostPlayed = function(page, arrayData) {
-            $('#chart-most-played').replaceWith('<canvas id="chart-most-played" width="400" height="200"></canvas>');
-
-            window.mostPlayedChartData['labels'] = arrayData['labels'];
-            window.mostPlayedChartData['datasets'][0].data = arrayData['serie1'];
-
-            disableEnableButtonPage($("#most-played-next-games"), page);
-
-            setMostPlayedHolder(
-                new Chart($('#chart-most-played').get(0).getContext("2d")).Bar(window.mostPlayedChartData, window.mostPlayedOptions),
-                page
-            );
-        };
-        setMostPlayedHolder(mostPlayedChart, 1);
-        getAjaxArrayData('most-played', 'fillGraphMostPlayed', 'currentPage');
-
-        // Chart most type
-        $("#most-type-previous-games").click(function (event) {
-            getAjaxArrayData('most-type', 'fillGraphMostType', 'nextPage');
-        });
-        $("#most-type-next-games").click(function (event) {
-            getAjaxArrayData('most-type', 'fillGraphMostType', 'previousPage');
-        });
-        function setMostTypeHolder(chart, page) {
-            document.getElementById('chart-most-type').onclick = function (evt) {
-                ajaxLinkTo('ajaxMostTypeGetUrl', page, chart.getBarsAtEvent(evt));
-            }
-        }
-        window.fillGraphMostType = function(page, arrayData) {
-            $('#chart-most-type').replaceWith('<canvas id="chart-most-type" width="400" height="200"></canvas>');
-
-            window.mostTypeChartData['labels'] = arrayData['labels'];
-            window.mostTypeChartData['datasets'][0].data = arrayData['serie1'];
-
-            disableEnableButtonPage($("#most-type-next-games"), page);
-
-            setMostTypeHolder(
-                new Chart($('#chart-most-type').get(0).getContext("2d")).Bar(window.mostTypeChartData, window.mostTypeOptions),
-                page
-            );
-        };
-        setMostTypeHolder(mostTypeChart, 1);
-        getAjaxArrayData('most-type', 'fillGraphMostType', 'currentPage');
-
-        // Chart acquisition by month
-        // Seulement si l'utilisateur a accès
-        if ($('#chart-acquisitionByMonth').length) {
-            $("#acquisition-previous-month").click(function (event) {
-                getAjaxArrayData('acquisition', 'fillGraphAcquisitionByMonth', 'nextPage');
+            $(this).parent().find('.graph-previous').click(function (event) {
+                getAjaxArrayData(idGraph, 'nextPage');
             });
-            $("#acquisition-next-month").click(function (event) {
-                getAjaxArrayData('acquisition', 'fillGraphAcquisitionByMonth', 'previousPage');
+            $(this).parent().find('.graph-next').click(function (event) {
+                getAjaxArrayData(idGraph, 'previousPage');
             });
-            function setAcquisitionByMonthHolder(chart) {
-                document.getElementById('chart-acquisitionByMonth').onclick = function (evt) {
-                    ajaxLinkTo('ajaxAcquisitionByMonthGetUrl', page, hart.getBarsAtEvent(evt));
+
+            window.fillGraph[idGraph] = function(page, arrayData) {
+                $('#' + idGraph).replaceWith('<canvas class="graph-handler" id="' + idGraph + '" width="' + parentObj.find('.width') + '" height="' + parentObj.find('.height') + '"></canvas>');
+
+                window.chartData[idGraph]['labels'] = arrayData['labels'];
+                for(var i = 0; i < window.chartData[idGraph]['datasets'].length; i++) {
+                    window.chartData[idGraph]['datasets'][i].data = arrayData['serie' + (i+1)];
                 }
-            }
-            window.fillGraphAcquisitionByMonth = function(page, arrayData) {
-                $('#chart-acquisitionByMonth').replaceWith('<canvas id="chart-acquisitionByMonth" width="400" height="100"></canvas>');
 
-                window.acquisitionByMonthChartData['labels'] = arrayData['labels'];
-                window.acquisitionByMonthChartData['datasets'][0].data = arrayData['serie1'];
+                disableEnableButtonPage(parentObj.find('.graph-next'), page);
 
-                disableEnableButtonPage($("#acquisition-next-month"), page);
+                var chart = null;
+                if(type == 'line') {
+                    chart = new Chart($('#' + idGraph).get(0).getContext("2d")).Line(window.chartData[idGraph], window.chartOptions[idGraph]);
+                } else if(type == 'bar') {
+                    chart = new Chart($('#' + idGraph).get(0).getContext("2d")).Bar(window.chartData[idGraph], window.chartOptions[idGraph]);
+                }
 
-                setAcquisitionByMonthHolder(
-                    new Chart($('#chart-acquisitionByMonth').get(0).getContext("2d")).Bar(window.acquisitionByMonthChartData, window.acquisitionByMonthOptions),
-                    page
-                );
+                document.getElementById(idGraph).onclick = function (evt) {
+                    ajaxLinkTo(getUrlAjax, page, chart.getPointsAtEvent(evt));
+                };
             };
-            setAcquisitionByMonthHolder(acquisitionByMonthChart, 2);
-            getAjaxArrayData('acquisition', 'fillGraphAcquisitionByMonth', 'currentPage');
-        }
 
+            getAjaxArrayData(idGraph, 'currentPage');
+        });
 
         // Utility functions
-        function getAjaxArrayData(key, callbackFunc, mode) {
+        function getAjaxArrayData(key, mode) {
             var arrayData = null;
 
-            var currentPage = parseInt($('#' + key + '-page').val());
-            var href = $('#' + key + '-href').val();
+            var obj = $('#' + key);
+            var currentPage = parseInt(obj.parent().find('.page').val());
+            var href = obj.parent().find('.href').val();
             var pageToDisplay = 0;
 
             if(mode == 'nextPage') {
@@ -174,11 +72,11 @@ $(function() {
                 url: href + '/' + pageToDisplay,
             }).done(function (ajaxReturn) {
 
-                $('#' + key + '-page').val(pageToDisplay);
+                obj.parent().find('.page').val(pageToDisplay);
 
                 arrayData = JSON.parse(ajaxReturn);
 
-                window[callbackFunc](pageToDisplay, arrayData);
+                window.fillGraph[key](pageToDisplay, arrayData);
             });
 
             return arrayData;
@@ -200,7 +98,7 @@ $(function() {
         }
         function ajaxLinkTo(route, page, activePoints) {
             $.ajax({
-                url: '/' + route + '/' + $("#username").val() + '/' + page + '/' + activePoints[0]['label']
+                url: route + '/' + page + '/' + activePoints[0]['label']
             }).done(function (ajaxReturn) {
                 window.open(ajaxReturn);
             });

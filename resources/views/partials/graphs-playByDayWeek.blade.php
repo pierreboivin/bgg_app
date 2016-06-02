@@ -17,10 +17,23 @@
             ]
         };
         window.playByDayWeekOptions = {
-            bezierCurveTension : 0.3,
-            pointDotRadius : 6
+            barValueSpacing : 10,
+            showTooltips: false,
+            onAnimationComplete: function () {
+                var ctx = this.chart.ctx;
+                ctx.font = this.scale.font;
+                ctx.fillStyle = this.scale.textColor;
+                ctx.textAlign = "center";
+                ctx.textBaseline = "bottom";
+
+                this.datasets.forEach(function (dataset) {
+                    dataset.bars.forEach(function (bar) {
+                        ctx.fillText(bar.value, bar.x, bar.y);
+                    });
+                })
+            }
         };
         var playByDayWeekCtx = document.getElementById("plays-by-dayweek").getContext("2d");
-        var playByDayWeekChart = new Chart(playByDayWeekCtx).Line(window.playByDayWeekChartData, window.playByDayWeekOptions);
+        var playByDayWeekChart = new Chart(playByDayWeekCtx).Bar(window.playByDayWeekChartData, window.playByDayWeekOptions);
     </script>
 </div>

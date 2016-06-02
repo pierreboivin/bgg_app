@@ -1,15 +1,18 @@
 <h3>Nombre de jeux par type</h3>
 <div style="width: calc(100% - 20px);">
-    <button id="most-type-previous-games" class="btn btn-primary">Types précédents</button>
-    <button id="most-type-next-games" class="btn btn-primary">Types suivants</button>
+    <button class="btn btn-primary graph-previous">Types précédents</button>
+    <button class="btn btn-primary graph-next">Types suivants</button>
 
-    <canvas id="chart-most-type" width="400" height="200"></canvas>
+    <canvas class="graph-handler" id="mostType" width="400" height="200"></canvas>
 
-    <input type="hidden" id="most-type-page" value="1">
-    <input type="hidden" id="most-type-href" value="{{ url('ajaxMostTypePrevious/' . $GLOBALS['parameters']['general']['username']) }}">
+    <input type="hidden" class="type" value="bar">
+    <input type="hidden" class="width" value="400">
+    <input type="hidden" class="height" value="100">
+    <input type="hidden" class="page" value="1">
+    <input type="hidden" class="href" value="{{ url('ajaxMostTypePrevious/' . $GLOBALS['parameters']['general']['username']) }}">
 
     <script>
-        window.mostTypeChartData = {
+        window.chartData['mostType'] = {
             labels: '',
             datasets: [
                 {
@@ -20,7 +23,7 @@
                 }
             ]
         };
-        window.mostTypeOptions = {
+        window.chartOptions['mostType'] = {
             barValueSpacing : 10,
             showTooltips: false,
             onAnimationComplete: function () {
@@ -37,7 +40,7 @@
                 })
             }
         };
-        var mostTypeCtx = document.getElementById("chart-most-type").getContext("2d");
-        var mostTypeChart = new Chart(mostTypeCtx).Bar(window.mostTypeChartData, window.mostTypeOptions);
+        var mostTypeCtx = document.getElementById("mostType").getContext("2d");
+        window.chartInstance['mostType'] = new Chart(mostTypeCtx).Bar(window.chartData['mostType'], window.chartOptions['mostType']);
     </script>
 </div>

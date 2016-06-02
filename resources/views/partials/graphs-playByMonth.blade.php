@@ -1,16 +1,20 @@
 <h3>Nombre de parties par mois</h3>
 <div style="width: calc(100% - 20px);">
-    <button id="plays-by-month-previous-months" class="btn btn-primary">Mois précédents</button>
-    <button id="plays-by-month-next-months" class="btn btn-primary">Mois suivants</button>
+    <button class="btn btn-primary graph-previous">Mois précédents</button>
+    <button class="btn btn-primary graph-next">Mois suivants</button>
 
-    <canvas id="plays-by-month" width="400" height="100"></canvas>
+    <canvas class="graph-handler" id="playByMonth" width="400" height="100"></canvas>
 
-    <input type="hidden" id="plays-by-month-page" value="1">
-    <input type="hidden" id="plays-by-month-href" value="{{ url('ajaxPlayByMonth/' . $GLOBALS['parameters']['general']['username']) }}">
+    <input type="hidden" class="type" value="line">
+    <input type="hidden" class="width" value="400">
+    <input type="hidden" class="height" value="100">
+    <input type="hidden" class="page" value="1">
+    <input type="hidden" class="href" value="{{ url('ajaxPlayByMonth/' . $GLOBALS['parameters']['general']['username']) }}">
+    <input type="hidden" class="href-url" value="{{ url('ajaxPlayByMonthGetUrl/' . $GLOBALS['parameters']['general']['username']) }}">
 
     <div id="plays-by-month-legend" class="legend"></div>
     <script>
-        window.playByMonthChartData = {
+        window.chartData['playByMonth'] = {
             labels: '',
             datasets: [
                 {
@@ -39,13 +43,13 @@
                 }
             ]
         };
-        window.playByMonthOptions = {
+        window.chartOptions['playByMonth'] = {
             bezierCurveTension : 0.3,
             pointDotRadius : 6
         };
-        var playByMonthCtx = document.getElementById("plays-by-month").getContext("2d");
-        var playByMonthChart = new Chart(playByMonthCtx).Line(window.playByMonthChartData, window.playByMonthOptions);
+        var playByMonthCtx = document.getElementById("playByMonth").getContext("2d");
+        window.chartInstance['playByMonth'] = new Chart(playByMonthCtx).Line(window.chartData['playByMonth'], window.chartOptions['playByMonth']);
 
-        $('#plays-by-month-legend').append(playByMonthChart.generateLegend());
+        $('#plays-by-month-legend').append(window.chartInstance['playByMonth'].generateLegend());
     </script>
 </div>
