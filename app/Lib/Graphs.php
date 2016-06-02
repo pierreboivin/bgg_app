@@ -326,7 +326,8 @@ class Graphs
         $arrayRentable = [];
 
         foreach ($GLOBALS['data']['gamesCollection'] as $gameId => $game) {
-            if (isset($GLOBALS['data']['arrayValuesGames'][$gameId])) {
+
+            if (isset($GLOBALS['data']['arrayValuesGames'][$gameId]) && $GLOBALS['data']['arrayValuesGames'][$gameId] > 0) {
 
                 $gameValue = $GLOBALS['data']['arrayValuesGames'][$gameId];
 

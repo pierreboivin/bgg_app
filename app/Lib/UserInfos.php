@@ -4,7 +4,6 @@ namespace App\Lib;
 
 class UserInfos
 {
-
     /**
      * @param $arrayRawUserInfos
      * @return array

@@ -6,6 +6,7 @@ use App\Http\Requests;
 use App\Lib\BGGData;
 use App\Lib\Page;
 use App\Lib\Stats;
+use App\Lib\UserInfos;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Input;
 
@@ -22,7 +23,7 @@ class RapportsController extends Controller
 
         $arrayRawUserInfos = BGGData::getUserInfos();
         $arrayRawGamesAndExpansionsOwned = BGGData::getGamesAndExpansionsOwned();
-        $arrayUserInfos = \App\Lib\UserInfos::getUserInformations($arrayRawUserInfos);
+        $arrayUserInfos = UserInfos::getUserInformations($arrayRawUserInfos);
         $arrayRawGamesPlays = BGGData::getPlays();
 
         Stats::getPlaysRelatedArrays($arrayRawGamesPlays);
@@ -100,7 +101,7 @@ class RapportsController extends Controller
         $arrayRawUserInfos = BGGData::getUserInfos();
         $arrayRawGamesAndExpansionsOwned = BGGData::getGamesAndExpansionsOwned();
         $arrayRawGamesOwned = BGGData::getGamesOwned();
-        $arrayUserInfos = \App\Lib\UserInfos::getUserInformations($arrayRawUserInfos);
+        $arrayUserInfos = UserInfos::getUserInformations($arrayRawUserInfos);
         $arrayRawGamesPlays = BGGData::getPlays();
         $arrayRawGamesRated = BGGData::getGamesRated();
 

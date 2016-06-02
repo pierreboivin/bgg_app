@@ -71,6 +71,9 @@ class Stats
         }
     }
 
+    /**
+     * @param $arrayGamesDetails
+     */
     public static function getOwnedRelatedArrays($arrayGamesDetails)
     {
         foreach($GLOBALS['data']['gamesCollection'] as $gameId => $game) {
@@ -109,6 +112,8 @@ class Stats
                     $gameValue = $privateProperties['currvalue'];
                 } elseif ($privateProperties['pricepaid']) {
                     $gameValue = $privateProperties['pricepaid'];
+                } else {
+                    $gameValue = 0;
                 }
                 $totalGamesValue += $gameValue;
                 Utility::arrayIncrementValue($arrayValuesGames, $idGame, $gameValue);
@@ -121,6 +126,10 @@ class Stats
         $GLOBALS['data']['totalGamesValue'] = $totalGamesValue;
     }
 
+    /**
+     * @param $arrayTotalPlays
+     * @return int
+     */
     private static function getHIndex($arrayTotalPlays)
     {
         $i = 0;
@@ -134,6 +143,9 @@ class Stats
         return $i;
     }
 
+    /**
+     * @param $arrayRawGamesOwned
+     */
     public static function getCollectionArrays($arrayRawGamesOwned)
     {
         $arrayGameCollection = [];
@@ -160,6 +172,9 @@ class Stats
         $GLOBALS['data']['gamesCollection'] = $arrayGameCollection;
     }
 
+    /**
+     * @param $arrayRawGamesRated
+     */
     public static function getRatedRelatedArrays($arrayRawGamesRated)
     {
         $arrayGameRated = [];
