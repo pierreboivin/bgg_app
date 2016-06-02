@@ -1,4 +1,4 @@
-@foreach ($table['ownedTimePlayed']['mostTime'] as $id => $game)
+@foreach ($table['ownedTimePlayed'][$type] as $id => $game)
     <tr>
         <td><a href="{{ $game['url'] }}" target="_blank">{{ $game['name'] }}</a></td>
         <td>{{ $game['totalPlays'] }}</td>

@@ -213,8 +213,8 @@ class Graphs
         });
 
         return [
-            'mostTime' => array_slice($gameLessTimePlayed, 0, self::TABLE_TIME_SINCE_PLAY_SLICE * $page),
-            'lessTime' => array_reverse(array_slice($gameLessTimePlayed,
+            'most' => array_slice($gameLessTimePlayed, 0, self::TABLE_TIME_SINCE_PLAY_SLICE * $page),
+            'less' => array_reverse(array_slice($gameLessTimePlayed,
                 count($gameLessTimePlayed) - self::TABLE_TIME_SINCE_PLAY_SLICE * $page))
         ];
     }

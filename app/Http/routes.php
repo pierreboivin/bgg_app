@@ -39,10 +39,8 @@ Route::get('ajaxPlayByYear/{username}/{page}', ['as' => 'ajaxPlayByYear', 'uses'
 Route::get('ajaxMostPlayedPrevious/{username}/{page}', ['as' => 'ajaxMostPlayedPrevious', 'uses' => 'StatsController@ajaxMostPlayedPrevious', 'middleware' => 'app.auth']);
 Route::get('ajaxMostTypePrevious/{username}/{page}', ['as' => 'ajaxMostTypePrevious', 'uses' => 'StatsController@ajaxMostTypePrevious', 'middleware' => 'app.auth']);
 Route::get('ajaxAcquisitionPrevious/{username}/{page}', ['as' => 'ajaxAcquisitionPrevious', 'uses' => 'StatsController@ajaxAcquisitionPrevious', 'middleware' => 'app.auth']);
-Route::get('ajaxTableLessTimePrevious/{username}/{page}', ['as' => 'ajaxTableLessTimePrevious', 'uses' => 'StatsController@ajaxTableLessTimePrevious', 'middleware' => 'app.auth']);
-Route::get('ajaxTableMostTimePrevious/{username}/{page}', ['as' => 'ajaxTableMostTimePrevious', 'uses' => 'StatsController@ajaxTableMostTimePrevious', 'middleware' => 'app.auth']);
-Route::get('ajaxTableMostRentablePrevious/{username}/{page}', ['as' => 'ajaxTableMostRentablePrevious', 'uses' => 'StatsController@ajaxTableMostRentablePrevious', 'middleware' => 'app.auth']);
-Route::get('ajaxTableLessRentablePrevious/{username}/{page}', ['as' => 'ajaxTableLessRentablePrevious', 'uses' => 'StatsController@ajaxTableLessRentablePrevious', 'middleware' => 'app.auth']);
+Route::get('ajaxTableTimeSince/{type}/{username}/{page}', ['as' => 'ajaxTableTimeSince', 'uses' => 'StatsController@ajaxTableTimeSince', 'middleware' => 'app.auth']);
+Route::get('ajaxTableRentable/{type}/{username}/{page}', ['as' => 'ajaxTableRentable', 'uses' => 'StatsController@ajaxTableRentable', 'middleware' => 'app.auth']);
 
 // Routes for getting URL in ajax
 Route::get('ajaxPlayByMonthGetUrl/{username}/{page}/{label}', ['as' => 'ajaxPlayByMonthGetUrl', 'uses' => 'StatsController@ajaxPlayByMonthGetUrl', 'middleware' => 'app.auth']);

@@ -8,9 +8,9 @@
                 <tr><th>Jeu</th><th>Parties jouées totales</th><th>Date de la dernière partie</th></tr>
             </thead>
             <tbody>
-                @include('partials.lines-table-owned-lesstime')
+            @include('partials.lines-table-time-since', ['type' => 'less'])
             </tbody>
         </table>
-        <button data-page="2" data-replace="table.less-time tbody" data-href="{{ url('ajaxTableLessTimePrevious/' . $GLOBALS['parameters']['general']['username']) }}" class="btn btn-primary table-more-button">Plus</button>
+        <button data-page="2" data-replace="table.less-time tbody" data-href="{{ url('ajaxTableTimeSince/less/' . $GLOBALS['parameters']['general']['username']) }}" class="btn btn-primary table-more-button">Plus</button>
     </div>
 </div>

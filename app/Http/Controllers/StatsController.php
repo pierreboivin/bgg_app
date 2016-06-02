@@ -82,9 +82,12 @@ class StatsController extends Controller
     }
 
     /**
+     * @param $type
+     * @param $username
      * @param $page
+     * @return mixed
      */
-    public function ajaxTableLessTimePrevious($username, $page)
+    public function ajaxTableTimeSince($type, $username, $page)
     {
         $arrayRawGamesOwned = BGGData::getGamesOwned();
         $arrayRawGamesPlays = BGGData::getPlays();
@@ -92,23 +95,27 @@ class StatsController extends Controller
         Stats::getCollectionArrays($arrayRawGamesOwned);
 
         $params['table']['ownedTimePlayed'] = Graphs::getOwnedTimePlayed($page);
+        $params['type'] = $type;
 
-        return \View::make('partials.lines-table-owned-lesstime', $params);
+        return \View::make('partials.lines-table-time-since', $params);
     }
 
     /**
      * @param $page
      */
-    public function ajaxTableMostTimePrevious($username, $page)
+    public function ajaxTableRentable($type, $username, $page)
     {
         $arrayRawGamesOwned = BGGData::getGamesOwned();
         $arrayRawGamesPlays = BGGData::getPlays();
+        $arrayRawGamesAndExpansionsOwned = BGGData::getGamesAndExpansionsOwned();
         Stats::getPlaysRelatedArrays($arrayRawGamesPlays);
         Stats::getCollectionArrays($arrayRawGamesOwned);
+        Stats::getAcquisitionRelatedArrays($arrayRawGamesAndExpansionsOwned);
 
-        $params['table']['ownedTimePlayed'] = Graphs::getOwnedTimePlayed($page);
+        $params['table']['ownedRentable'] = Graphs::getOwnedRentable($page);
+        $params['type'] = $type;
 
-        return \View::make('partials.lines-table-owned-mosttime', $params);
+        return \View::make('partials.lines-table-rentable', $params);
     }
 
     /**

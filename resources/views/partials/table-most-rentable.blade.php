@@ -8,9 +8,9 @@
                 <tr><th>Jeu</th><th>Parties jouées totales</th><th>Valeur du jeu</th><th>Prix par partie</th></tr>
             </thead>
             <tbody>
-                @include('partials.lines-table-most-rentable')
+            @include('partials.lines-table-rentable', ['type' => 'most'])
             </tbody>
         </table>
-        <button data-page="2" data-replace="table.most-rentable tbody" data-href="{{ url('ajaxTableMostRentablePrevious/' . $GLOBALS['parameters']['general']['username']) }}" class="btn btn-primary table-more-button">Plus</button>
+        <button data-page="2" data-replace="table.most-rentable tbody" data-href="{{ url('ajaxTableRentable/most/' . $GLOBALS['parameters']['general']['username']) }}" class="btn btn-primary table-more-button">Plus</button>
     </div>
 </div>

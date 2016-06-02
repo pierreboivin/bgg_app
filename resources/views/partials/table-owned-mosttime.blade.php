@@ -8,9 +8,9 @@
                 <tr><th>Jeu</th><th>Parties jouées totales</th><th>Date de la dernière partie</th></tr>
             </thead>
             <tbody>
-                @include('partials.lines-table-owned-mosttime')
+                @include('partials.lines-table-time-since', ['type' => 'most'])
             </tbody>
         </table>
-        <button data-page="2" data-replace="table.most-time tbody" data-href="{{ url('ajaxTableMostTimePrevious/' . $GLOBALS['parameters']['general']['username']) }}" class="btn btn-primary table-more-button">Plus</button>
+        <button data-page="2" data-replace="table.most-time tbody" data-href="{{ url('ajaxTableTimeSince/most/' . $GLOBALS['parameters']['general']['username']) }}" class="btn btn-primary table-more-button">Plus</button>
     </div>
 </div>
