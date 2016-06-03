@@ -49,7 +49,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="navbar-header">
                         <span class="navbar-brand">Mécaniques</span>
                         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#nav-mechanics">
@@ -58,7 +58,7 @@
                             <span class="icon-bar"></span>
                         </button>
                     </div>
-                    <div class="collapse navbar-collapse" id="nav-filtrer">
+                    <div class="collapse navbar-collapse" id="nav-mechanics">
                         <div class="btn-group option-set" role="group">
                             <select class="filter-mechanics form-control">
                                 <option value="">Tous</option>

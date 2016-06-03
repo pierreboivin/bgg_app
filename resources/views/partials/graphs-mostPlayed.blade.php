@@ -41,7 +41,7 @@
                 })
             }
         };
-        var mostPlayedCtx = document.getElementById("chart-most-played").getContext("2d");
+        var mostPlayedCtx = document.getElementById("mostPlayed").getContext("2d");
         window.chartInstance['mostPlayed'] = new Chart(mostPlayedCtx).Bar(window.chartData['mostPlayed'], window.chartOptions['mostPlayed']);
     </script>
 </div>

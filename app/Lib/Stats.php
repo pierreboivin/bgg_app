@@ -2,6 +2,8 @@
 
 namespace App\Lib;
 
+use Illuminate\Support\Facades\Lang;
+
 class Stats
 {
     /**
@@ -79,7 +81,12 @@ class Stats
         foreach($GLOBALS['data']['gamesCollection'] as $gameId => $game) {
             $gameDetail = $arrayGamesDetails[$gameId];
             foreach($gameDetail['link'] as $link) {
-                $GLOBALS['data']['gamesCollection'][$gameId]['detail'][$link['@attributes']['type']][] = ['value' => $link['@attributes']['value'], 'id' => $link['@attributes']['id']];
+                $attributes = $link['@attributes'];
+                $label = $attributes['value'];
+                if (Lang::has('mechanics.' . $attributes['value'])) {
+                    $label = trans('mechanics.' . $attributes['value']);
+                }
+                $GLOBALS['data']['gamesCollection'][$gameId]['detail'][$attributes['type']][] = ['value' => $label, 'id' => $attributes['id']];
             }
         }
     }

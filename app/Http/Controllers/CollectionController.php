@@ -6,6 +6,7 @@ use App\Http\Requests;
 use App\Lib\BGGData;
 use App\Lib\Page;
 use App\Lib\Stats;
+use App\Lib\Utility;
 
 class CollectionController extends Controller
 {
@@ -50,7 +51,7 @@ class CollectionController extends Controller
 
             if(isset($gameProperties['detail']['boardgamemechanic'])) {
                 foreach($gameProperties['detail']['boardgamemechanic'] as $mechanic) {
-                    $classes[] = str_slug($mechanic['value']);
+                    $classes[] = Utility::getKeyByString($mechanic['value']);
                     $allMechanics[] = $mechanic['value'];
                 }
             }
@@ -89,9 +90,9 @@ class CollectionController extends Controller
 
         $mechanics = array_values(array_unique($allMechanics));
         foreach($mechanics as $mechanic) {
-            $params['mechanics'][str_slug($mechanic)] = $mechanic;
+            $params['mechanics'][Utility::getKeyByString($mechanic)] = $mechanic;
         }
-        asort($params['mechanics']);
+        ksort($params['mechanics']);
 
         $params = array_merge($params, $paramsMenu);
 

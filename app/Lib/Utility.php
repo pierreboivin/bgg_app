@@ -110,5 +110,24 @@ class Utility
         return number_format($totalGamesValue, 2, '.', '') . ' $';
     }
 
+    /**
+     * @param $string
+     * @return string
+     */
+    public static function replaceAccent($string)
+    {
+        return strtr($string,
+            'àâäåãáÂÄÀÅÃÁæÆçÇéèêëÉÊËÈïîìíÏÎÌÍñÑöôóòõÓÔÖÒÕùûüúÜÛÙÚÿ',
+            'aaaaaaaaaaaaaacceeeeeeeeiiiiiiiinnoooooooooouuuuuuuuy');
+    }
+
+    /**
+     * @param $string
+     * @return string
+     */
+    public static function getKeyByString($string)
+    {
+        return self::replaceAccent(str_slug($string));
+    }
 
 }
