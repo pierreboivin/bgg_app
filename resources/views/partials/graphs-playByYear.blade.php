@@ -3,11 +3,9 @@
     <button class="btn btn-primary graph-previous">Années précédentes</button>
     <button class="btn btn-primary graph-next">Années suivantes</button>
 
-    <canvas class="graph-handler" id="playsByYear" width="400" height="100"></canvas>
+    <canvas class="graph-handler" id="playsByYear"></canvas>
 
     <input type="hidden" class="type" value="line">
-    <input type="hidden" class="width" value="400">
-    <input type="hidden" class="height" value="100">
     <input type="hidden" class="page" value="1">
     <input type="hidden" class="href" value="{{ url('ajaxPlayByYear/' . $GLOBALS['parameters']['general']['username']) }}">
     <input type="hidden" class="href-url" value="{{ url('ajaxPlayByYearGetUrl/' . $GLOBALS['parameters']['general']['username']) }}">

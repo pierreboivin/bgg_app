@@ -27,7 +27,7 @@ $(function() {
             });
 
             window.fillGraph[idGraph] = function(page, arrayData) {
-                $('#' + idGraph).replaceWith('<canvas class="graph-handler" id="' + idGraph + '" width="' + parentObj.find('.width') + '" height="' + parentObj.find('.height') + '"></canvas>');
+                $('#' + idGraph).replaceWith('<canvas class="graph-handler" id="' + idGraph + '"></canvas>');
 
                 window.chartData[idGraph]['labels'] = arrayData['labels'];
                 for(var i = 0; i < window.chartData[idGraph]['datasets'].length; i++) {

@@ -1,6 +1,6 @@
 <h3>Nombre de parties totales par jour de la semaine</h3>
 <div style="width: calc(100% - 20px);">
-    <canvas id="plays-by-dayweek" width="400" height="100"></canvas>
+    <canvas id="plays-by-dayweek"></canvas>
     <div id="plays-by-dayweek-legend" class="legend"></div>
     <script>
         window.playByDayWeekChartData = {

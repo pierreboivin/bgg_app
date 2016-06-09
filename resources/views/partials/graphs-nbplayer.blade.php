@@ -1,6 +1,6 @@
 <h3>Nombre de jeux selon le nombre de joueurs</h3>
 <div style="width: calc(100% - 20px);">
-    <canvas id="chart-nb-player" width="400" height="100"></canvas>
+    <canvas id="chart-nb-player"></canvas>
     <script>
         window.nbPlayerChartData = {
             labels: [{!! $graphs['nbPlayer']['labels'] !!}],

@@ -3,11 +3,9 @@
     <button class="btn btn-primary graph-previous">Mois précédents</button>
     <button class="btn btn-primary graph-next">Mois suivants</button>
 
-    <canvas class="graph-handler" id="acquisitionByMonth" width="400" height="100"></canvas>
+    <canvas class="graph-handler" id="acquisitionByMonth"></canvas>
 
     <input type="hidden" class="type" value="bar">
-    <input type="hidden" class="width" value="400">
-    <input type="hidden" class="height" value="100">
     <input type="hidden" class="page" value="1">
     <input type="hidden" class="href" value="{{ url('ajaxAcquisitionPrevious/' . $GLOBALS['parameters']['general']['username']) }}">
     <input type="hidden" class="href-url" value="{{ url('ajaxAcquisitionByMonthGetUrl/' . $GLOBALS['parameters']['general']['username']) }}">

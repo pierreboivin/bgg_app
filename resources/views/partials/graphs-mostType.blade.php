@@ -3,11 +3,9 @@
     <button class="btn btn-primary graph-previous">Types précédents</button>
     <button class="btn btn-primary graph-next">Types suivants</button>
 
-    <canvas class="graph-handler" id="mostType" width="400" height="200"></canvas>
+    <canvas class="graph-handler" id="mostType"></canvas>
 
     <input type="hidden" class="type" value="bar">
-    <input type="hidden" class="width" value="400">
-    <input type="hidden" class="height" value="100">
     <input type="hidden" class="page" value="1">
     <input type="hidden" class="href" value="{{ url('ajaxMostTypePrevious/' . $GLOBALS['parameters']['general']['username']) }}">
 

@@ -3,11 +3,9 @@
     <button class="btn btn-primary graph-previous">Jeux précédents</button>
     <button class="btn btn-primary graph-next">Jeux suivants</button>
 
-    <canvas class="graph-handler" id="mostPlayed" width="400" height="200"></canvas>
+    <canvas class="graph-handler" id="mostPlayed"></canvas>
 
     <input type="hidden" class="type" value="bar">
-    <input type="hidden" class="width" value="400">
-    <input type="hidden" class="height" value="200">
     <input type="hidden" class="page" value="1">
     <input type="hidden" class="href" value="{{ url('ajaxMostPlayedPrevious/' . $GLOBALS['parameters']['general']['username']) }}">
     <input type="hidden" class="href-url" value="{{ url('ajaxMostPlayedGetUrl/' . $GLOBALS['parameters']['general']['username']) }}">

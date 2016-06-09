@@ -137,7 +137,7 @@ class Graphs
         $arrayQuantity = [];
         $arrayUrls = [];
         foreach ($arrayMostPlayed as $gameId => $properties) {
-            $arrayLabels[] = addslashes($properties['name']);
+            $arrayLabels[] = str_limit(addslashes($properties['name']), 30, '...');
             $arrayQuantity[] = $properties['nbPlayed'];
             $arrayUrls[$properties['name']] = Utility::urlToGame($gameId);
         }
