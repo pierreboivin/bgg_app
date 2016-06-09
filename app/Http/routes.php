@@ -32,6 +32,7 @@ Route::get('/collection/{username}', ['as' => 'collection', 'uses' => 'Collectio
 Route::get('/rapports/{username}', ['as' => 'rapports', 'uses' => 'RapportsController@home', 'middleware' => 'app.auth']);
 Route::match(['get', 'post'], '/rapports/mensuel/{username}', ['as' => 'rapports', 'uses' => 'RapportsController@mensuel', 'middleware' => 'app.auth']);
 Route::match(['get', 'post'], '/rapports/annuel/{username}', ['as' => 'rapports', 'uses' => 'RapportsController@annuel', 'middleware' => 'app.auth']);
+Route::get('/rapports/vendre/{username}', ['as' => 'rapports', 'uses' => 'RapportsController@vendre', 'middleware' => 'app.auth']);
 
 // Routes for getting previous pages
 Route::get('ajaxPlayByMonth/{username}/{page}', ['as' => 'ajaxPlayByMonth', 'uses' => 'StatsController@ajaxPlayByMonth', 'middleware' => 'app.auth']);

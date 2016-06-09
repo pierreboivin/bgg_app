@@ -175,42 +175,7 @@ class Graphs
 
     public static function getOwnedTimePlayed($page = 1)
     {
-        $gameLessTimePlayed = [];
-        foreach ($GLOBALS['data']['gamesCollection'] as $gameId => $gameProperties) {
-            if (isset($GLOBALS['data']['arrayTotalPlays'][$gameId])) {
-                $gamePlayed = $GLOBALS['data']['arrayTotalPlays'][$gameId]['plays'];
-
-                usort($gamePlayed, function ($a, $b) {
-                    return $a['date'] - $b['date'];
-                });
-
-                $dateTimestamp = end($gamePlayed)['date'];
-
-                $gameLessTimePlayed[] = [
-                    'name' => $gameProperties['name'],
-                    'url' => Utility::urlToGame($gameId),
-                    'totalPlays' => count($gamePlayed),
-                    'date' => $dateTimestamp,
-                    'dateFormated' => Carbon::createFromTimestamp($dateTimestamp)->formatLocalized('%e %b %Y'),
-                    'since' => Carbon::createFromTimestamp($dateTimestamp)->diffForHumans()
-                ];
-
-            } else {
-                // Never played this game
-                $gameLessTimePlayed[] = [
-                    'name' => $gameProperties['name'],
-                    'url' => Utility::urlToGame($gameId),
-                    'totalPlays' => 0,
-                    'date' => '',
-                    'dateFormated' => '',
-                    'since' => ''
-                ];
-            }
-        }
-
-        usort($gameLessTimePlayed, function ($a, $b) {
-            return $a['date'] - $b['date'];
-        });
+        $gameLessTimePlayed = Stats::getCollectionTimePlayed();
 
         return [
             'most' => array_slice($gameLessTimePlayed, 0, self::TABLE_TIME_SINCE_PLAY_SLICE * $page),
@@ -316,38 +281,9 @@ class Graphs
         return array_slice($arrayDesignerFrequency, 0, 20, true);
     }
 
-    private static function compareRentabilite($a, $b)
-    {
-        return $b['rentabilite'] < $a['rentabilite'];
-    }
-
     public static function getOwnedRentable($numPage = 1)
     {
-        $arrayRentable = [];
-
-        foreach ($GLOBALS['data']['gamesCollection'] as $gameId => $game) {
-
-            if (isset($GLOBALS['data']['arrayValuesGames'][$gameId]) && $GLOBALS['data']['arrayValuesGames'][$gameId] > 0) {
-
-                $gameValue = $GLOBALS['data']['arrayValuesGames'][$gameId];
-
-                if (intval($game['numplays']) > 0) {
-                    $rentabilite = $gameValue / intval($game['numplays']);
-                } else {
-                    $rentabilite = $gameValue;
-                }
-
-                $arrayRentable[$gameId] = [
-                    'value' => $gameValue,
-                    'rentabilite' => $rentabilite,
-                    'name' => $game['name'],
-                    'numplays' => intval($game['numplays']),
-                    'url' => Utility::urlToGame($gameId)
-                ];
-            }
-        }
-
-        uasort($arrayRentable, 'self::compareRentabilite');
+        $arrayRentable = Stats::getRentabiliteCollection();
 
         return [
             'most' => array_slice($arrayRentable, 0, self::TABLE_OWNED_RENTABLE_SLICE * $numPage),

@@ -2,6 +2,7 @@
 
 namespace App\Lib;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Lang;
 
 class Stats
@@ -158,6 +159,7 @@ class Stats
         $arrayGameCollection = [];
         foreach ($arrayRawGamesOwned['item'] as $game) {
             $arrayGameCollection[$game['@attributes']['objectid']] = [
+                'id' => $game['@attributes']['objectid'],
                 'name' => $game['name'],
                 'thumbnail' => $game['thumbnail'],
                 'minplayer' => $game['stats']['@attributes']['minplayers'],
@@ -206,6 +208,83 @@ class Stats
         }
 
         $GLOBALS['data']['gamesRated'] = $arrayGameRated;
+    }
+
+    private static function compareRentabilite($a, $b)
+    {
+        return $b['rentabilite'] < $a['rentabilite'];
+    }
+
+    public static function getRentabiliteCollection()
+    {
+        foreach ($GLOBALS['data']['gamesCollection'] as $gameId => $game) {
+
+            if (isset($GLOBALS['data']['arrayValuesGames'][$gameId]) && $GLOBALS['data']['arrayValuesGames'][$gameId] > 0) {
+
+                $gameValue = $GLOBALS['data']['arrayValuesGames'][$gameId];
+
+                if (intval($game['numplays']) > 0) {
+                    $rentabilite = $gameValue / intval($game['numplays']);
+                } else {
+                    $rentabilite = $gameValue;
+                }
+
+                $arrayRentable[$gameId] = [
+                    'id' => $gameId,
+                    'value' => $gameValue,
+                    'rentabilite' => $rentabilite,
+                    'name' => $game['name'],
+                    'numplays' => intval($game['numplays']),
+                    'url' => Utility::urlToGame($gameId)
+                ];
+            }
+        }
+
+        uasort($arrayRentable, 'self::compareRentabilite');
+
+        return $arrayRentable;
+    }
+
+    public static function getCollectionTimePlayed()
+    {
+        foreach ($GLOBALS['data']['gamesCollection'] as $gameId => $gameProperties) {
+            if (isset($GLOBALS['data']['arrayTotalPlays'][$gameId])) {
+                $gamePlayed = $GLOBALS['data']['arrayTotalPlays'][$gameId]['plays'];
+
+                usort($gamePlayed, function ($a, $b) {
+                    return $a['date'] - $b['date'];
+                });
+
+                $dateTimestamp = end($gamePlayed)['date'];
+
+                $gameLessTimePlayed[] = [
+                    'id' => $gameId,
+                    'name' => $gameProperties['name'],
+                    'url' => Utility::urlToGame($gameId),
+                    'totalPlays' => count($gamePlayed),
+                    'date' => $dateTimestamp,
+                    'dateFormated' => Carbon::createFromTimestamp($dateTimestamp)->formatLocalized('%e %b %Y'),
+                    'since' => Carbon::createFromTimestamp($dateTimestamp)->diffForHumans()
+                ];
+
+            } else {
+                // Never played this game
+                $gameLessTimePlayed[] = [
+                    'id' => $gameId,
+                    'name' => $gameProperties['name'],
+                    'url' => Utility::urlToGame($gameId),
+                    'totalPlays' => 0,
+                    'date' => '',
+                    'dateFormated' => '',
+                    'since' => ''
+                ];
+            }
+        }
+
+        usort($gameLessTimePlayed, function ($a, $b) {
+            return $a['date'] - $b['date'];
+        });
+        return $gameLessTimePlayed;
     }
 
 }

@@ -116,9 +116,9 @@ class RapportsController extends Controller
         $params['table'] = [];
         $params['stats'] = [];
 
-        $firstYear = (int) $GLOBALS['data']['firstDatePlayRecorded']->format('Y');
+        $firstYear = (int)$GLOBALS['data']['firstDatePlayRecorded']->format('Y');
 
-        for($i = $firstYear; $i <= date('Y'); $i++) {
+        for ($i = $firstYear; $i <= date('Y'); $i++) {
             $params['listYear'][$i] = $i;
         }
 
@@ -139,18 +139,18 @@ class RapportsController extends Controller
                     ];
                     $allPlays += $gameInfo['nbPlayed'];
 
-                    if(date('Y', $GLOBALS['data']['arrayTotalPlays'][$idGame]['firstPlay']) == $yearSelected) {
-                        if(isset($GLOBALS['data']['gamesRated'][$idGame])) {
+                    if (date('Y', $GLOBALS['data']['arrayTotalPlays'][$idGame]['firstPlay']) == $yearSelected) {
+                        if (isset($GLOBALS['data']['gamesRated'][$idGame])) {
                             $gamesFirstTryAndRated[$idGame] = $GLOBALS['data']['gamesRated'][$idGame];
                         }
                         $firstTryGame++;
                     }
                 }
-                foreach($GLOBALS['data']['gamesCollection'] as $idGame => $gameInfo) {
-                    if(!isset($GLOBALS['data']['arrayPlaysByYear'][$yearSelected][$idGame])) {
+                foreach ($GLOBALS['data']['gamesCollection'] as $idGame => $gameInfo) {
+                    if (!isset($GLOBALS['data']['arrayPlaysByYear'][$yearSelected][$idGame])) {
                         $gamesCollectionNotPlayed[$idGame] = $gameInfo;
                         $gamesCollectionNotPlayed[$idGame]['rating'] = '';
-                        if(isset($GLOBALS['data']['gamesRated'][$idGame])) {
+                        if (isset($GLOBALS['data']['gamesRated'][$idGame])) {
                             $gamesCollectionNotPlayed[$idGame]['rating'] = $GLOBALS['data']['gamesRated'][$idGame]['rating'];
                         }
                     }
@@ -182,5 +182,86 @@ class RapportsController extends Controller
         $params = array_merge($paramsMenu, $params);
 
         return \View::make('rapports_annuel', $params);
+    }
+
+    public function vendre()
+    {
+        $arrayRawUserInfos = BGGData::getUserInfos();
+        $arrayRawGamesAndExpansionsOwned = BGGData::getGamesAndExpansionsOwned();
+        $arrayRawGamesOwned = BGGData::getGamesOwned();
+        $arrayUserInfos = UserInfos::getUserInformations($arrayRawUserInfos);
+        $arrayRawGamesPlays = BGGData::getPlays();
+        $arrayRawGamesRated = BGGData::getGamesRated();
+
+        Stats::getPlaysRelatedArrays($arrayRawGamesPlays);
+        Stats::getAcquisitionRelatedArrays($arrayRawGamesAndExpansionsOwned);
+        Stats::getRatedRelatedArrays($arrayRawGamesRated);
+        Stats::getCollectionArrays($arrayRawGamesOwned);
+
+        $params['userinfo'] = $arrayUserInfos;
+
+
+        $gamesToSell = [];
+
+        // Less rentable
+        $arrayRentable = Stats::getRentabiliteCollection();
+        $lessRentable = array_reverse(array_slice($arrayRentable, count($arrayRentable) - 30));
+        foreach($lessRentable as &$game) {
+            $game['rentabilite'] = round($game['rentabilite'], 2) . ' $ par partie';
+        }
+        $this->compileToSell($gamesToSell, $lessRentable, 'Moins rentable', 1, 'rentabilite');
+
+        // Played since
+        $gameLessTimePlayed = Stats::getCollectionTimePlayed();
+        $mostTimeSincePlayed = array_slice($gameLessTimePlayed, 0, 30);
+        foreach($mostTimeSincePlayed as &$game) {
+            if(!$game['since']) {
+                $game['since'] = 'jamais';
+            }
+        }
+        $this->compileToSell($gamesToSell, $mostTimeSincePlayed, 'Joué depuis longtemps', 1, 'since');
+
+        // Less played
+        $lessPlayed = $GLOBALS['data']['gamesCollection'];
+        usort($lessPlayed, function ($a, $b) {
+            return $a['numplays'] - $b['numplays'];
+        });
+        $lessPlayed = array_slice($lessPlayed, 0, 30);
+        foreach($lessPlayed as &$game) {
+            if($game['numplays'] == 0) {
+                $game['numplays'] = 'jamais';
+            } else {
+                $game['numplays'] . ' parties';
+            }
+        }
+        $this->compileToSell($gamesToSell, $lessPlayed, 'Moins joués', 1, 'numplays');
+
+        usort($gamesToSell, function ($a, $b) {
+            return $b['weight'] - $a['weight'];
+        });
+
+        $params['games'] = $gamesToSell;
+
+        return \View::make('rapports_vendre', $params);
+    }
+
+    public function compileToSell(&$compilation, $arrayGames, $reason, $weight = 1, $suppField = '')
+    {
+        foreach ($arrayGames as $game) {
+            if($suppField) {
+                $otherInfo = ' (' . $game[$suppField] . ')';
+            }
+            if (isset($compilation[$game['id']])) {
+                $compilation[$game['id']]['reason'][] = $reason . $otherInfo;
+                $compilation[$game['id']]['weight'] += $weight;
+            } else {
+                $compilation[$game['id']] = [
+                    'id' => $game['id'],
+                    'name' => $game['name'],
+                    'reason' => [$reason . $otherInfo],
+                    'weight' => $weight
+                ];
+            }
+        }
     }
 }

@@ -33,6 +33,9 @@
                             <ul class="dropdown-menu">
                                 <li><a class="desactivate-if-not-loaded" href="/rapports/mensuel/{{ $GLOBALS['parameters']['general']['username'] }}">Mensuel</a></li>
                                 <li><a class="desactivate-if-not-loaded" href="/rapports/annuel/{{ $GLOBALS['parameters']['general']['username'] }}">Annuel</a></li>
+                                @if(Auth::check())
+                                    <li><a class="desactivate-if-not-loaded" href="/rapports/vendre/{{ $GLOBALS['parameters']['general']['username'] }}">Jeux qui pourraient être vendus</a></li>
+                                @endif
                             </ul>
                         </li>
                     @endif
