@@ -118,7 +118,7 @@ class RapportsController extends Controller
 
         $firstYear = (int)$GLOBALS['data']['firstDatePlayRecorded']->format('Y');
 
-        for ($i = $firstYear; $i <= date('Y'); $i++) {
+        for ($i = date('Y'); $i >= $firstYear; $i--) {
             $params['listYear'][$i] = $i;
         }
 

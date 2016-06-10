@@ -217,6 +217,7 @@ class Stats
 
     public static function getRentabiliteCollection()
     {
+        $arrayRentable = [];
         foreach ($GLOBALS['data']['gamesCollection'] as $gameId => $game) {
 
             if (isset($GLOBALS['data']['arrayValuesGames'][$gameId]) && $GLOBALS['data']['arrayValuesGames'][$gameId] > 0) {
@@ -240,7 +241,9 @@ class Stats
             }
         }
 
-        uasort($arrayRentable, 'self::compareRentabilite');
+        if($arrayRentable) {
+            uasort($arrayRentable, 'self::compareRentabilite');
+        }
 
         return $arrayRentable;
     }
