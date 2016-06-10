@@ -162,8 +162,8 @@ class Stats
                 'id' => $game['@attributes']['objectid'],
                 'name' => $game['name'],
                 'thumbnail' => $game['thumbnail'],
-                'minplayer' => $game['stats']['@attributes']['minplayers'],
-                'maxplayer' => $game['stats']['@attributes']['maxplayers'],
+                'minplayer' => isset($game['stats']['@attributes']['minplayers']) ? $game['stats']['@attributes']['minplayers'] : 0,
+                'maxplayer' => isset($game['stats']['@attributes']['maxplayers']) ? $game['stats']['@attributes']['maxplayers'] : 0,
                 'playingtime' => isset($game['stats']['@attributes']['playingtime']) ? $game['stats']['@attributes']['playingtime'] : 0,
                 'numplays' => isset($game['numplays']) ? $game['numplays'] : 0
             ];
