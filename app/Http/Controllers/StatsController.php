@@ -42,8 +42,12 @@ class StatsController extends Controller
         $params['stats']['nbGamesAndExpansionsOwned'] = $arrayRawGamesAndExpansionsOwned['@attributes']['totalitems'];
         $params['stats']['nbPlaysTotal'] = $GLOBALS['data']['countAllPlays'];
         $params['stats']['nbPlaysDifferentGame'] = count($GLOBALS['data']['arrayTotalPlays']);
-        $params['stats']['averagePlayByMonth'] = round($GLOBALS['data']['countAllPlays'] / count($GLOBALS['data']['arrayPlaysByMonth']));
-        $params['stats']['averagePlayDifferentByMonth'] = round(count($GLOBALS['data']['arrayTotalPlays']) / count($GLOBALS['data']['arrayPlaysByMonth']));
+        $params['stats']['averagePlayByMonth'] = 0;
+        $params['stats']['averagePlayDifferentByMonth'] = 0;
+        if(count($GLOBALS['data']['arrayPlaysByMonth']) > 0) {
+            $params['stats']['averagePlayByMonth'] = round($GLOBALS['data']['countAllPlays'] / count($GLOBALS['data']['arrayPlaysByMonth']));
+            $params['stats']['averagePlayDifferentByMonth'] = round(count($GLOBALS['data']['arrayTotalPlays']) / count($GLOBALS['data']['arrayPlaysByMonth']));
+        }
         $params['stats']['hindex'] = $GLOBALS['data']['hindex'];
         $params['stats']['averageAcquisitionByMonth'] = '';
         if (SessionManager::ifLogin()) {
@@ -61,8 +65,13 @@ class StatsController extends Controller
         }
 
         $params['stats']['nbPlayAveragePlayCollectionGame'] = round($totalPlayGameCollection / count($GLOBALS['data']['gamesCollection']), 2);
-        $params['stats']['nbPlayAverageByDay'] = round($GLOBALS['data']['countAllPlays'] / $GLOBALS['data']['nbDaysSinceFirstPlay'], 2);
-        $params['stats']['nbPlayDifferentAverageByDay'] = round(count($GLOBALS['data']['arrayTotalPlays']) / $GLOBALS['data']['nbDaysSinceFirstPlay'], 2);
+        $params['stats']['nbPlayAverageByDay'] = 0;
+        $params['stats']['nbPlayDifferentAverageByDay'] = 0;
+        if(isset($GLOBALS['data']['nbDaysSinceFirstPlay'])) {
+            $params['stats']['nbPlayAverageByDay'] = round($GLOBALS['data']['countAllPlays'] / $GLOBALS['data']['nbDaysSinceFirstPlay'],
+                2);
+            $params['stats']['nbPlayDifferentAverageByDay'] = round(count($GLOBALS['data']['arrayTotalPlays']) / $GLOBALS['data']['nbDaysSinceFirstPlay'], 2);
+        }
 
         $params['graphs']['byMonth'] = Graphs::getPlayByMonth();
         $params['graphs']['byYear'] = Graphs::getPlayByYear();
