@@ -200,12 +200,12 @@ class RapportsController extends Controller
 
         $params['userinfo'] = $arrayUserInfos;
 
-
         $gamesToSell = [];
+        $nbToGetInEachCategory = floor(count($GLOBALS['data']['gamesCollection']) / 5);
 
         // Less rentable
         $arrayRentable = Stats::getRentabiliteCollection();
-        $lessRentable = array_reverse(array_slice($arrayRentable, count($arrayRentable) - 30));
+        $lessRentable = array_reverse(array_slice($arrayRentable, count($arrayRentable) - $nbToGetInEachCategory));
         foreach($lessRentable as &$game) {
             $game['rentabilite'] = round($game['rentabilite'], 2) . ' $ par partie';
         }
@@ -213,7 +213,7 @@ class RapportsController extends Controller
 
         // Played since
         $gameLessTimePlayed = Stats::getCollectionTimePlayed();
-        $mostTimeSincePlayed = array_slice($gameLessTimePlayed, 0, 30);
+        $mostTimeSincePlayed = array_slice($gameLessTimePlayed, 0, $nbToGetInEachCategory);
         foreach($mostTimeSincePlayed as &$game) {
             if(!$game['since']) {
                 $game['since'] = 'jamais';
@@ -226,7 +226,7 @@ class RapportsController extends Controller
         usort($lessPlayed, function ($a, $b) {
             return $a['numplays'] - $b['numplays'];
         });
-        $lessPlayed = array_slice($lessPlayed, 0, 30);
+        $lessPlayed = array_slice($lessPlayed, 0, $nbToGetInEachCategory);
         foreach($lessPlayed as &$game) {
             if($game['numplays'] == 0) {
                 $game['numplays'] = 'jamais';
@@ -235,6 +235,15 @@ class RapportsController extends Controller
             }
         }
         $this->compileToSell($gamesToSell, $lessPlayed, 'Moins joués', 1, 'numplays');
+
+        // Less rated
+        $arrayRated = Stats::getRatedCollection();
+        $lessRated = array_reverse(array_slice($arrayRated, count($arrayRated) - $nbToGetInEachCategory));
+        foreach($lessRated as &$game) {
+            $game['rating'] .= ' / 10';
+        }
+        $this->compileToSell($gamesToSell, $lessRated, 'Moins bien classé', 1, 'rating');
+
 
         usort($gamesToSell, function ($a, $b) {
             return $b['weight'] - $a['weight'];

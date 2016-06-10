@@ -245,6 +245,28 @@ class Stats
         return $arrayRentable;
     }
 
+    public static function getRatedCollection()
+    {
+        foreach ($GLOBALS['data']['gamesCollection'] as $gameId => $game) {
+
+            if (isset($GLOBALS['data']['gamesRated'][$gameId])) {
+
+                $arrayRated[$gameId] = [
+                    'id' => $gameId,
+                    'rating' => $GLOBALS['data']['gamesRated'][$gameId]['rating'],
+                    'name' => $game['name'],
+                    'url' => Utility::urlToGame($gameId)
+                ];
+            }
+        }
+
+        usort($arrayRated, function ($a, $b) {
+            return $b['rating'] - $a['rating'];
+        });
+
+        return $arrayRated;
+    }
+
     public static function getCollectionTimePlayed()
     {
         foreach ($GLOBALS['data']['gamesCollection'] as $gameId => $gameProperties) {
