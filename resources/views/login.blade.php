@@ -1,11 +1,17 @@
 @extends('layouts.master')
 
-@section('title', 'Connexion')
+@section('title', 'Accueil')
+@section('meta.description', 'Application permettant d\'afficher plusieurs statistiques à partir des données utilisateurs de boargamegeek.com.')
 
 @section('content')
 
     <div class="jumbotron login vertical-center">
         <div class="container">
+
+            <div class="well">
+                Ce site web vous permet de consulter plusieurs statistiques concernant vos parties jouées et vos jeux possédés sur boardgamegeek.com. Plusieurs rapports et graphiques sont à la disposition des utilisateurs.
+            </div>
+
             <h2>Visitez le site en tant qu'invité</h2>
 
             {!! Form::open(array('url' => '/guestLogin')) !!}

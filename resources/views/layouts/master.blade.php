@@ -2,9 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>BGG App - @yield('title')</title>
+    <title>@yield('title') - BGG App - Système de statistique BGG</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="description" content="@yield('meta.description')">
+    <meta name="dcterms.description" content="@yield('meta.description')">
+    <meta property="og:title" content="@yield('title')"/>
+    <meta property="og:description" content="@yield('meta.description')">
+    <meta property="og:site_name" content="BGG App"/>
+    <meta property="og:type" content="website"/>
+    <meta name="author" content="Pierre Boivin">
+    <meta name="dcterms.creator" content="Pierre Boivin" />
 
     <script src="/assets/js/app.min.js"></script>
 
