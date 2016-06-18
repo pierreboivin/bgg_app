@@ -137,7 +137,7 @@ class Graphs
         $arrayQuantity = [];
         $arrayUrls = [];
         foreach ($arrayMostPlayed as $gameId => $properties) {
-            $arrayLabels[] = str_limit(addslashes($properties['name']), 30, '...');
+            $arrayLabels[] = str_limit($properties['name'], 30, '...');
             $arrayQuantity[] = $properties['nbPlayed'];
             $arrayUrls[$properties['name']] = Utility::urlToGame($gameId);
         }
@@ -239,7 +239,6 @@ class Graphs
 
     public static function getPlayByDayWeek()
     {
-        // Build differents stats array
         $arrayPlayByDayWeek = [];
 
         foreach ($GLOBALS['data']['arrayPlaysByDayWeek'] as $dayWeek => $nbPlay) {
@@ -247,10 +246,30 @@ class Graphs
             $arrayPlayByDayWeek[$labelWeekDay] = $nbPlay;
         }
 
-        // Return labels and series
         return [
             'labels' => Utility::implodeWrap(array_keys($arrayPlayByDayWeek)),
             'serie1' => Utility::implodeWrap(array_values($arrayPlayByDayWeek))
+        ];
+    }
+
+    public static function getPlayByRating()
+    {
+        $arrayPlaysByRating = array_fill(0, 11, 0);
+        $arrayCollectionByRating = array_fill(0, 11, 0);
+        foreach ($GLOBALS['data']['gamesRated'] as $idGame => $gameRated) {
+            if(isset($GLOBALS['data']['arrayTotalPlays'][$idGame])) {
+                $rating = floor($gameRated['rating']);
+                $arrayPlaysByRating[$rating] += $GLOBALS['data']['arrayTotalPlays'][$idGame]['nbPlayed'];
+            }
+            if(isset($GLOBALS['data']['gamesCollection'][$idGame])) {
+                $arrayCollectionByRating[$rating] += 1;
+            }
+        }
+
+        return [
+            'labels' => Utility::implodeWrap(array_keys($arrayPlaysByRating)),
+            'serie1' => Utility::implodeWrap(array_values($arrayPlaysByRating)),
+            'serie2' => Utility::implodeWrap(array_values($arrayCollectionByRating))
         ];
     }
 

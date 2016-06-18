@@ -45,9 +45,9 @@
             bezierCurveTension : 0.3,
             pointDotRadius : 6
         };
-        var playByYearCtx = document.getElementById("plays-by-year").getContext("2d");
+        var playByYearCtx = document.getElementById("playsByYear").getContext("2d");
         window.chartInstance['playsByYear'] = new Chart(playByYearCtx).Line(window.chartData['playsByYear'], window.chartOptions['playsByYear']);
 
-        $('#plays-by-year-legend').append(window.chartData['playsByYear'].generateLegend());
+        $('#plays-by-year-legend').append(window.chartInstance['playsByYear'].generateLegend());
     </script>
 </div>

@@ -282,11 +282,15 @@ class Stats
 
                 $dateTimestamp = end($gamePlayed)['date'];
 
+                $totalPlay = 0;
+                foreach($gamePlayed as $playDetail) {
+                    $totalPlay += $playDetail['quantity'];
+                }
                 $gameLessTimePlayed[] = [
                     'id' => $gameId,
                     'name' => $gameProperties['name'],
                     'url' => Utility::urlToGame($gameId),
-                    'totalPlays' => count($gamePlayed),
+                    'totalPlays' => $totalPlay,
                     'date' => $dateTimestamp,
                     'dateFormated' => Carbon::createFromTimestamp($dateTimestamp)->formatLocalized('%e %b %Y'),
                     'since' => Carbon::createFromTimestamp($dateTimestamp)->diffForHumans()

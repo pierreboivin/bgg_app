@@ -21,11 +21,13 @@ class StatsController extends Controller
         $arrayGamesDetails = BGGData::getDetailOwned($arrayRawGamesOwned);
         $arrayRawGamesAndExpansionsOwned = BGGData::getGamesAndExpansionsOwned();
         $arrayRawGamesPlays = BGGData::getPlays();
+        $arrayRawGamesRated = BGGData::getGamesRated();
 
         Stats::getPlaysRelatedArrays($arrayRawGamesPlays);
         Stats::getAcquisitionRelatedArrays($arrayRawGamesAndExpansionsOwned);
         Stats::getCollectionArrays($arrayRawGamesOwned);
         Stats::getOwnedRelatedArrays($arrayGamesDetails);
+        Stats::getRatedRelatedArrays($arrayRawGamesRated);
 
         $arrayUserInfos = UserInfos::getUserInformations($arrayRawUserInfos);
 
@@ -80,6 +82,7 @@ class StatsController extends Controller
         $params['graphs']['nbPlayer'] = Graphs::getNbPlayerCollection();
         $params['graphs']['acquisitionByMonth'] = Graphs::getAcquisitionByMonth();
         $params['graphs']['mostType'] = Graphs::getMostType();
+        $params['graphs']['playsByRating'] = Graphs::getPlayByRating();
 
         $params['table']['ownedTimePlayed'] = Graphs::getOwnedTimePlayed();
         $params['table']['mostDesigner'] = Graphs::getMostDesignerOwned();

@@ -8,6 +8,8 @@
     <div class="jumbotron login vertical-center">
         <div class="container">
 
+            <h1>Système de statistiques BoardGameGeek</h1>
+
             <div class="well">
                 Ce site web vous permet de consulter plusieurs statistiques concernant vos parties jouées et vos jeux possédés sur boardgamegeek.com. Plusieurs rapports et graphiques sont à la disposition des utilisateurs.
             </div>
