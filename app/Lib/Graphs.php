@@ -24,7 +24,7 @@ class Graphs
 
     const NB_PLAYER_MAX = 12;
 
-    const PIE_COLORS = [0 => '#D3B78F', 1 => '#9B8461', 2 => '#7F93AF', 3 => '#576271'];
+    var $PIE_COLORS = [0 => '#D3B78F', 1 => '#9B8461', 2 => '#7F93AF', 3 => '#576271'];
 
     public static function getPlayByMonth($numPage = 1)
     {
