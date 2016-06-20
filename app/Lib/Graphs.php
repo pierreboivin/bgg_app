@@ -3,6 +3,7 @@
 namespace App\Lib;
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Lang;
 use Laravelrus\LocalizedCarbon\LocalizedCarbon;
 
 class Graphs
@@ -22,6 +23,8 @@ class Graphs
     const ACQUISITION_BY_MONTH_SLICE = 13;
 
     const NB_PLAYER_MAX = 12;
+
+    const PIE_COLORS = [0 => '#D3B78F', 1 => '#9B8461', 2 => '#7F93AF', 3 => '#576271'];
 
     public static function getPlayByMonth($numPage = 1)
     {
@@ -270,6 +273,39 @@ class Graphs
             'labels' => Utility::implodeWrap(array_keys($arrayPlaysByRating)),
             'serie1' => Utility::implodeWrap(array_values($arrayPlaysByRating)),
             'serie2' => Utility::implodeWrap(array_values($arrayCollectionByRating))
+        ];
+    }
+
+    public static function getPlayByLength()
+    {
+        $arrayPlaysByLength = [];
+        $arrayPlaysByLengthLabels = [];
+        foreach($GLOBALS['data']['gamesCollection'] as $idGame => $game) {
+            if(isset($GLOBALS['data']['arrayTotalPlays'][$idGame])) {
+                $playingtime = $game['playingtime'];
+
+                if($playingtime <= 30) {
+                    $type = 0;
+                } elseif($playingtime > 30 && $playingtime <= 60) {
+                    $type = 1;
+                } elseif($playingtime > 60 && $playingtime <= 120) {
+                    $type = 2;
+                } elseif($playingtime > 120) {
+                    $type = 3;
+                }
+
+                Utility::arrayIncrementValue($arrayPlaysByLength, $type, $GLOBALS['data']['arrayTotalPlays'][$idGame]['nbPlayed']);
+            }
+        }
+
+        arsort($arrayPlaysByLength);
+
+        foreach($arrayPlaysByLength as $type => $plays) {
+            $arrayPlaysByLengthLabels[] = ['label' => Lang::get('length.' . $type), 'value' => $plays, 'color' => self::PIE_COLORS[$type]];
+        }
+
+        return [
+            'serie' => json_encode($arrayPlaysByLengthLabels)
         ];
     }
 

@@ -43,7 +43,7 @@
                             <h3>Jeux possédés</h3>
                             <p>Nombre de jeux possédés (sans extension) : {{ $stats['nbGamesOwned'] }}</p>
                             <p>Nombre de jeux possédés (avec extension) : {{ $stats['nbGamesAndExpansionsOwned'] }}</p>
-                            <p>Nombre de parties jouées en moyenne dans les jeux possédés : {!! $stats['nbPlayAveragePlayCollectionGame'] !!}</p>
+                            <p>Moyenne de parties jouées sur l'ensemble des jeux possédés : {!! $stats['nbPlayAveragePlayCollectionGame'] !!}</p>
                             <p>Nombre d'acquisitions moyennes par mois : {!! \App\Helpers\Helper::ifEmptyToolTip($stats['averageAcquisitionByMonth']) !!}</p>
                         </div>
                         <div class="col-md-4">
@@ -84,6 +84,10 @@
                     <hr>
                     <div class="chart-container">
                         @include('partials.graphs-playByRating')
+                    </div>
+                    <hr>
+                    <div class="chart-container">
+                        @include('partials.graphs-playByLength')
                     </div>
                     <hr>
                     <div class="table-container">

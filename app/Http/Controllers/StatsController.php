@@ -83,6 +83,7 @@ class StatsController extends Controller
         $params['graphs']['acquisitionByMonth'] = Graphs::getAcquisitionByMonth();
         $params['graphs']['mostType'] = Graphs::getMostType();
         $params['graphs']['playsByRating'] = Graphs::getPlayByRating();
+        $params['graphs']['playsByLength'] = Graphs::getPlayByLength();
 
         $params['table']['ownedTimePlayed'] = Graphs::getOwnedTimePlayed();
         $params['table']['mostDesigner'] = Graphs::getMostDesignerOwned();
