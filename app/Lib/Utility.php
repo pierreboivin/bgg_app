@@ -130,4 +130,27 @@ class Utility
         return self::replaceAccent(str_slug($string));
     }
 
+    /**
+     * @param $array
+     * @param $key
+     * @return mixed
+     */
+    public static function normalizeArray(&$array, $key)
+    {
+        $values = [];
+        foreach($array as $item) {
+            $values[] = $item[$key];
+        }
+        $minValue = min($values);
+        $maxValue = max($values);
+
+        foreach($array as $i => $item) {
+            if(($maxValue - $minValue) > 0) {
+                $array[$i][$key] = ($item[$key] - $minValue) / ($maxValue - $minValue);
+            }
+        }
+
+        return $array;
+    }
+
 }

@@ -24,8 +24,6 @@ class Graphs
 
     const NB_PLAYER_MAX = 12;
 
-    public $PIE_COLORS = [0 => '#D3B78F', 1 => '#9B8461', 2 => '#7F93AF', 3 => '#576271'];
-
     public static function getPlayByMonth($numPage = 1)
     {
         // Define which plays are new
@@ -278,6 +276,7 @@ class Graphs
 
     public static function getPlayByLength()
     {
+        $PIE_COLORS = [0 => '#D3B78F', 1 => '#9B8461', 2 => '#7F93AF', 3 => '#576271'];
         $arrayPlaysByLength = [];
         $arrayPlaysByLengthLabels = [];
         foreach($GLOBALS['data']['gamesCollection'] as $idGame => $game) {
@@ -301,7 +300,7 @@ class Graphs
         arsort($arrayPlaysByLength);
 
         foreach($arrayPlaysByLength as $type => $plays) {
-            $arrayPlaysByLengthLabels[] = ['label' => Lang::get('length.' . $type), 'value' => $plays, 'color' => self::PIE_COLORS[$type]];
+            $arrayPlaysByLengthLabels[] = ['label' => Lang::get('length.' . $type), 'value' => $plays, 'color' => $PIE_COLORS[$type]];
         }
 
         return [

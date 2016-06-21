@@ -1,13 +1,13 @@
 @extends('layouts.master')
 
-@section('title', 'Jeux qui pourraient être vendus')
+@section('title', 'Jeux qui pourraient être achetés')
 @section('class', 'rapports')
 
 @section('content')
 
     @include('partials.userInfo')
 
-    <h2>Jeux qui pourraient être vendus</h2>
+    <h2>Jeux qui pourraient être achetés</h2>
 
     <table class="table table-hover table-condensed">
         <thead>

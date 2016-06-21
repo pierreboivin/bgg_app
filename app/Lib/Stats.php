@@ -39,6 +39,7 @@ class Stats
             $countAllPlays += $quantityPlay;
 
             Utility::arrayIncrementValue($arrayTotalPlays, $idGame, $quantityPlay, 'nbPlayed');
+            $arrayTotalPlays[$idGame]['id'] = $idGame;
             $arrayTotalPlays[$idGame]['name'] = $play['item']['@attributes']['name'];
             $arrayTotalPlays[$idGame]['plays'][] = [
                 'date' => Utility::dateToTimestamp($datePlay),
@@ -91,6 +92,7 @@ class Stats
             }
         }
     }
+
 
     private static function compareDate($a, $b)
     {
@@ -198,6 +200,7 @@ class Stats
             $maxplayers = isset($game['maxplayers']) ? $game['maxplayers'] : '';
 
             $arrayGameRated[$game['@attributes']['objectid']] = [
+                'id' => $game['@attributes']['objectid'],
                 'name' => $game['name'],
                 'thumbnail' => $thumbnail,
                 'minplayer' => $minplayers,

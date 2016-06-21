@@ -33,4 +33,9 @@ class BGGUrls {
     {
         return 'http://boardgamegeek.com/xmlapi2/thing?id=' . $i;
     }
+
+    public static function getHot()
+    {
+        return 'http://boardgamegeek.com/xmlapi2/hot?type=boardgame';
+    }
 }

@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use App\Lib\BGGData;
+use App\Lib\Graphs;
 use App\Lib\Page;
 use App\Lib\Stats;
 use App\Lib\UserInfos;
+use App\Lib\Utility;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Input;
 
@@ -206,20 +208,20 @@ class RapportsController extends Controller
         // Less rentable
         $arrayRentable = Stats::getRentabiliteCollection();
         $lessRentable = array_reverse(array_slice($arrayRentable, count($arrayRentable) - $nbToGetInEachCategory));
-        foreach($lessRentable as &$game) {
+        foreach ($lessRentable as &$game) {
             $game['rentabilite'] = round($game['rentabilite'], 2) . ' $ par partie';
         }
-        $this->compileToSell($gamesToSell, $lessRentable, 'Moins rentable', 1, 'rentabilite');
+        $this->compileGameArray($gamesToSell, $lessRentable, 'Moins rentable', 1, 'rentabilite');
 
         // Played since
         $gameLessTimePlayed = Stats::getCollectionTimePlayed();
         $mostTimeSincePlayed = array_slice($gameLessTimePlayed, 0, $nbToGetInEachCategory);
-        foreach($mostTimeSincePlayed as &$game) {
-            if(!$game['since']) {
+        foreach ($mostTimeSincePlayed as &$game) {
+            if (!$game['since']) {
                 $game['since'] = 'jamais';
             }
         }
-        $this->compileToSell($gamesToSell, $mostTimeSincePlayed, 'Joué depuis longtemps', 1, 'since');
+        $this->compileGameArray($gamesToSell, $mostTimeSincePlayed, 'Joué depuis longtemps', 1, 'since');
 
         // Less played
         $lessPlayed = $GLOBALS['data']['gamesCollection'];
@@ -227,22 +229,22 @@ class RapportsController extends Controller
             return $a['numplays'] - $b['numplays'];
         });
         $lessPlayed = array_slice($lessPlayed, 0, $nbToGetInEachCategory);
-        foreach($lessPlayed as &$game) {
-            if($game['numplays'] == 0) {
+        foreach ($lessPlayed as &$game) {
+            if ($game['numplays'] == 0) {
                 $game['numplays'] = 'jamais';
             } else {
                 $game['numplays'] . ' parties';
             }
         }
-        $this->compileToSell($gamesToSell, $lessPlayed, 'Moins joués', 1, 'numplays');
+        $this->compileGameArray($gamesToSell, $lessPlayed, 'Moins joués', 1, 'numplays');
 
         // Less rated
         $arrayRated = Stats::getRatedCollection();
         $lessRated = array_reverse(array_slice($arrayRated, count($arrayRated) - $nbToGetInEachCategory));
-        foreach($lessRated as &$game) {
+        foreach ($lessRated as &$game) {
             $game['rating'] .= ' / 10';
         }
-        $this->compileToSell($gamesToSell, $lessRated, 'Moins bien classé', 1, 'rating');
+        $this->compileGameArray($gamesToSell, $lessRated, 'Moins bien classé', 1, 'rating');
 
 
         usort($gamesToSell, function ($a, $b) {
@@ -254,11 +256,14 @@ class RapportsController extends Controller
         return \View::make('rapports_vendre', $params);
     }
 
-    public function compileToSell(&$compilation, $arrayGames, $reason, $weight = 1, $suppField = '')
+    public function compileGameArray(&$compilation, $arrayGames, $reason, $weight = 1, $suppField = '')
     {
         foreach ($arrayGames as $game) {
-            if($suppField) {
+            if ($suppField) {
                 $otherInfo = ' (' . $game[$suppField] . ')';
+            }
+            if (isset($game['weight'])) {
+                $weight = $game['weight'];
             }
             if (isset($compilation[$game['id']])) {
                 $compilation[$game['id']]['reason'][] = $reason . $otherInfo;
@@ -272,5 +277,89 @@ class RapportsController extends Controller
                 ];
             }
         }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function tobuy()
+    {
+        $arrayRawUserInfos = BGGData::getUserInfos();
+        $arrayRawGamesOwned = BGGData::getGamesOwned();
+        $arrayGamesDetails = BGGData::getDetailOwned($arrayRawGamesOwned);
+        $arrayRawGamesRated = BGGData::getGamesRated();
+        $arrayRawGamesPlays = BGGData::getPlays();
+        $arrayGamesHot = BGGData::getHotWithDetails();
+
+        $arrayUserInfos = UserInfos::getUserInformations($arrayRawUserInfos);
+        Stats::getRatedRelatedArrays($arrayRawGamesRated);
+        Stats::getCollectionArrays($arrayRawGamesOwned);
+        Stats::getOwnedRelatedArrays($arrayGamesDetails);
+        Stats::getPlaysRelatedArrays($arrayRawGamesPlays);
+
+        $params['userinfo'] = $arrayUserInfos;
+
+        $gamesToBuy = [];
+
+        // High rated
+        $highRating = [];
+        foreach ($GLOBALS['data']['gamesRated'] as $idGame => $ratedGame) {
+            if (!isset($GLOBALS['data']['gamesCollection'][$idGame])) {
+                $highRating[$idGame] = $ratedGame;
+            }
+        }
+        uasort($highRating, 'self::compareOrderRating');
+        $highRating = array_slice($highRating, 0, 50, true);
+        foreach ($highRating as &$game) {
+            $game['weight'] = $game['rating'];
+            $game['rating'] .= ' / 10';
+        }
+        Utility::normalizeArray($highRating, 'weight');
+        $this->compileGameArray($gamesToBuy, $highRating, 'Bien classé', 1, 'rating');
+
+        // Played frequently
+        $playsFrequently = [];
+        foreach ($GLOBALS['data']['arrayTotalPlays'] as $idGame => $game) {
+            if (!isset($GLOBALS['data']['gamesCollection'][$idGame])) {
+                $playsFrequently[$idGame] = $game;
+            }
+        }
+        usort($playsFrequently, function ($a, $b) {
+            return $a['nbPlayed'] - $b['nbPlayed'];
+        });
+        $playsFrequently = array_slice(array_reverse($playsFrequently), 0, 50, true);
+        foreach ($playsFrequently as &$game) {
+            $game['weight'] = $game['nbPlayed'];
+            $game['nbPlayed'] .= ' parties';
+        }
+        Utility::normalizeArray($playsFrequently, 'weight');
+        $this->compileGameArray($gamesToBuy, $playsFrequently, 'Joué souvent', 1, 'nbPlayed');
+
+        // Game hot of the same author
+        $gameWithDesignerHot = [];
+        $mostDesigner = Graphs::getMostDesignerOwned();
+        foreach ($arrayGamesHot as $idGame => $game) {
+            if (!isset($GLOBALS['data']['gamesCollection'][$idGame])) {
+                if (isset($game['detail']['boardgamedesigner'])) {
+                    foreach ($game['detail']['boardgamedesigner'] as $hotDesigner) {
+                        if (isset($mostDesigner[$hotDesigner['id']])) {
+                            $gameWithDesignerHot[$idGame] = $game;
+                            $gameWithDesignerHot[$idGame]['weight'] = $mostDesigner[$hotDesigner['id']]['nbOwned'];
+                            $gameWithDesignerHot[$idGame]['designer'] = $mostDesigner[$hotDesigner['id']]['name'];
+                        }
+                    }
+                }
+            }
+        }
+        Utility::normalizeArray($gameWithDesignerHot, 'weight');
+        $this->compileGameArray($gamesToBuy, $gameWithDesignerHot, 'Jeu d\'un auteur apprécié', 1, 'designer');
+
+        usort($gamesToBuy, function ($a, $b) {
+            return $b['weight'] - $a['weight'];
+        });
+
+        $params['games'] = $gamesToBuy;
+
+        return \View::make('rapports_tobuy', $params);
     }
 }

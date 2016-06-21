@@ -40,6 +40,44 @@ class BGGData
         return self::getBGGUrl($urlBGG);
     }
 
+    public static function getHotWithDetails()
+    {
+        $urlBGG = BGGUrls::getHot();
+
+        $arrayRawGamesHot = self::getBGGUrl($urlBGG);
+
+        $arrayHotGames = [];
+        foreach($arrayRawGamesHot['item'] as $game) {
+            $arrayHotGames[$game['@attributes']['id']] = ['name' => $game['name']['@attributes']['value']];
+        }
+
+        $arrayHotGamesDetails = BGGData::getDetailOfGames($arrayHotGames);
+
+        foreach($arrayHotGamesDetails as $gameId => $gameDetail) {
+            $arrayHotGames[$gameId]['id'] = $gameId;
+            foreach($gameDetail['link'] as $link) {
+                $attributes = $link['@attributes'];
+                $label = $attributes['value'];
+                $arrayHotGames[$gameId]['detail'][$attributes['type']][] = ['value' => $label, 'id' => $attributes['id']];
+            }
+        }
+        return $arrayHotGames;
+    }
+
+    public static function getDetailOfGames($games)
+    {
+        $arrayGamesDetails = [];
+        $arrayIds = array_keys($games);
+        $strIds = implode(',', $arrayIds);
+        $urlBGG = BGGUrls::getDetail($strIds);
+
+        $fromBGG = self::getBGGUrl($urlBGG);
+        foreach ($fromBGG['item'] as $gameDetail) {
+            $arrayGamesDetails[$gameDetail['@attributes']['id']] = $gameDetail;
+        }
+        return $arrayGamesDetails;
+    }
+
     public static function getDetailOwned(&$arrayRawGamesOwned)
     {
         $arrayGamesDetails = [];
@@ -203,6 +241,7 @@ class BGGData
         }
         return false;
     }
+
 
 
 }

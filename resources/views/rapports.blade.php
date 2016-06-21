@@ -17,6 +17,9 @@
             <h3 class="list-group-item-heading">Jeux qui pourraient être vendus</h3>
         </a>
         @endif
+        <a href="/rapports/tobuy/{{ $GLOBALS['parameters']['general']['username'] }}" class="list-group-item">
+            <h3 class="list-group-item-heading">Jeux qui pourraient être achetés</h3>
+        </a>
     </div>
 
 @endsection

@@ -45,6 +45,7 @@
                                 @if(Auth::check())
                                     <li><a class="desactivate-if-not-loaded" href="/rapports/vendre/{{ $GLOBALS['parameters']['general']['username'] }}">Jeux qui pourraient être vendus</a></li>
                                 @endif
+                                <li><a class="desactivate-if-not-loaded" href="/rapports/tobuy/{{ $GLOBALS['parameters']['general']['username'] }}">Jeux qui pourraient être achetés</a></li>
                             </ul>
                         </li>
                     @endif
