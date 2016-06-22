@@ -18,6 +18,13 @@ class BGGData
             ['cookie' => 'bggusername=' . $GLOBALS['parameters']['general']['username'] . '; bggpassword=' . $GLOBALS['parameters']['login']['password']]);
     }
 
+    public static function getGamesOwnedByUserName($username)
+    {
+        $urlBGG = BGGUrls::getGamesOwnedByUserName($username);
+
+        return self::getBGGUrl($urlBGG);
+    }
+
     public static function getGamesAndExpansionsOwned()
     {
         $urlBGG = BGGUrls::getGamesAndExpansionsOwned();
@@ -153,6 +160,15 @@ class BGGData
         return array('progress' => $progression, 'message' => $message);
     }
 
+    public static function getCurrentUserNameCollectionDataInCache($compare)
+    {
+        if (self::dataExistInCache(BGGUrls::getGamesOwnedByUserName($compare))) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     private static function dataExistInCache($url)
     {
         if ($GLOBALS['parameters']['typeLogin'] == 'guest') {
@@ -241,7 +257,6 @@ class BGGData
         }
         return false;
     }
-
 
 
 }

@@ -10,6 +10,7 @@ use App\Lib\Stats;
 use App\Lib\UserInfos;
 use App\Lib\Utility;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Input;
 
 class RapportsController extends Controller
@@ -361,5 +362,49 @@ class RapportsController extends Controller
         $params['games'] = $gamesToBuy;
 
         return \View::make('rapports_tobuy', $params);
+    }
+
+    public function home_compare_user()
+    {
+        $arrayRawUserInfos = BGGData::getUserInfos();
+
+        $arrayUserInfos = UserInfos::getUserInformations($arrayRawUserInfos);
+
+        $params['userinfo'] = $arrayUserInfos;
+
+        return \View::make('rapports_home_compare_user', $params);
+    }
+
+    public function compare()
+    {
+        $compareUsername = $_GET['compare'];
+
+        $arrayRawUserInfos = BGGData::getUserInfos();
+        $arrayRawGamesOwned = BGGData::getGamesOwned();
+
+        $arrayUserInfos = UserInfos::getUserInformations($arrayRawUserInfos);
+        Stats::getCollectionArrays($arrayRawGamesOwned);
+
+        $gamesOwnedOtherUser = BGGData::getGamesOwnedByUsername($compareUsername);
+        Stats::getCollectionArrays($gamesOwnedOtherUser, 'gamesCompare');
+
+        $gamesInCommon = array_intersect_key($GLOBALS['data']['gamesCompare'], $GLOBALS['data']['gamesCollection']);
+
+        $similarity = round(count($gamesInCommon)/count($GLOBALS['data']['gamesCollection'])*100, 2);
+
+        $params['compareinfo'] = $compareUsername;
+        $params['userinfo'] = $arrayUserInfos;
+        $params['gamesInCommon'] = ['correlation' => $similarity, 'games' => $gamesInCommon];
+
+        return \View::make('rapports_compare', $params);
+    }
+
+    public function check_loading() {
+        return Response::json(BGGData::getCurrentUserNameCollectionDataInCache($_GET['compare']));
+    }
+
+    public function loadCompare()
+    {
+        BGGData::getGamesOwnedByUsername($_GET['compare']);
     }
 }

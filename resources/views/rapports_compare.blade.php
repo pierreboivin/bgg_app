@@ -1,0 +1,33 @@
+@extends('layouts.master')
+
+@section('title', 'Comparaison à une autre personne')
+@section('class', 'rapports_compareuser')
+
+@section('content')
+
+    @include('partials.userInfo')
+
+    <h2>Comparaison à {{ $compareinfo }}</h2>
+
+    <h3>Jeux en communs</h3>
+    <p class="well">
+        Nombre de jeux en communs : {{ count($gamesInCommon['games']) }} <br>
+        Corrélation : {{ $gamesInCommon['correlation'] }} %
+    </p>
+    <table class="table table-hover table-condensed">
+        <thead>
+        <tr>
+            <th>Jeu</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach($gamesInCommon['games'] as $game)
+            <tr>
+                <td><a href="http://boardgamegeek.com/boardgame/{{ $game['id'] }}" target="_blank">{{ $game['name'] }}</a></td>
+            </tr>
+        @endforeach
+        </tbody>
+
+    </table>
+
+@endsection

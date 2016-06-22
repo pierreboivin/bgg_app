@@ -34,6 +34,10 @@ Route::match(['get', 'post'], '/rapports/mensuel/{username}', ['as' => 'rapports
 Route::match(['get', 'post'], '/rapports/annuel/{username}', ['as' => 'rapports', 'uses' => 'RapportsController@annuel', 'middleware' => 'app.auth']);
 Route::get('/rapports/vendre/{username}', ['as' => 'rapports', 'uses' => 'RapportsController@vendre', 'middleware' => 'app.auth']);
 Route::get('/rapports/tobuy/{username}', ['as' => 'rapports', 'uses' => 'RapportsController@tobuy', 'middleware' => 'app.auth']);
+Route::get('/rapports/home_compare_user/{username}', ['as' => 'rapports', 'uses' => 'RapportsController@home_compare_user', 'middleware' => 'app.auth']);
+Route::get('/compare/loadCompare/{username}', ['as' => 'loadCompare', 'uses' => 'RapportsController@loadCompare', 'middleware' => 'app.auth']);
+Route::get('/compare/check_loading/{username}', ['as' => 'check_loading', 'uses' => 'RapportsController@check_loading', 'middleware' => 'app.auth']);
+Route::get('/rapport/compare/{username}', ['as' => 'loadCompare', 'uses' => 'RapportsController@compare', 'middleware' => 'app.auth']);
 
 // Routes for getting previous pages
 Route::get('ajaxPlayByMonth/{username}/{page}', ['as' => 'ajaxPlayByMonth', 'uses' => 'StatsController@ajaxPlayByMonth', 'middleware' => 'app.auth']);

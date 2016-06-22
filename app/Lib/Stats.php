@@ -156,7 +156,7 @@ class Stats
     /**
      * @param $arrayRawGamesOwned
      */
-    public static function getCollectionArrays($arrayRawGamesOwned)
+    public static function getCollectionArrays($arrayRawGamesOwned, $keyGlobal = 'gamesCollection')
     {
         $arrayGameCollection = [];
         foreach ($arrayRawGamesOwned['item'] as $game) {
@@ -180,7 +180,7 @@ class Stats
             }
         }
 
-        $GLOBALS['data']['gamesCollection'] = $arrayGameCollection;
+        $GLOBALS['data'][$keyGlobal] = $arrayGameCollection;
     }
 
     /**

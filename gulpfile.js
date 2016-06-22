@@ -39,6 +39,7 @@ gulp.task('js', function(){
   paths.dev.js+'general.js',
   paths.dev.js+'collection.js',
   paths.dev.js+'home.js',
+  paths.dev.js+'rapports_compareuser.js',
   paths.dev.js+'chart.js'
  ])
      .pipe(concat('app.min.js'))

@@ -46,6 +46,7 @@
                                     <li><a class="desactivate-if-not-loaded" href="/rapports/vendre/{{ $GLOBALS['parameters']['general']['username'] }}">Jeux qui pourraient être vendus</a></li>
                                 @endif
                                 <li><a class="desactivate-if-not-loaded" href="/rapports/tobuy/{{ $GLOBALS['parameters']['general']['username'] }}">Jeux qui pourraient être achetés</a></li>
+                                <li><a class="desactivate-if-not-loaded" href="/rapports/home_compare_user/{{ $GLOBALS['parameters']['general']['username'] }}">Comparaison à une autre personne</a></li>
                             </ul>
                         </li>
                     @endif

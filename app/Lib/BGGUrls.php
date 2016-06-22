@@ -9,6 +9,11 @@ class BGGUrls {
         return 'http://www.boardgamegeek.com/xmlapi2/collection?own=1&excludesubtype=boardgameexpansion&stats=1&showprivate=1&username=' . urlencode($GLOBALS['parameters']['general']['username']);
     }
 
+    public static function getGamesOwnedByUserName($username)
+    {
+        return 'http://www.boardgamegeek.com/xmlapi2/collection?own=1&excludesubtype=boardgameexpansion&stats=1&username=' . urlencode($username);
+    }
+
     public static function getGamesAndExpansionsOwned()
     {
         return 'http://www.boardgamegeek.com/xmlapi2/collection?own=1&stats=1&showprivate=1&username=' . urlencode($GLOBALS['parameters']['general']['username']);
