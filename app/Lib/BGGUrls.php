@@ -11,7 +11,7 @@ class BGGUrls {
 
     public static function getGamesOwnedByUserName($username)
     {
-        return 'http://www.boardgamegeek.com/xmlapi2/collection?own=1&excludesubtype=boardgameexpansion&stats=1&username=' . urlencode($username);
+        return 'http://www.boardgamegeek.com/xmlapi2/collection?own=1&excludesubtype=boardgameexpansion&stats=1&showprivate=1&username=' . urlencode($username);
     }
 
     public static function getGamesAndExpansionsOwned()

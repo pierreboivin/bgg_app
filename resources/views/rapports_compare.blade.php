@@ -7,10 +7,12 @@
 
     @include('partials.userInfo')
 
-    <h2>Comparaison à {{ $compareinfo }}</h2>
+    <h2>Comparaison à {{ $compareinfo['username_compared'] }}</h2>
 
     <h3>Jeux en communs</h3>
     <p class="well">
+        Nombre de jeux à {{ $userinfo['username'] }} : {{ $compareinfo['nb_collection'] }} <br>
+        Nombre de jeux à {{ $compareinfo['username_compared'] }} : {{ $compareinfo['nb_collection_compared'] }} <br>
         Nombre de jeux en communs : {{ count($gamesInCommon['games']) }} <br>
         Corrélation : {{ $gamesInCommon['correlation'] }} %
     </p>

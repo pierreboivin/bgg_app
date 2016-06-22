@@ -390,16 +390,25 @@ class RapportsController extends Controller
 
         $gamesInCommon = array_intersect_key($GLOBALS['data']['gamesCompare'], $GLOBALS['data']['gamesCollection']);
 
-        $similarity = round(count($gamesInCommon)/count($GLOBALS['data']['gamesCollection'])*100, 2);
+        if(count($GLOBALS['data']['gamesCollection']) > 0 && count($GLOBALS['data']['gamesCompare']) > 0) {
+            $similarity = round(count($gamesInCommon) / count($GLOBALS['data']['gamesCollection']) * 100, 2);
+        } else {
+            $similarity = 0;
+        }
 
-        $params['compareinfo'] = $compareUsername;
+        $params['compareinfo'] = [
+            'username_compared' => $compareUsername,
+            'nb_collection' => count($GLOBALS['data']['gamesCollection']),
+            'nb_collection_compared' => count($GLOBALS['data']['gamesCompare'])
+        ];
         $params['userinfo'] = $arrayUserInfos;
         $params['gamesInCommon'] = ['correlation' => $similarity, 'games' => $gamesInCommon];
 
         return \View::make('rapports_compare', $params);
     }
 
-    public function check_loading() {
+    public function check_loading()
+    {
         return Response::json(BGGData::getCurrentUserNameCollectionDataInCache($_GET['compare']));
     }
 

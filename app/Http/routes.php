@@ -57,7 +57,7 @@ Route::get('ajaxAcquisitionByMonthGetUrl/{username}/{page}/{label}', ['as' => 'a
 // Gestion d'erreur critique
 Route::get('/error', function()
 {
-    return 'Une erreur s\'est produite. Consultez l\'administrateur du site <a href="mailto:pierreboivin85@gmail.com">ici</a>.';
+    return 'Une erreur s\'est produite. Contactez l\'administrateur du site <a href="mailto:pierreboivin85@gmail.com">ici</a>.';
 });
 
 // Module pour voir les logs
