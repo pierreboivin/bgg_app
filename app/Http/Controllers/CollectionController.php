@@ -6,6 +6,7 @@ use App\Http\Requests;
 use App\Lib\BGGData;
 use App\Lib\Page;
 use App\Lib\Stats;
+use App\Lib\UserInfos;
 use App\Lib\Utility;
 
 class CollectionController extends Controller
@@ -17,7 +18,7 @@ class CollectionController extends Controller
         $arrayRawGamesOwned = BGGData::getGamesOwned();
         $arrayGamesDetails = BGGData::getDetailOwned($arrayRawGamesOwned);
         $arrayRawUserInfos = BGGData::getUserInfos();
-        $arrayUserInfos = \App\Lib\UserInfos::getUserInformations($arrayRawUserInfos);
+        $arrayUserInfos = UserInfos::getUserInformations($arrayRawUserInfos);
         Stats::getCollectionArrays($arrayRawGamesOwned);
         Stats::getOwnedRelatedArrays($arrayGamesDetails);
         $params['userinfo'] = $arrayUserInfos;
@@ -42,6 +43,7 @@ class CollectionController extends Controller
             } else {
                 $arrayGame['acquisitiondate'] = '0000-00-00';
             }
+
 
             if ($arrayGame['playingtime'] >= 60) {
                 $classes[] = 'longgame';

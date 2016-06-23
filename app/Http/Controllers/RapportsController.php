@@ -67,8 +67,7 @@ class RapportsController extends Controller
                     $allPlays += $gameInfo['nbPlayed'];
                 }
 
-                uasort($dtoGames, 'self::compareOrder');
-
+                uasort($dtoGames, 'App\Lib\Utility::compareOrderNbPlayed');
                 $params['playsThisMonth'] = $dtoGames;
             }
 
@@ -86,16 +85,6 @@ class RapportsController extends Controller
         $params = array_merge($paramsMenu, $params);
 
         return \View::make('rapports_mensuel', $params);
-    }
-
-    private static function compareOrder($a, $b)
-    {
-        return $b['nbPlayed'] - $a['nbPlayed'];
-    }
-
-    private static function compareOrderRating($a, $b)
-    {
-        return floatval($b['rating']) > floatval($a['rating']);
     }
 
     public function annuel()
@@ -163,11 +152,11 @@ class RapportsController extends Controller
                 $nbGameCollectionPlayAtLeastOnce = count($GLOBALS['data']['gamesCollection']) - count($gamesCollectionNotPlayed);
 
                 // First try and rated
-                uasort($gamesFirstTryAndRated, 'self::compareOrderRating');
+                uasort($gamesFirstTryAndRated, 'App\Lib\Utility::compareOrderRating');
                 $gamesFirstTryAndRated = array_slice($gamesFirstTryAndRated, 0, 20, true);
 
                 // Most plays this year
-                uasort($dtoGames, 'self::compareOrder');
+                uasort($dtoGames, 'App\Lib\Utility::compareOrderNbPlayed');
                 $dtoGames = array_slice($dtoGames, 0, 30, true);
 
                 $params['table']['firstTryAndGoodRated'] = $gamesFirstTryAndRated;
@@ -229,9 +218,7 @@ class RapportsController extends Controller
 
         // Less played
         $lessPlayed = $GLOBALS['data']['gamesCollection'];
-        usort($lessPlayed, function ($a, $b) {
-            return $a['numplays'] - $b['numplays'];
-        });
+        usort($lessPlayed, 'App\Lib\Utility::compareNumPlays');
         $lessPlayed = array_slice($lessPlayed, 0, $nbToGetInEachCategory);
         foreach ($lessPlayed as &$game) {
             if ($game['numplays'] == 0) {
@@ -250,10 +237,7 @@ class RapportsController extends Controller
         }
         $this->compileGameArray($gamesToSell, $lessRated, 'Moins bien classé', 1, 'rating');
 
-
-        usort($gamesToSell, function ($a, $b) {
-            return $b['weight'] - $a['weight'];
-        });
+        usort($gamesToSell, 'App\Lib\Utility::compareOrderWeight');
 
         $params['games'] = $gamesToSell;
 
@@ -283,9 +267,6 @@ class RapportsController extends Controller
         }
     }
 
-    /**
-     * @return mixed
-     */
     public function tobuy()
     {
         $arrayRawUserInfos = BGGData::getUserInfos();
@@ -312,7 +293,7 @@ class RapportsController extends Controller
                 $highRating[$idGame] = $ratedGame;
             }
         }
-        uasort($highRating, 'self::compareOrderRating');
+        uasort($highRating, 'App\Lib\Utility::compareOrderRating');
         $highRating = array_slice($highRating, 0, 50, true);
         foreach ($highRating as &$game) {
             $game['weight'] = $game['rating'];
@@ -328,10 +309,8 @@ class RapportsController extends Controller
                 $playsFrequently[$idGame] = $game;
             }
         }
-        usort($playsFrequently, function ($a, $b) {
-            return $a['nbPlayed'] - $b['nbPlayed'];
-        });
-        $playsFrequently = array_slice(array_reverse($playsFrequently), 0, 50, true);
+        usort($playsFrequently, 'App\Lib\Utility::compareOrderNbPlayed');
+        $playsFrequently = array_slice($playsFrequently, 0, 50, true);
         foreach ($playsFrequently as &$game) {
             $game['weight'] = $game['nbPlayed'];
             $game['nbPlayed'] .= ' parties';
@@ -358,9 +337,7 @@ class RapportsController extends Controller
         Utility::normalizeArray($gameWithDesignerHot, 'weight');
         $this->compileGameArray($gamesToBuy, $gameWithDesignerHot, 'Jeu d\'un auteur apprécié', 1, 'designer');
 
-        usort($gamesToBuy, function ($a, $b) {
-            return $b['weight'] - $a['weight'];
-        });
+        usort($gamesToBuy, 'App\Lib\Utility::compareOrderWeight');
 
         $params['games'] = $gamesToBuy;
 

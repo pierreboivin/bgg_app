@@ -1,5 +1,12 @@
 $( function() {
     if(is_page('home')) {
+        $('#btnUserLogin').click(function () {
+            $('#btnUserLogin').button('loading');
+        });
+        $('#btnGuestLogin').click(function () {
+            $('#btnGuestLogin').button('loading');
+        });
+
         var loadData = function() {
             $.getJSON("/load/" + $("#username").val(), function(data) {});
         };

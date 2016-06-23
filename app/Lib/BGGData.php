@@ -14,23 +14,23 @@ class BGGData
     {
         $urlBGG = BGGUrls::getGamesOwned();
 
-        return self::getBGGUrl($urlBGG, 'curl',
-            ['cookie' => 'bggusername=' . $GLOBALS['parameters']['general']['username'] . '; bggpassword=' . $GLOBALS['parameters']['login']['password']]);
+        return BGGData::manageSingleMultiple(self::getBGGUrl($urlBGG, 'curl',
+            ['cookie' => 'bggusername=' . $GLOBALS['parameters']['general']['username'] . '; bggpassword=' . $GLOBALS['parameters']['login']['password']]));
     }
 
     public static function getGamesOwnedByUserName($username)
     {
         $urlBGG = BGGUrls::getGamesOwnedByUserName($username);
 
-        return self::getBGGUrl($urlBGG);
+        return BGGData::manageSingleMultiple(self::getBGGUrl($urlBGG));
     }
 
     public static function getGamesAndExpansionsOwned()
     {
         $urlBGG = BGGUrls::getGamesAndExpansionsOwned();
 
-        return self::getBGGUrl($urlBGG, 'curl',
-            ['cookie' => 'bggusername=' . $GLOBALS['parameters']['general']['username'] . '; bggpassword=' . $GLOBALS['parameters']['login']['password']]);
+        return BGGData::manageSingleMultiple(self::getBGGUrl($urlBGG, 'curl',
+            ['cookie' => 'bggusername=' . $GLOBALS['parameters']['general']['username'] . '; bggpassword=' . $GLOBALS['parameters']['login']['password']]));
     }
 
     public static function getUserInfos()
@@ -186,7 +186,6 @@ class BGGData
 
     private static function getBGGUrl($url, $mode = 'url', $parameter = [], $numTry = 0)
     {
-        $pathFileDebug = app_path() . '/Debug/' . md5($url) . '.txt';
         $keyCache = 'url_' . md5($url) . '_' . $GLOBALS['parameters']['typeLogin'];
 
         // Si on est pas connecté, mais qu'il existe une cache pour l'utilisateur connecté, on obtient cette dernière
@@ -197,38 +196,26 @@ class BGGData
             }
         }
 
-        if ($GLOBALS['debugMode'] == 'getDebug') {
-            if (file_exists($pathFileDebug)) {
-                $contentUrl = file_get_contents($pathFileDebug);
-            } else {
-                throw new \Exception('You have to write debug file before obtaining it.');
-            }
+        if (Cache::has($keyCache)) {
+            $contentUrl = Cache::get($keyCache);
         } else {
-            if (Cache::has($keyCache)) {
-                $contentUrl = Cache::get($keyCache);
-            } else {
-                try {
-                    Log::info('Get info from bgg : ' . $url);
-                    if ($mode == 'curl') {
-                        $ch = curl_init();
-                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                        curl_setopt($ch, CURLOPT_COOKIE, $parameter['cookie']);
-                        curl_setopt($ch, CURLOPT_URL, $url);
-                        $contentUrl = curl_exec($ch);
-                    } else {
-                        $contentUrl = file_get_contents($url);
-                    }
-                } catch (\Exception $e) {
-                    Log::error($e);
-                    Session::flash('error', 'Réessayez un peu plus tard.');
-                    return redirect('home');
+            try {
+                Log::info('Get info from bgg : ' . $url);
+                if ($mode == 'curl') {
+                    $ch = curl_init();
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    curl_setopt($ch, CURLOPT_COOKIE, $parameter['cookie']);
+                    curl_setopt($ch, CURLOPT_URL, $url);
+                    $contentUrl = curl_exec($ch);
+                } else {
+                    $contentUrl = file_get_contents($url);
                 }
-                Cache::put($keyCache, $contentUrl, self::CACHE_TIME_IN_MINUTES);
+            } catch (\Exception $e) {
+                Log::error($e);
+                Session::flash('error', 'Réessayez un peu plus tard.');
+                return redirect('home');
             }
-
-            if ($GLOBALS['debugMode'] == 'writeDebug') {
-                file_put_contents($pathFileDebug, $contentUrl);
-            }
+            Cache::put($keyCache, $contentUrl, self::CACHE_TIME_IN_MINUTES);
         }
 
         @$simpleXmlObject = simplexml_load_string($contentUrl);
@@ -256,6 +243,18 @@ class BGGData
             return true;
         }
         return false;
+    }
+
+    private static function manageSingleMultiple($getBGGUrl)
+    {
+        if(isset($getBGGUrl['item'][0])) {
+            return $getBGGUrl;
+        } else {
+            $temp = $getBGGUrl['item'];
+            unset($getBGGUrl['item']);
+            $getBGGUrl['item'][0] = $temp;
+            return $getBGGUrl;
+        }
     }
 
 

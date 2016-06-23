@@ -308,11 +308,6 @@ class Graphs
         ];
     }
 
-    private static function compareOwned($a, $b)
-    {
-        return $b['nbOwned'] - $a['nbOwned'];
-    }
-
     public static function getMostDesignerOwned()
     {
         $arrayDesignerFrequency = [];
@@ -331,7 +326,7 @@ class Graphs
             }
         }
 
-        uasort($arrayDesignerFrequency, 'self::compareOwned');
+        uasort($arrayDesignerFrequency, 'App\Lib\Utility::compareOwned');
         return array_slice($arrayDesignerFrequency, 0, 20, true);
     }
 

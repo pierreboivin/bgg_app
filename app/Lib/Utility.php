@@ -6,6 +6,41 @@ use Carbon\Carbon;
 
 class Utility
 {
+    public static function compareOrderNbPlayed($a, $b)
+    {
+        return $b['nbPlayed'] - $a['nbPlayed'];
+    }
+
+    public static function compareOrderRating($a, $b)
+    {
+        return floatval($b['rating']) > floatval($a['rating']);
+    }
+
+    public static function compareOrderWeight($a, $b)
+    {
+        return $b['weight'] - $a['weight'];
+    }
+
+    public static function compareNumPlays($a, $b)
+    {
+        return $a['numplays'] - $b['numplays'];
+    }
+
+    public static function compareDate($a, $b)
+    {
+        return $a['date'] - $b['date'];
+    }
+
+    public static function compareRentabilite($a, $b)
+    {
+        return $b['rentabilite'] < $a['rentabilite'];
+    }
+
+    public static function compareOwned($a, $b)
+    {
+        return $b['nbOwned'] - $a['nbOwned'];
+    }
+
     /**
      * @param $gameId
      * @return string
@@ -131,6 +166,7 @@ class Utility
     }
 
     /**
+     * Convert any float collection from 0 to 1 range
      * @param $array
      * @param $key
      * @return mixed

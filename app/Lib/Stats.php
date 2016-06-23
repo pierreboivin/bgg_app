@@ -48,9 +48,9 @@ class Stats
         }
 
         // Get first play of each game
-        foreach($arrayTotalPlays as $idGame => $game) {
-            uasort($game['plays'], 'self::compareDate');
-            $firstPlay = last($game['plays']);
+        foreach ($arrayTotalPlays as $idGame => $game) {
+            uasort($game['plays'], 'App\Lib\Utility::compareDate');
+            $firstPlay = last(array_reverse($game['plays']));
             $arrayTotalPlays[$idGame]['firstPlay'] = $firstPlay['date'];
         }
 
@@ -69,7 +69,7 @@ class Stats
         $GLOBALS['data']['countAllPlays'] = $countAllPlays;
         $GLOBALS['data']['hindex'] = $hindex;
 
-        if(count($allDatesPlayed) > 0) {
+        if (count($allDatesPlayed) > 0) {
             $GLOBALS['data']['firstDatePlayRecorded'] = Utility::dateStrToCarbon(last($allDatesPlayed));
             $GLOBALS['data']['nbDaysSinceFirstPlay'] = $GLOBALS['data']['firstDatePlayRecorded']->diffInDays();
         }
@@ -80,24 +80,22 @@ class Stats
      */
     public static function getOwnedRelatedArrays($arrayGamesDetails)
     {
-        foreach($GLOBALS['data']['gamesCollection'] as $gameId => $game) {
+        foreach ($GLOBALS['data']['gamesCollection'] as $gameId => $game) {
             $gameDetail = $arrayGamesDetails[$gameId];
-            foreach($gameDetail['link'] as $link) {
+            foreach ($gameDetail['link'] as $link) {
                 $attributes = $link['@attributes'];
                 $label = $attributes['value'];
                 if (Lang::has('mechanics.' . $attributes['value'])) {
                     $label = trans('mechanics.' . $attributes['value']);
                 }
-                $GLOBALS['data']['gamesCollection'][$gameId]['detail'][$attributes['type']][] = ['value' => $label, 'id' => $attributes['id']];
+                $GLOBALS['data']['gamesCollection'][$gameId]['detail'][$attributes['type']][] = [
+                    'value' => $label,
+                    'id' => $attributes['id']
+                ];
             }
         }
     }
 
-
-    private static function compareDate($a, $b)
-    {
-        return $b['date'] - $a['date'];
-    }
 
     /**
      * @param $arrayGamesAndExpansionsOwned
@@ -175,8 +173,8 @@ class Stats
                 $rating = 0;
             }
             $arrayGameCollection[$game['@attributes']['objectid']]['rating'] = $rating;
-            if(isset($game['privateinfo'])) {
-                $arrayGameCollection[$game['@attributes']['objectid']]['private'] = $game['privateinfo'];
+            if (isset($game['privateinfo'])) {
+                $arrayGameCollection[$game['@attributes']['objectid']]['privateinfo'] = $game['privateinfo'];
             }
         }
 
@@ -213,11 +211,6 @@ class Stats
         $GLOBALS['data']['gamesRated'] = $arrayGameRated;
     }
 
-    private static function compareRentabilite($a, $b)
-    {
-        return $b['rentabilite'] < $a['rentabilite'];
-    }
-
     public static function getRentabiliteCollection()
     {
         $arrayRentable = [];
@@ -244,8 +237,8 @@ class Stats
             }
         }
 
-        if($arrayRentable) {
-            uasort($arrayRentable, 'self::compareRentabilite');
+        if ($arrayRentable) {
+            uasort($arrayRentable, 'App\Lib\Utility::compareRentabilite');
         }
 
         return $arrayRentable;
@@ -266,9 +259,7 @@ class Stats
             }
         }
 
-        usort($arrayRated, function ($a, $b) {
-            return $b['rating'] - $a['rating'];
-        });
+        usort($arrayRated, 'App\Lib\Utility::compareOrderRating');
 
         return $arrayRated;
     }
@@ -279,14 +270,12 @@ class Stats
             if (isset($GLOBALS['data']['arrayTotalPlays'][$gameId])) {
                 $gamePlayed = $GLOBALS['data']['arrayTotalPlays'][$gameId]['plays'];
 
-                usort($gamePlayed, function ($a, $b) {
-                    return $a['date'] - $b['date'];
-                });
+                usort($gamePlayed, 'App\Lib\Utility::compareDate');
 
                 $dateTimestamp = end($gamePlayed)['date'];
 
                 $totalPlay = 0;
-                foreach($gamePlayed as $playDetail) {
+                foreach ($gamePlayed as $playDetail) {
                     $totalPlay += $playDetail['quantity'];
                 }
                 $gameLessTimePlayed[] = [
@@ -313,9 +302,8 @@ class Stats
             }
         }
 
-        usort($gameLessTimePlayed, function ($a, $b) {
-            return $a['date'] - $b['date'];
-        });
+        usort($gameLessTimePlayed, 'App\Lib\Utility::compareDate');
+
         return $gameLessTimePlayed;
     }
 

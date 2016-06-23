@@ -4,7 +4,6 @@ window.chartInstance = {};
 window.fillGraph = {};
 
 $(function() {
-
     if(is_page('stats')) {
 
         // Buttons table more
