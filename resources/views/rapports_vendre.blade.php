@@ -9,6 +9,10 @@
 
     <h2>Jeux qui pourraient être vendus</h2>
 
+    @if(!Auth::check())
+        <p class="well">Notez que ce rapport serait plus précis si vous étiez connecté.</p>
+    @endif
+
     <table class="table table-hover table-condensed">
         <thead>
         <tr>

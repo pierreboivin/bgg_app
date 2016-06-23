@@ -6,6 +6,7 @@ use App\Http\Requests;
 use App\Lib\BGGData;
 use App\Lib\Graphs;
 use App\Lib\Page;
+use App\Lib\SessionManager;
 use App\Lib\Stats;
 use App\Lib\UserInfos;
 use App\Lib\Utility;
@@ -207,12 +208,14 @@ class RapportsController extends Controller
         $nbToGetInEachCategory = floor(count($GLOBALS['data']['gamesCollection']) / 5);
 
         // Less rentable
-        $arrayRentable = Stats::getRentabiliteCollection();
-        $lessRentable = array_reverse(array_slice($arrayRentable, count($arrayRentable) - $nbToGetInEachCategory));
-        foreach ($lessRentable as &$game) {
-            $game['rentabilite'] = round($game['rentabilite'], 2) . ' $ par partie';
+        if (SessionManager::ifLogin()) {
+            $arrayRentable = Stats::getRentabiliteCollection();
+            $lessRentable = array_reverse(array_slice($arrayRentable, count($arrayRentable) - $nbToGetInEachCategory));
+            foreach ($lessRentable as &$game) {
+                $game['rentabilite'] = round($game['rentabilite'], 2) . ' $ par partie';
+            }
+            $this->compileGameArray($gamesToSell, $lessRentable, 'Moins rentable', 1, 'rentabilite');
         }
-        $this->compileGameArray($gamesToSell, $lessRentable, 'Moins rentable', 1, 'rentabilite');
 
         // Played since
         $gameLessTimePlayed = Stats::getCollectionTimePlayed();
@@ -370,7 +373,10 @@ class RapportsController extends Controller
 
         $arrayUserInfos = UserInfos::getUserInformations($arrayRawUserInfos);
 
+        $arrayBuddies = UserInfos::formatArrayUserInfo($arrayRawUserInfos, 'buddies', 'buddy');
+
         $params['userinfo'] = $arrayUserInfos;
+        $params['userinfo']['lists']['buddies'] = array_combine($arrayBuddies, $arrayBuddies);
 
         return \View::make('rapports_home_compare_user', $params);
     }

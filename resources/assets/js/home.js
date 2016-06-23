@@ -8,7 +8,11 @@ $( function() {
                 $('#progression .progress-bar').html(data.message);
                 $('#progression .progress-bar').width(data.progress + '%');
                 if (data.progress < 100) {
-                    checkIfDataLoaded();
+                    setTimeout(
+                        function()
+                        {
+                            checkIfDataLoaded();
+                        }, 1000);
                 } else {
                     dataCompleted();
                 }
