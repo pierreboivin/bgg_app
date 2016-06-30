@@ -32,4 +32,28 @@
 
     </table>
 
+    <h3>Jeux non joués</h3>
+    <p class="well">
+        Nombre de jeux non joués : {{ $gamesNotPlayed['nbGames'] }} <br>
+        Pourcentage de la collection : {{ $gamesNotPlayed['percentCollection'] }} %
+    </p>
+    <table class="table table-hover table-condensed">
+        <thead>
+        <tr>
+            <th>Jeu</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach($gamesNotPlayed['games'] as $game)
+            <tr>
+                <td><a href="http://boardgamegeek.com/boardgame/{{ $game['id'] }}" target="_blank">{{ $game['name'] }}</a></td>
+            </tr>
+        @endforeach
+        </tbody>
+
+    </table>
+
+
+
+
 @endsection

@@ -79,7 +79,7 @@ class StatsController extends Controller
         }
         $params['stats']['nbGameOwnedNotPlayed'] = $totalGameOwnedNotPlayed;
         if(count($GLOBALS['data']['gamesCollection']) > 0) {
-            $params['stats']['percentGameOwnedNotPlayed'] = Utility::displayPercent(round($totalGameOwnedNotPlayed / count($GLOBALS['data']['gamesCollection']),
+            $params['stats']['percentGameOwnedNotPlayed'] = Utility::displayPercent(round($totalGameOwnedNotPlayed / count($GLOBALS['data']['gamesCollection']) * 100,
                 2));
         }
 

@@ -364,12 +364,15 @@ class RapportsController extends Controller
 
         $arrayRawUserInfos = BGGData::getUserInfos();
         $arrayRawGamesOwned = BGGData::getGamesOwned();
+        $arrayRawGamesPlays = BGGData::getPlays();
 
         $arrayUserInfos = UserInfos::getUserInformations($arrayRawUserInfos);
         Stats::getCollectionArrays($arrayRawGamesOwned);
 
         $gamesOwnedOtherUser = BGGData::getGamesOwnedByUsername($compareUsername);
         Stats::getCollectionArrays($gamesOwnedOtherUser, 'gamesCompare');
+
+        Stats::getPlaysRelatedArrays($arrayRawGamesPlays);
 
         $gamesInCommon = array_intersect_key($GLOBALS['data']['gamesCompare'], $GLOBALS['data']['gamesCollection']);
 
@@ -379,6 +382,16 @@ class RapportsController extends Controller
             $similarity = 0;
         }
 
+        $gamesNotPlayed = [];
+        foreach($GLOBALS['data']['gamesCompare'] as $idGame => $game) {
+            if(!isset($GLOBALS['data']['arrayTotalPlays'][$idGame])) {
+                $gamesNotPlayed[$idGame] = $game;
+            }
+        }
+        if(count($GLOBALS['data']['gamesCompare']) > 0) {
+            $percentCollection = round(count($gamesNotPlayed) / count($GLOBALS['data']['gamesCompare']) * 100, 2);
+        }
+
         $params['compareinfo'] = [
             'username_compared' => $compareUsername,
             'nb_collection' => count($GLOBALS['data']['gamesCollection']),
@@ -386,6 +399,7 @@ class RapportsController extends Controller
         ];
         $params['userinfo'] = $arrayUserInfos;
         $params['gamesInCommon'] = ['correlation' => $similarity, 'games' => $gamesInCommon];
+        $params['gamesNotPlayed'] = ['nbGames' => count($gamesNotPlayed), 'percentCollection' => $percentCollection, 'games' => $gamesNotPlayed];
 
         return \View::make('rapports_compare', $params);
     }
