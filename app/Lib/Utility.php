@@ -146,6 +146,15 @@ class Utility
     }
 
     /**
+     * @param $value
+     * @return string
+     */
+    public static function displayPercent($value)
+    {
+        return $value . ' %';
+    }
+
+    /**
      * @param $string
      * @return string
      */

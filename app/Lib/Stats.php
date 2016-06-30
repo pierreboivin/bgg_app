@@ -107,24 +107,26 @@ class Stats
         $totalWithAcquisitionDate = 0;
         $arrayValuesGames = [];
         $totalGamesValue = 0;
-        foreach ($arrayGamesAndExpansionsOwned['item'] as $game) {
-            if (isset($game['privateinfo'])) {
-                $privateProperties = $game['privateinfo']['@attributes'];
-                $idGame = $game['@attributes']['objectid'];
-                if ($privateProperties['acquisitiondate']) {
-                    $timestampDate = Utility::dateToYearMonthTimestamp($privateProperties['acquisitiondate']);
-                    Utility::arrayIncrementValue($acquisitionsByMonth[$timestampDate], $idGame, $game['name']);
-                    $totalWithAcquisitionDate++;
+        if(isset($arrayGamesAndExpansionsOwned['item'])) {
+            foreach ($arrayGamesAndExpansionsOwned['item'] as $game) {
+                if (isset($game['privateinfo'])) {
+                    $privateProperties = $game['privateinfo']['@attributes'];
+                    $idGame = $game['@attributes']['objectid'];
+                    if ($privateProperties['acquisitiondate']) {
+                        $timestampDate = Utility::dateToYearMonthTimestamp($privateProperties['acquisitiondate']);
+                        Utility::arrayIncrementValue($acquisitionsByMonth[$timestampDate], $idGame, $game['name']);
+                        $totalWithAcquisitionDate++;
+                    }
+                    if ($privateProperties['currvalue']) {
+                        $gameValue = $privateProperties['currvalue'];
+                    } elseif ($privateProperties['pricepaid']) {
+                        $gameValue = $privateProperties['pricepaid'];
+                    } else {
+                        $gameValue = 0;
+                    }
+                    $totalGamesValue += $gameValue;
+                    Utility::arrayIncrementValue($arrayValuesGames, $idGame, $gameValue);
                 }
-                if ($privateProperties['currvalue']) {
-                    $gameValue = $privateProperties['currvalue'];
-                } elseif ($privateProperties['pricepaid']) {
-                    $gameValue = $privateProperties['pricepaid'];
-                } else {
-                    $gameValue = 0;
-                }
-                $totalGamesValue += $gameValue;
-                Utility::arrayIncrementValue($arrayValuesGames, $idGame, $gameValue);
             }
         }
         ksort($acquisitionsByMonth);
@@ -157,24 +159,26 @@ class Stats
     public static function getCollectionArrays($arrayRawGamesOwned, $keyGlobal = 'gamesCollection')
     {
         $arrayGameCollection = [];
-        foreach ($arrayRawGamesOwned['item'] as $game) {
-            $arrayGameCollection[$game['@attributes']['objectid']] = [
-                'id' => $game['@attributes']['objectid'],
-                'name' => $game['name'],
-                'thumbnail' => isset($game['thumbnail']) ? $game['thumbnail'] : '',
-                'minplayer' => isset($game['stats']['@attributes']['minplayers']) ? $game['stats']['@attributes']['minplayers'] : 0,
-                'maxplayer' => isset($game['stats']['@attributes']['maxplayers']) ? $game['stats']['@attributes']['maxplayers'] : 0,
-                'playingtime' => isset($game['stats']['@attributes']['playingtime']) ? $game['stats']['@attributes']['playingtime'] : 0,
-                'numplays' => isset($game['numplays']) ? $game['numplays'] : 0
-            ];
-            if (isset($game['stats']['rating']['@attributes']['value']) && $game['stats']['rating']['@attributes']['value'] != 'N/A') {
-                $rating = $game['stats']['rating']['@attributes']['value'];
-            } else {
-                $rating = 0;
-            }
-            $arrayGameCollection[$game['@attributes']['objectid']]['rating'] = $rating;
-            if (isset($game['privateinfo'])) {
-                $arrayGameCollection[$game['@attributes']['objectid']]['privateinfo'] = $game['privateinfo'];
+        if(isset($arrayRawGamesOwned['item'])) {
+            foreach ($arrayRawGamesOwned['item'] as $game) {
+                $arrayGameCollection[$game['@attributes']['objectid']] = [
+                    'id' => $game['@attributes']['objectid'],
+                    'name' => $game['name'],
+                    'thumbnail' => isset($game['thumbnail']) ? $game['thumbnail'] : '',
+                    'minplayer' => isset($game['stats']['@attributes']['minplayers']) ? $game['stats']['@attributes']['minplayers'] : 0,
+                    'maxplayer' => isset($game['stats']['@attributes']['maxplayers']) ? $game['stats']['@attributes']['maxplayers'] : 0,
+                    'playingtime' => isset($game['stats']['@attributes']['playingtime']) ? $game['stats']['@attributes']['playingtime'] : 0,
+                    'numplays' => isset($game['numplays']) ? $game['numplays'] : 0
+                ];
+                if (isset($game['stats']['rating']['@attributes']['value']) && $game['stats']['rating']['@attributes']['value'] != 'N/A') {
+                    $rating = $game['stats']['rating']['@attributes']['value'];
+                } else {
+                    $rating = 0;
+                }
+                $arrayGameCollection[$game['@attributes']['objectid']]['rating'] = $rating;
+                if (isset($game['privateinfo'])) {
+                    $arrayGameCollection[$game['@attributes']['objectid']]['privateinfo'] = $game['privateinfo'];
+                }
             }
         }
 
@@ -187,25 +191,27 @@ class Stats
     public static function getRatedRelatedArrays($arrayRawGamesRated)
     {
         $arrayGameRated = [];
-        foreach ($arrayRawGamesRated['item'] as $game) {
-            if (isset($game['stats']['rating']['@attributes']['value']) && $game['stats']['rating']['@attributes']['value'] != 'N/A') {
-                $rating = $game['stats']['rating']['@attributes']['value'];
-            } else {
-                $rating = 0;
-            }
-            $thumbnail = isset($game['thumbnail']) ? $game['thumbnail'] : '';
-            $minplayers = isset($game['minplayers']) ? $game['minplayers'] : '';
-            $maxplayers = isset($game['maxplayers']) ? $game['maxplayers'] : '';
+        if(isset($arrayRawGamesRated['item'])) {
+            foreach ($arrayRawGamesRated['item'] as $game) {
+                if (isset($game['stats']['rating']['@attributes']['value']) && $game['stats']['rating']['@attributes']['value'] != 'N/A') {
+                    $rating = $game['stats']['rating']['@attributes']['value'];
+                } else {
+                    $rating = 0;
+                }
+                $thumbnail = isset($game['thumbnail']) ? $game['thumbnail'] : '';
+                $minplayers = isset($game['minplayers']) ? $game['minplayers'] : '';
+                $maxplayers = isset($game['maxplayers']) ? $game['maxplayers'] : '';
 
-            $arrayGameRated[$game['@attributes']['objectid']] = [
-                'id' => $game['@attributes']['objectid'],
-                'name' => $game['name'],
-                'thumbnail' => $thumbnail,
-                'minplayer' => $minplayers,
-                'maxplayer' => $maxplayers,
-                'playingtime' => isset($game['stats']['@attributes']['playingtime']) ? $game['stats']['@attributes']['playingtime'] : 0,
-                'rating' => $rating
-            ];
+                $arrayGameRated[$game['@attributes']['objectid']] = [
+                    'id' => $game['@attributes']['objectid'],
+                    'name' => $game['name'],
+                    'thumbnail' => $thumbnail,
+                    'minplayer' => $minplayers,
+                    'maxplayer' => $maxplayers,
+                    'playingtime' => isset($game['stats']['@attributes']['playingtime']) ? $game['stats']['@attributes']['playingtime'] : 0,
+                    'rating' => $rating
+                ];
+            }
         }
 
         $GLOBALS['data']['gamesRated'] = $arrayGameRated;

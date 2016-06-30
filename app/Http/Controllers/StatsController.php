@@ -32,9 +32,12 @@ class StatsController extends Controller
         $arrayUserInfos = UserInfos::getUserInformations($arrayRawUserInfos);
 
         $totalPlayGameCollection = 0;
+        $totalGameOwnedNotPlayed = 0;
         foreach($GLOBALS['data']['gamesCollection'] as $idGame => $game) {
             if(isset($GLOBALS['data']['arrayTotalPlays'][$idGame])) {
                 $totalPlayGameCollection += $GLOBALS['data']['arrayTotalPlays'][$idGame]['nbPlayed'];
+            } else {
+                $totalGameOwnedNotPlayed++;
             }
         }
 
@@ -73,6 +76,11 @@ class StatsController extends Controller
             $params['stats']['nbPlayAverageByDay'] = round($GLOBALS['data']['countAllPlays'] / $GLOBALS['data']['nbDaysSinceFirstPlay'],
                 2);
             $params['stats']['nbPlayDifferentAverageByDay'] = round(count($GLOBALS['data']['arrayTotalPlays']) / $GLOBALS['data']['nbDaysSinceFirstPlay'], 2);
+        }
+        $params['stats']['nbGameOwnedNotPlayed'] = $totalGameOwnedNotPlayed;
+        if(count($GLOBALS['data']['gamesCollection']) > 0) {
+            $params['stats']['percentGameOwnedNotPlayed'] = Utility::displayPercent(round($totalGameOwnedNotPlayed / count($GLOBALS['data']['gamesCollection']),
+                2));
         }
 
         $params['graphs']['byMonth'] = Graphs::getPlayByMonth();

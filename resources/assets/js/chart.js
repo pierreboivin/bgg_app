@@ -3,6 +3,14 @@ window.chartOptions = {};
 window.chartInstance = {};
 window.fillGraph = {};
 
+Chart.defaults.global.responsive = true;
+Chart.defaults.global.animationEasing = 'easeOutBack';
+Chart.defaults.global.tooltipFillColor = '#2C4870';
+Chart.defaults.global.tooltipFontColor = '#fff';
+Chart.defaults.global.tooltipFontSize = 16;
+Chart.defaults.global.scaleFontSize = 14;
+Chart.defaults.global.tooltipTemplate = "<%if (label){%><%=label%> : <%}%><%= value %>";
+
 $(function() {
     if(is_page('stats')) {
 

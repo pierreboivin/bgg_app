@@ -224,6 +224,7 @@ class BGGData
         }
         $arrayData = json_decode(json_encode($simpleXmlObject), true);
 
+        // Retry if data is not valid
         if (self::dataInvalid($arrayData)) {
             if ($numTry < 3) {
                 Cache::forget($keyCache);

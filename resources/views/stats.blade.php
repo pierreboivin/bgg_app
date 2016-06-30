@@ -5,16 +5,6 @@
 
 @section('content')
 
-    <script>
-        Chart.defaults.global.responsive = true;
-        Chart.defaults.global.animationEasing = 'easeOutBack';
-        Chart.defaults.global.tooltipFillColor = '#2C4870';
-        Chart.defaults.global.tooltipFontColor = '#fff';
-        Chart.defaults.global.tooltipFontSize = 16;
-        Chart.defaults.global.scaleFontSize = 14;
-        Chart.defaults.global.tooltipTemplate = "<%if (label){%><%=label%> : <%}%><%= value %>";
-    </script>
-
     @include('partials.userInfo')
 
     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
@@ -45,6 +35,7 @@
                             <p>Nombre de jeux possédés (avec extension) : {{ $stats['nbGamesAndExpansionsOwned'] }}</p>
                             <p>Moyenne de parties jouées sur l'ensemble des jeux possédés : {!! $stats['nbPlayAveragePlayCollectionGame'] !!}</p>
                             <p>Nombre d'acquisitions moyennes par mois : {!! \App\Helpers\Helper::ifEmptyToolTip($stats['averageAcquisitionByMonth']) !!}</p>
+                            <p>Nombre de jeux possédés non joués : {{ $stats['nbGameOwnedNotPlayed'] }} ({{$stats['percentGameOwnedNotPlayed']}})</p>
                         </div>
                         <div class="col-md-4">
                             <h3>Valeur collection</h3>
