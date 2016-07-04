@@ -10,7 +10,7 @@
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-8">
                     <div class="navbar-header">
                         <span class="navbar-brand">Types de jeux</span>
                         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#nav-filtrer">
@@ -22,30 +22,10 @@
                     <div class="collapse navbar-collapse" id="nav-filtrer">
                         <div class="btn-group option-set filter-playingtime" role="group" data-filter-group="type-game">
                             <button type="button" class="navbar-btn btn btn-default active" data-filter-value="">Tous</button>
-                            <button type="button" class="navbar-btn btn btn-default" data-filter-value=".shortgame">Jeux courts (30 min. et -)</button>
-                            <button type="button" class="navbar-btn btn btn-default" data-filter-value=".longgame">Jeux longs (60 min. et +)</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="navbar-header">
-                        <span class="navbar-brand">Nombre de joueurs</span>
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#nav-joueurs">
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                    </div>
-                    <div class="collapse navbar-collapse" id="nav-joueurs">
-                        <div class="btn-group option-set filter-players" role="group" data-filter-group="players">
-                            <button type="button" class="navbar-btn btn btn-default active" data-filter-value="">Tous</button>
-                            <button type="button" class="navbar-btn btn btn-default" data-filter-value=".players_solo">Solo</button>
-                            <button type="button" class="navbar-btn btn btn-default" data-filter-value=".players_2">2</button>
-                            <button type="button" class="navbar-btn btn btn-default" data-filter-value=".players_3">3</button>
-                            <button type="button" class="navbar-btn btn btn-default" data-filter-value=".players_4">4</button>
-                            <button type="button" class="navbar-btn btn btn-default" data-filter-value=".players_5">5</button>
-                            <button type="button" class="navbar-btn btn btn-default" data-filter-value=".players_6">6</button>
-                            <button type="button" class="navbar-btn btn btn-default" data-filter-value=".players_plus">7 et plus</button>
+                            <button type="button" class="navbar-btn btn btn-default" data-filter-value=".30minus">30 minutes et moins</button>
+                            <button type="button" class="navbar-btn btn btn-default" data-filter-value=".31to60">Entre 31 et 60 minutes</button>
+                            <button type="button" class="navbar-btn btn btn-default" data-filter-value=".61to120">Entre 61 et 120 minutes</button>
+                            <button type="button" class="navbar-btn btn btn-default" data-filter-value=".121plus">121 minutes et plus</button>
                         </div>
                     </div>
                 </div>
@@ -65,6 +45,40 @@
                                 @foreach($mechanics as $slugMechanics => $mechanic)
                                     <option value="{{ $slugMechanics }}">{{ $mechanic }}</option>
                                 @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="navbar-header">
+                        <span class="navbar-brand">Nombre de joueurs</span>
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#nav-joueurs">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
+                    <div class="collapse navbar-collapse" id="nav-joueurs">
+                        <div class="pull-left">
+                            <div class="btn-group option-set filter-players" role="group" data-filter-group="players">
+                                <button type="button" class="navbar-btn btn btn-default active" data-filter-value="">Tous</button>
+                                <button type="button" class="navbar-btn btn btn-default" data-filter-value=".players_solo">Solo</button>
+                                <button type="button" class="navbar-btn btn btn-default" data-filter-value=".players_2">2</button>
+                                <button type="button" class="navbar-btn btn btn-default" data-filter-value=".players_3">3</button>
+                                <button type="button" class="navbar-btn btn btn-default" data-filter-value=".players_4">4</button>
+                                <button type="button" class="navbar-btn btn btn-default" data-filter-value=".players_5">5</button>
+                                <button type="button" class="navbar-btn btn btn-default" data-filter-value=".players_6">6</button>
+                                <button type="button" class="navbar-btn btn btn-default" data-filter-value=".players_plus">7 et plus</button>
+                                <input type="hidden" class="selector-players" value="">
+                            </div>
+                        </div>
+                        <div class="pull-left">
+                            <select class="form-control option-set" id="players-type-filter" name="players-type-filter">
+                                <option value="">Tous</option>
+                                <option value="best">Meilleurs selon les votes</option>
+                                <option value="recommended">Recommandés selon les votes</option>
                             </select>
                         </div>
                     </div>
@@ -93,7 +107,7 @@
                 </div>
                 <div class="col-md-2">
                     <div class="navbar-header">
-                        <span class="navbar-brand">Nombre de jeux : {{ count($games) }}</span>
+                        <span class="navbar-brand">Nombre de jeux : <span class="nb-games">{{ count($games) }}</span></span>
                     </div>
                 </div>
             </div>

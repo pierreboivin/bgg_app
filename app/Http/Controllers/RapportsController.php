@@ -335,6 +335,7 @@ class RapportsController extends Controller
             }
         }
         Utility::normalizeArray($gameWithDesignerHot, 'weight');
+
         $this->compileGameArray($gamesToBuy, $gameWithDesignerHot, 'Jeu d\'un auteur apprécié', 1, 'designer');
 
         usort($gamesToBuy, 'App\Lib\Utility::compareOrderWeight');

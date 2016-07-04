@@ -44,11 +44,14 @@ class CollectionController extends Controller
                 $arrayGame['acquisitiondate'] = '0000-00-00';
             }
 
-
-            if ($arrayGame['playingtime'] >= 60) {
-                $classes[] = 'longgame';
-            } elseif ($arrayGame['playingtime'] <= 30) {
-                $classes[] = 'shortgame';
+            if ($arrayGame['playingtime'] <= 30) {
+                $classes[] = '30minus';
+            } elseif ($arrayGame['playingtime'] > 30 && $arrayGame['playingtime'] <= 60) {
+                $classes[] = '31to60';
+            } elseif ($arrayGame['playingtime'] > 61 && $arrayGame['playingtime'] <= 120) {
+                $classes[] = '61to120';
+            } elseif($arrayGame['playingtime'] > 120) {
+                $classes[] = '121plus';
             }
 
             if(isset($gameProperties['detail']['boardgamemechanic'])) {
@@ -70,6 +73,13 @@ class CollectionController extends Controller
                 }
                 for ($i = $begin; $i <= $end; $i++) {
                     $classes[] = 'players_' . $i;
+
+                    if(isset($gameProperties['poll']['process_suggested_numplayers']['best']) && $gameProperties['poll']['process_suggested_numplayers']['best'] == $i) {
+                        $classes[] = 'players_' . $i . '_best';
+                    }
+                    if(isset($gameProperties['poll']['process_suggested_numplayers']['recommended']) && $gameProperties['poll']['process_suggested_numplayers']['recommended'] == $i) {
+                        $classes[] = 'players_' . $i . '_recommended';
+                    }
                 }
             }
 

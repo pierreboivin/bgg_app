@@ -18,7 +18,7 @@ class Utility
 
     public static function compareOrderWeight($a, $b)
     {
-        return $b['weight'] - $a['weight'];
+        return floatval($b['weight']) > floatval($a['weight']);
     }
 
     public static function compareNumPlays($a, $b)

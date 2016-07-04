@@ -82,16 +82,58 @@ class Stats
     {
         foreach ($GLOBALS['data']['gamesCollection'] as $gameId => $game) {
             $gameDetail = $arrayGamesDetails[$gameId];
-            foreach ($gameDetail['link'] as $link) {
-                $attributes = $link['@attributes'];
-                $label = $attributes['value'];
-                if (Lang::has('mechanics.' . $attributes['value'])) {
-                    $label = trans('mechanics.' . $attributes['value']);
+            if (isset($gameDetail['link'])) {
+                foreach ($gameDetail['link'] as $link) {
+                    $attributes = $link['@attributes'];
+                    $label = $attributes['value'];
+                    if (Lang::has('mechanics.' . $attributes['value'])) {
+                        $label = trans('mechanics.' . $attributes['value']);
+                    }
+                    $GLOBALS['data']['gamesCollection'][$gameId]['detail'][$attributes['type']][] = [
+                        'value' => $label,
+                        'id' => $attributes['id']
+                    ];
                 }
-                $GLOBALS['data']['gamesCollection'][$gameId]['detail'][$attributes['type']][] = [
-                    'value' => $label,
-                    'id' => $attributes['id']
-                ];
+            }
+            if (isset($gameDetail['poll'])) {
+                foreach ($gameDetail['poll'] as $poll) {
+                    if (isset($poll['@attributes']) && $poll['@attributes']['name'] == 'suggested_numplayers') {
+                        $GLOBALS['data']['gamesCollection'][$gameId]['poll'][$poll['@attributes']['name']]['votes']['num'] = $poll['@attributes']['totalvotes'];
+                        if (isset($poll['results'])) {
+                            $arrayByPlayers = [];
+                            foreach ($poll['results'] as $results) {
+                                if (isset($results['@attributes']['numplayers'])) {
+                                    $key = $results['@attributes']['numplayers'];
+                                    if (isset($results['result'])) {
+                                        foreach ($results['result'] as $typeResult) {
+                                            $type = $typeResult['@attributes']['value'];
+                                            $numVotes = $typeResult['@attributes']['numvotes'];
+                                            $arrayByPlayers[$key][$type] = $numVotes;
+                                        }
+                                    }
+                                }
+                            }
+                            $GLOBALS['data']['gamesCollection'][$gameId]['poll'][$poll['@attributes']['name']]['votes']['results'] = $arrayByPlayers;
+                        }
+                        // Post process best/recommanded
+                        $maxBest = $maxRecommended = 0;
+                        if ($arrayByPlayers) {
+                            foreach ($arrayByPlayers as $nbPlayer => $results) {
+                                if ($results['Best'] > $maxBest) {
+                                    $bestKey = $nbPlayer;
+                                    $maxBest = $results['Best'];
+                                }
+                                if ($results['Recommended'] > $maxRecommended) {
+                                    $recommendedKey = $nbPlayer;
+                                    $maxRecommended = $results['Recommended'];
+                                }
+                            }
+                            $GLOBALS['data']['gamesCollection'][$gameId]['poll']['process_suggested_numplayers']['best'] = $bestKey;
+                            $GLOBALS['data']['gamesCollection'][$gameId]['poll']['process_suggested_numplayers']['recommended'] = $recommendedKey;
+                        }
+
+                    }
+                }
             }
         }
     }
@@ -107,7 +149,7 @@ class Stats
         $totalWithAcquisitionDate = 0;
         $arrayValuesGames = [];
         $totalGamesValue = 0;
-        if(isset($arrayGamesAndExpansionsOwned['item'])) {
+        if (isset($arrayGamesAndExpansionsOwned['item'])) {
             foreach ($arrayGamesAndExpansionsOwned['item'] as $game) {
                 if (isset($game['privateinfo'])) {
                     $privateProperties = $game['privateinfo']['@attributes'];
@@ -159,7 +201,7 @@ class Stats
     public static function getCollectionArrays($arrayRawGamesOwned, $keyGlobal = 'gamesCollection')
     {
         $arrayGameCollection = [];
-        if(isset($arrayRawGamesOwned['item'])) {
+        if (isset($arrayRawGamesOwned['item'])) {
             foreach ($arrayRawGamesOwned['item'] as $game) {
                 $arrayGameCollection[$game['@attributes']['objectid']] = [
                     'id' => $game['@attributes']['objectid'],
@@ -191,7 +233,7 @@ class Stats
     public static function getRatedRelatedArrays($arrayRawGamesRated)
     {
         $arrayGameRated = [];
-        if(isset($arrayRawGamesRated['item'])) {
+        if (isset($arrayRawGamesRated['item'])) {
             foreach ($arrayRawGamesRated['item'] as $game) {
                 if (isset($game['stats']['rating']['@attributes']['value']) && $game['stats']['rating']['@attributes']['value'] != 'N/A') {
                     $rating = $game['stats']['rating']['@attributes']['value'];
