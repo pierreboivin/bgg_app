@@ -15,10 +15,10 @@
     <meta name="author" content="Pierre Boivin">
     <meta name="dcterms.creator" content="Pierre Boivin" />
 
-    <script src="/assets/js/app.min.js"></script>
+    <script src="{!! \App\Helpers\Helper::asset_timed('/assets/js/app.min.js') !!}"></script>
 
     <link href='http://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="/assets/css/app.min.css" />
+    <link rel="stylesheet" type="text/css" href="{!! \App\Helpers\Helper::asset_timed('/assets/css/app.min.css') !!}" />
 </head>
 <body class="@yield('class')">
     <nav class="navbar navbar-inverse navbar-fixed-top">

@@ -18,6 +18,14 @@ class Helper{
     public static function ifLogin() {
         return SessionManager::ifLogin();
     }
+    public static function asset_timed($path, $secure=null){
+        $file = public_path($path);
+        if(file_exists($file)){
+            return asset($path, $secure) . '?' . filemtime($file);
+        }else{
+            throw new \Exception('The file "'.$path.'" cannot be found in the public folder');
+        }
+    }
 
 
 }
