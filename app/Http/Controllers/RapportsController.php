@@ -271,6 +271,7 @@ class RapportsController extends Controller
     {
         $arrayRawUserInfos = BGGData::getUserInfos();
         $arrayRawGamesOwned = BGGData::getGamesOwned();
+        $arrayRawGamesPreviouslyOwned = BGGData::getGamesPreviouslyOwned();
         $arrayGamesDetails = BGGData::getDetailOwned($arrayRawGamesOwned);
         $arrayRawGamesRated = BGGData::getGamesRated();
         $arrayRawGamesPlays = BGGData::getPlays();
@@ -279,6 +280,7 @@ class RapportsController extends Controller
         $arrayUserInfos = UserInfos::getUserInformations($arrayRawUserInfos);
         Stats::getRatedRelatedArrays($arrayRawGamesRated);
         Stats::getCollectionArrays($arrayRawGamesOwned);
+        Stats::getCollectionArrays($arrayRawGamesPreviouslyOwned, 'gamesPrevOwned');
         Stats::getOwnedRelatedArrays($arrayGamesDetails);
         Stats::getPlaysRelatedArrays($arrayRawGamesPlays);
 
@@ -289,7 +291,7 @@ class RapportsController extends Controller
         // High rated
         $highRating = [];
         foreach ($GLOBALS['data']['gamesRated'] as $idGame => $ratedGame) {
-            if (!isset($GLOBALS['data']['gamesCollection'][$idGame])) {
+            if (!isset($GLOBALS['data']['gamesCollection'][$idGame]) && !isset($GLOBALS['data']['gamesPrevOwned'][$idGame])) {
                 $highRating[$idGame] = $ratedGame;
             }
         }
@@ -305,7 +307,7 @@ class RapportsController extends Controller
         // Played frequently
         $playsFrequently = [];
         foreach ($GLOBALS['data']['arrayTotalPlays'] as $idGame => $game) {
-            if (!isset($GLOBALS['data']['gamesCollection'][$idGame])) {
+            if (!isset($GLOBALS['data']['gamesCollection'][$idGame]) && !isset($GLOBALS['data']['gamesPrevOwned'][$idGame])) {
                 $playsFrequently[$idGame] = $game;
             }
         }
@@ -322,7 +324,7 @@ class RapportsController extends Controller
         $gameWithDesignerHot = [];
         $mostDesigner = Graphs::getMostDesignerOwned();
         foreach ($arrayGamesHot as $idGame => $game) {
-            if (!isset($GLOBALS['data']['gamesCollection'][$idGame])) {
+            if (!isset($GLOBALS['data']['gamesCollection'][$idGame]) && !isset($GLOBALS['data']['gamesPrevOwned'][$idGame])) {
                 if (isset($game['detail']['boardgamedesigner'])) {
                     foreach ($game['detail']['boardgamedesigner'] as $hotDesigner) {
                         if (isset($mostDesigner[$hotDesigner['id']])) {
@@ -389,6 +391,7 @@ class RapportsController extends Controller
                 $gamesNotPlayed[$idGame] = $game;
             }
         }
+        usort($gamesNotPlayed, 'App\Lib\Utility::compareRatingBgg');
         if(count($GLOBALS['data']['gamesCompare']) > 0) {
             $percentCollection = round(count($gamesNotPlayed) / count($GLOBALS['data']['gamesCompare']) * 100, 2);
         }

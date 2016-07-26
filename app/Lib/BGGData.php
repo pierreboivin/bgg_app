@@ -18,6 +18,14 @@ class BGGData
             ['cookie' => 'bggusername=' . $GLOBALS['parameters']['general']['username'] . '; bggpassword=' . $GLOBALS['parameters']['login']['password']]));
     }
 
+    public static function getGamesPreviouslyOwned()
+    {
+        $urlBGG = BGGUrls::getGamesPreviouslyOwned();
+
+        return BGGData::manageSingleMultiple(self::getBGGUrl($urlBGG, 'curl',
+            ['cookie' => 'bggusername=' . $GLOBALS['parameters']['general']['username'] . '; bggpassword=' . $GLOBALS['parameters']['login']['password']]));
+    }
+    
     public static function getGamesOwnedByUserName($username)
     {
         $urlBGG = BGGUrls::getGamesOwnedByUserName($username);
@@ -257,6 +265,5 @@ class BGGData
             return $getBGGUrl;
         }
     }
-
 
 }

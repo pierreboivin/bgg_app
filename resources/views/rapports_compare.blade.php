@@ -41,12 +41,16 @@
         <thead>
         <tr>
             <th>Jeu</th>
+            <th>Évaluation BGG</th>
+            <th>Nombre de joueurs</th>
         </tr>
         </thead>
         <tbody>
         @foreach($gamesNotPlayed['games'] as $game)
             <tr>
                 <td><a href="http://boardgamegeek.com/boardgame/{{ $game['id'] }}" target="_blank">{{ $game['name'] }}</a></td>
+                <td>{{ $game['rating_bgg'] }}</td>
+                <td>{{ $game['minplayer'] . ' - ' . $game['maxplayer'] }}</td>
             </tr>
         @endforeach
         </tbody>

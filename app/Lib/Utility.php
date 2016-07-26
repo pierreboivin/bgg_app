@@ -41,6 +41,11 @@ class Utility
         return $b['nbOwned'] - $a['nbOwned'];
     }
 
+    public static function compareRatingBgg($a, $b)
+    {
+        return floatval($b['rating_bgg']) > floatval($a['rating_bgg']);
+    }
+
     /**
      * @param $gameId
      * @return string

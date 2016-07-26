@@ -218,6 +218,12 @@ class Stats
                     $rating = 0;
                 }
                 $arrayGameCollection[$game['@attributes']['objectid']]['rating'] = $rating;
+                if (isset($game['stats']['rating']['average']['@attributes']['value']) && $game['stats']['rating']['average']['@attributes']['value'] != 'N/A') {
+                    $rating = round($game['stats']['rating']['average']['@attributes']['value'], 2);
+                } else {
+                    $rating = 0;
+                }
+                $arrayGameCollection[$game['@attributes']['objectid']]['rating_bgg'] = $rating;
                 if (isset($game['privateinfo'])) {
                     $arrayGameCollection[$game['@attributes']['objectid']]['privateinfo'] = $game['privateinfo'];
                 }

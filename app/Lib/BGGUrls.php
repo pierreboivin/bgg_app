@@ -9,6 +9,11 @@ class BGGUrls {
         return 'http://www.boardgamegeek.com/xmlapi2/collection?own=1&excludesubtype=boardgameexpansion&stats=1&showprivate=1&username=' . urlencode($GLOBALS['parameters']['general']['username']);
     }
 
+    public static function getGamesPreviouslyOwned()
+    {
+        return 'http://www.boardgamegeek.com/xmlapi2/collection?prevowned=1&excludesubtype=boardgameexpansion&stats=1&showprivate=1&username=' . urlencode($GLOBALS['parameters']['general']['username']);
+    }
+
     public static function getGamesOwnedByUserName($username)
     {
         return 'http://www.boardgamegeek.com/xmlapi2/collection?own=1&excludesubtype=boardgameexpansion&stats=1&showprivate=1&username=' . urlencode($username);
@@ -43,4 +48,5 @@ class BGGUrls {
     {
         return 'http://boardgamegeek.com/xmlapi2/hot?type=boardgame';
     }
+
 }
