@@ -86,7 +86,7 @@
             </div>
 
             <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <div class="navbar-header">
                         <span class="navbar-brand">Trier</span>
                         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#nav-trier">
@@ -103,6 +103,14 @@
                                 <button type="button" class="navbar-btn btn btn-default" data-sort-by="acquisitiondate" date-sort-direction="desc">Date d'acquisition</button>
                             @endif
                         </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="navbar-header">
+                        <span class="navbar-brand">Afficher les extensions</span>
+                    </div>
+                    <div class="collapse navbar-collapse">
+                        <input id="show_expansions" type="checkbox" name="show_expansions" value="1">
                     </div>
                 </div>
                 <div class="col-md-2">
@@ -125,6 +133,15 @@
                         <span class="hidden acquisitiondate">{{ $game['acquisitiondate'] }}</span>
                     @endif
                 </a>
+                @if($game['expansions'])
+                    <div class="expansions">
+                        <ul>
+                        @foreach($game['expansions'] as $idExpansion => $expansion)
+                            <li>{{ $expansion['name'] }}</li>
+                        @endforeach
+                        </ul>
+                    </div>
+                @endif
             </div>
         @endforeach
     </div>

@@ -1,13 +1,18 @@
-$(function () {
+$(window).load(function(){
     if (is_page('collection')) {
         // init Isotope
+        $('.expansions').hide();
         var $grid = $('.grid').isotope({
             itemSelector: '.element-item',
-            layoutMode: 'fitRows',
+            layoutMode: 'masonry',
             getSortData: {
                 rating: '.rating',
                 acquisitiondate: '.acquisitiondate'
-            }
+            },
+            masonry: {
+                columnWidth: 90,
+                fitWidth: true
+            },
         });
         var filters = {};
 
@@ -57,6 +62,15 @@ $(function () {
                 $buttonGroup.find('.is-checked').removeClass('is-checked');
                 $(this).addClass('is-checked');
             });
+        });
+        $('#show_expansions').on('change', function () {
+            if($(this).is(":checked")) {
+                $('.expansions').show();
+                $('.grid').isotope( 'reloadItems' ).isotope();
+            } else {
+                $('.expansions').hide();
+                $('.grid').isotope( 'reloadItems' ).isotope();
+            }
         });
 
         filterPlayers = function () {

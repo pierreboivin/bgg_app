@@ -361,4 +361,33 @@ class Stats
         return $gameLessTimePlayed;
     }
 
+    public static function getOwnedExpansionLink($arrayRawGamesAndExpansionsOwned)
+    {
+        // Search array
+        foreach($arrayRawGamesAndExpansionsOwned['item'] as $index => $games) {
+            $idOwned[$games['@attributes']['objectid']] = $index;
+        }
+        // Add to expansions index of gamesCollection
+        foreach($GLOBALS['data']['gamesCollection'] as $gameId => $game) {
+            $GLOBALS['data']['gamesCollection'][$gameId]['expansions'] = [];
+            if(isset($game['detail']['boardgameexpansion'])) {
+                foreach ($game['detail']['boardgameexpansion'] as $expansion) {
+                    if(isset($idOwned[$expansion['id']])) {
+                        $index = $idOwned[$expansion['id']];
+                        $game = $arrayRawGamesAndExpansionsOwned['item'][$index];
+                        $GLOBALS['data']['gamesCollection'][$gameId]['expansions'][$expansion['id']] = [
+                            'id' => $game['@attributes']['objectid'],
+                            'name' => $game['name'],
+                            'thumbnail' => isset($game['thumbnail']) ? $game['thumbnail'] : '',
+                            'minplayer' => isset($game['stats']['@attributes']['minplayers']) ? $game['stats']['@attributes']['minplayers'] : 0,
+                            'maxplayer' => isset($game['stats']['@attributes']['maxplayers']) ? $game['stats']['@attributes']['maxplayers'] : 0,
+                            'playingtime' => isset($game['stats']['@attributes']['playingtime']) ? $game['stats']['@attributes']['playingtime'] : 0,
+                            'numplays' => isset($game['numplays']) ? $game['numplays'] : 0
+                        ];
+                    }
+                }
+            }
+        }
+    }
+
 }

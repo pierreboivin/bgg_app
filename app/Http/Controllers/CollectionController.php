@@ -19,8 +19,11 @@ class CollectionController extends Controller
         $arrayGamesDetails = BGGData::getDetailOwned($arrayRawGamesOwned);
         $arrayRawUserInfos = BGGData::getUserInfos();
         $arrayUserInfos = UserInfos::getUserInformations($arrayRawUserInfos);
+        $arrayRawGamesAndExpansionsOwned = BGGData::getGamesAndExpansionsOwned();
         Stats::getCollectionArrays($arrayRawGamesOwned);
         Stats::getOwnedRelatedArrays($arrayGamesDetails);
+        Stats::getOwnedExpansionLink($arrayRawGamesAndExpansionsOwned);
+
         $params['userinfo'] = $arrayUserInfos;
         $allMechanics = [];
 
@@ -37,6 +40,15 @@ class CollectionController extends Controller
             $arrayGame['maxplayer'] = isset($gameProperties['maxplayer']) ? $gameProperties['maxplayer'] : 0;
             $arrayGame['numplays'] = $gameProperties['numplays'];
             $arrayGame['rating'] = $gameProperties['rating'];
+
+            foreach($gameProperties['expansions'] as $expansion) {
+                if($expansion['minplayer'] < $arrayGame['minplayer']) {
+                    $arrayGame['minplayer'] = $expansion['minplayer'];
+                }
+                if($expansion['maxplayer'] > $arrayGame['maxplayer']) {
+                    $arrayGame['maxplayer'] = $expansion['maxplayer'];
+                }
+            }
 
             if (isset($gameProperties['privateinfo']['@attributes']['acquisitiondate'])) {
                 $arrayGame['acquisitiondate'] = $gameProperties['privateinfo']['@attributes']['acquisitiondate'];
@@ -94,6 +106,8 @@ class CollectionController extends Controller
             if (isset($gameProperties['privateinfo']['@attributes']['acquisitiondate'])) {
                 $arrayGame['tooltip'] .= '<br>Date d\'acquisition : ' . $gameProperties['privateinfo']['@attributes']['acquisitiondate'];
             }
+
+            $arrayGame['expansions'] = $gameProperties['expansions'];
 
             $arrayGames[$idGame] = $arrayGame;
         }

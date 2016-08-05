@@ -3,36 +3,62 @@
 
 .collection {
   .element-item {
+    width: @width-box;
+    height: auto;
+    float: left;
+    text-align: center;
+    color: @color-primary-0;
+    text-decoration: none;
+    border: 1px solid black;
+    margin: 0.4em 0.4em;
+
+    .name {
+      padding: 0.2em 0.4em;
+    }
+
+    img {
+      max-width: calc(@width-box - 1);
+      padding-bottom: 10px;
+    }
+
     a {
-      width: @width-box;
-      height: @height-box;
-      float: left;
-      text-align: center;
-      color: @color-primary-0;
-      text-decoration: none;
-      border: 1px solid black;
-      margin: 0.4em 0.4em;
-
-      .name {
-        padding: 0.2em 0.4em;
-      }
-
-      img {
-        max-width: calc(@width-box - 1);
-        max-height: calc(@height-box - 4);
-      }
-
       &:hover {
         border-color: @color-primary-1;
         color: @color-primary-1;
       }
+    }
 
+    .expansions {
+      text-align: left;
+      padding: 0px 10px 5px 10px;
+      font-size: 0.9em;
+      ul {
+        padding: 0px;
+        margin: 0px;
+        list-style: none;
+        padding-left: 1em;
+        li {
+          padding: 0px;
+          margin: 0px;
+        }
+        li:before {
+          display: inline-block;
+          content: "-";
+          width: 1em;
+          margin-left: -1em;
+        }
+      }
     }
   }
 }
+.navbar-collapse input[type=checkbox] {
+  margin-top: 1.2em;
+}
+
 .option-set select.form-control {
   margin: 7px 0px;
 }
+
 #players-type-filter {
   margin-top: 8px;
   margin-left: 7px;
