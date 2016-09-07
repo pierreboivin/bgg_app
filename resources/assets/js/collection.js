@@ -4,15 +4,11 @@ $(window).load(function(){
         $('.expansions').hide();
         var $grid = $('.grid').isotope({
             itemSelector: '.element-item',
-            layoutMode: 'masonry',
+            layoutMode: 'fitRows',
             getSortData: {
                 rating: '.rating',
                 acquisitiondate: '.acquisitiondate'
-            },
-            masonry: {
-                columnWidth: 90,
-                fitWidth: true
-            },
+            }
         });
         var filters = {};
 
@@ -66,10 +62,22 @@ $(window).load(function(){
         $('#show_expansions').on('change', function () {
             if($(this).is(":checked")) {
                 $('.expansions').show();
+                $('#collections').addClass('with-expansions');
                 $('.grid').isotope( 'reloadItems' ).isotope();
             } else {
                 $('.expansions').hide();
+                $('#collections').removeClass('with-expansions');
                 $('.grid').isotope( 'reloadItems' ).isotope();
+            }
+        });
+
+        var limitNbExpansions = 3
+        $('.expansions').each(function (i) {
+            $(this).find('li:gt(' + (limitNbExpansions - 1) + ')').hide();
+            if ($(this).find('li').length > limitNbExpansions) {
+                $(this).find('.show-more').show();
+            } else {
+                $(this).find('.show-more').hide();
             }
         });
 

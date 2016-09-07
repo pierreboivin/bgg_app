@@ -8,6 +8,7 @@ use App\Lib\Page;
 use App\Lib\Stats;
 use App\Lib\UserInfos;
 use App\Lib\Utility;
+use Carbon\Carbon;
 
 class CollectionController extends Controller
 {
@@ -29,32 +30,9 @@ class CollectionController extends Controller
 
         $arrayGames = [];
         foreach ($GLOBALS['data']['gamesCollection'] as $idGame => $gameProperties) {
-
-            $arrayGame = [];
             $classes = [];
 
-            $arrayGame['name'] = $gameProperties['name'];
-            $arrayGame['image'] = 'http://' . $gameProperties['thumbnail'];
-            $arrayGame['playingtime'] = isset($gameProperties['playingtime']) ? $gameProperties['playingtime'] : 0;
-            $arrayGame['minplayer'] = isset($gameProperties['minplayer']) ? $gameProperties['minplayer'] : 0;
-            $arrayGame['maxplayer'] = isset($gameProperties['maxplayer']) ? $gameProperties['maxplayer'] : 0;
-            $arrayGame['numplays'] = $gameProperties['numplays'];
-            $arrayGame['rating'] = $gameProperties['rating'];
-
-            foreach($gameProperties['expansions'] as $expansion) {
-                if($expansion['minplayer'] < $arrayGame['minplayer']) {
-                    $arrayGame['minplayer'] = $expansion['minplayer'];
-                }
-                if($expansion['maxplayer'] > $arrayGame['maxplayer']) {
-                    $arrayGame['maxplayer'] = $expansion['maxplayer'];
-                }
-            }
-
-            if (isset($gameProperties['privateinfo']['@attributes']['acquisitiondate'])) {
-                $arrayGame['acquisitiondate'] = $gameProperties['privateinfo']['@attributes']['acquisitiondate'];
-            } else {
-                $arrayGame['acquisitiondate'] = '0000-00-00';
-            }
+            $arrayGame = $this->preProcessGameInfo($gameProperties);
 
             if ($arrayGame['playingtime'] <= 30) {
                 $classes[] = '30minus';
@@ -107,8 +85,6 @@ class CollectionController extends Controller
                 $arrayGame['tooltip'] .= '<br>Date d\'acquisition : ' . $gameProperties['privateinfo']['@attributes']['acquisitiondate'];
             }
 
-            $arrayGame['expansions'] = $gameProperties['expansions'];
-
             $arrayGames[$idGame] = $arrayGame;
         }
 
@@ -123,5 +99,75 @@ class CollectionController extends Controller
         $params = array_merge($params, $paramsMenu);
 
         return \View::make('collection', $params);
+    }
+
+    public function game($username, $idGame)
+    {
+        $paramsMenu = Page::getMenuParams();
+
+        $arrayRawGamesOwned = BGGData::getGamesOwned();
+        $arrayGamesDetails = BGGData::getDetailOwned($arrayRawGamesOwned);
+        $arrayRawUserInfos = BGGData::getUserInfos();
+        $arrayUserInfos = UserInfos::getUserInformations($arrayRawUserInfos);
+        $arrayRawGamesAndExpansionsOwned = BGGData::getGamesAndExpansionsOwned();
+        $arrayRawGamesPlays = BGGData::getPlays();
+        Stats::getCollectionArrays($arrayRawGamesOwned);
+        Stats::getOwnedRelatedArrays($arrayGamesDetails);
+        Stats::getOwnedExpansionLink($arrayRawGamesAndExpansionsOwned);
+        Stats::getPlaysRelatedArrays($arrayRawGamesPlays);
+
+        $params['userinfo'] = $arrayUserInfos;
+
+        $gameProperties = $GLOBALS['data']['gamesCollection'][$idGame];
+
+        $arrayGame = $this->preProcessGameInfo($gameProperties);
+
+        $allPlays = $GLOBALS['data']['arrayTotalPlays'][$idGame]['plays'];
+        if($allPlays) {
+            uasort($allPlays, 'App\Lib\Utility::compareDate');
+            $params['lastPlayed']['date'] = $allPlays[0]['date'];
+            $params['lastPlayed']['since'] = Carbon::createFromTimestamp($allPlays[0]['date'])->diffForHumans();
+        } else {
+            $params['lastPlayed'] = 'jamais';
+        }
+
+        $params['plays'] = $allPlays;
+
+        $params['game'] = $arrayGame;
+
+        $params = array_merge($params, $paramsMenu);
+
+        return \View::make('game', $params);
+    }
+
+    /**
+     * @param $gameProperties
+     * @param $arrayGame
+     * @return array
+     */
+    public function preProcessGameInfo($gameProperties)
+    {
+        $arrayGame = $gameProperties;
+        $arrayGame['image'] = 'http://' . $gameProperties['thumbnail'];
+        $arrayGame['playingtime'] = isset($gameProperties['playingtime']) ? $gameProperties['playingtime'] : 0;
+        $arrayGame['minplayer'] = isset($gameProperties['minplayer']) ? $gameProperties['minplayer'] : 0;
+        $arrayGame['maxplayer'] = isset($gameProperties['maxplayer']) ? $gameProperties['maxplayer'] : 0;
+
+        foreach ($gameProperties['expansions'] as $expansion) {
+            if ($expansion['minplayer'] < $arrayGame['minplayer']) {
+                $arrayGame['minplayer'] = $expansion['minplayer'];
+            }
+            if ($expansion['maxplayer'] > $arrayGame['maxplayer']) {
+                $arrayGame['maxplayer'] = $expansion['maxplayer'];
+            }
+        }
+
+        if (isset($gameProperties['privateinfo']['@attributes']['acquisitiondate'])) {
+            $arrayGame['acquisitiondate'] = $gameProperties['privateinfo']['@attributes']['acquisitiondate'];
+        } else {
+            $arrayGame['acquisitiondate'] = '0000-00-00';
+        }
+
+        return $arrayGame;
     }
 }

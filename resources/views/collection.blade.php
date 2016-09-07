@@ -86,7 +86,7 @@
             </div>
 
             <div class="row">
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <div class="navbar-header">
                         <span class="navbar-brand">Trier</span>
                         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#nav-trier">
@@ -122,24 +122,29 @@
         </div>
     </nav>
 
-    <div class="grid collection">
+    <div id="collections" class="grid collection">
         @foreach($games as $idGame => $game)
             <div class="element-item {{ $game['class'] }}" data-toggle="tooltip" data-html="true" data-placement="top" title="{{ $game['tooltip'] }}">
-                <a href="http://boardgamegeek.com/boardgame/{{ $idGame }}" target="_blank">
-                    <div class="name">{{ $game['name'] }}</div>
-                    <div class="image">{!! HTML::image($game['image']) !!}</div>
-                    <span class="hidden rating">{{ $game['rating'] }}</span>
-                    @if(\App\Helpers\Helper::ifLogin())
-                        <span class="hidden acquisitiondate">{{ $game['acquisitiondate'] }}</span>
-                    @endif
-                </a>
+                <div class="col-left">
+                    <a href="{{ url('fiche', [$userinfo['username'], $idGame]) }}">
+                        <div class="name">{{ $game['name'] }}</div>
+                        <div class="image">{!! HTML::image($game['image']) !!}</div>
+                        <span class="hidden rating">{{ $game['rating'] }}</span>
+                        @if(\App\Helpers\Helper::ifLogin())
+                            <span class="hidden acquisitiondate">{{ $game['acquisitiondate'] }}</span>
+                        @endif
+                    </a>
+                </div>
                 @if($game['expansions'])
-                    <div class="expansions">
-                        <ul>
-                        @foreach($game['expansions'] as $idExpansion => $expansion)
-                            <li>{{ $expansion['name'] }}</li>
-                        @endforeach
-                        </ul>
+                    <div class="col-right">
+                        <div class="expansions">
+                            <ul>
+                            @foreach($game['expansions'] as $idExpansion => $expansion)
+                                <li>{{ str_limit($expansion['name'], 50) }}</li>
+                            @endforeach
+                            </ul>
+                            <a class="show-more" href="{{ url('fiche', [$userinfo['username'], $idGame]) }}">Voir plus</a>
+                        </div>
                     </div>
                 @endif
             </div>

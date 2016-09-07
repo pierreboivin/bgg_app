@@ -19,7 +19,12 @@ class Stats
         $arrayPlaysByDayWeek = [];
         $allDatesPlayed = [];
         $countAllPlays = 0;
+
         foreach ($arrayGamesPlays as $play) {
+            // Informations missing for this game
+            if(!isset($play['item'])) {
+                continue;
+            }
             $idGame = $play['item']['@attributes']['objectid'];
             $quantityPlay = $play['@attributes']['quantity'];
             $datePlay = $play['@attributes']['date'];

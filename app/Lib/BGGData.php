@@ -128,7 +128,12 @@ class BGGData
             $arrayPlay = self::getBGGUrl($urlBGG);
 
             if (isset($arrayPlay['play'])) {
-                $arrayAllPlay = array_merge($arrayAllPlay, $arrayPlay['play']);
+                // Only one item
+                if(isset($arrayPlay['play']['@attributes'])) {
+                    $arrayAllPlay[] = $arrayPlay['play'];
+                } else {
+                    $arrayAllPlay = array_merge($arrayAllPlay, $arrayPlay['play']);
+                }
             } else {
                 Cache::put('url_plays_' . $GLOBALS['parameters']['general']['username'] . '_' . $GLOBALS['parameters']['typeLogin'],
                     true, self::CACHE_TIME_IN_MINUTES);

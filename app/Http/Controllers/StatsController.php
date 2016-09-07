@@ -112,11 +112,14 @@ class StatsController extends Controller
     {
         $arrayRawGamesOwned = BGGData::getGamesOwned();
         $arrayRawGamesPlays = BGGData::getPlays();
+        $arrayRawUserInfos = BGGData::getUserInfos();
         Stats::getPlaysRelatedArrays($arrayRawGamesPlays);
         Stats::getCollectionArrays($arrayRawGamesOwned);
+        $arrayUserInfos = UserInfos::getUserInformations($arrayRawUserInfos);
 
         $params['table']['ownedTimePlayed'] = Graphs::getOwnedTimePlayed($page);
         $params['type'] = $type;
+        $params['userinfo'] = $arrayUserInfos;
 
         return \View::make('partials.lines-table-time-since', $params);
     }
@@ -129,12 +132,15 @@ class StatsController extends Controller
         $arrayRawGamesOwned = BGGData::getGamesOwned();
         $arrayRawGamesPlays = BGGData::getPlays();
         $arrayRawGamesAndExpansionsOwned = BGGData::getGamesAndExpansionsOwned();
+        $arrayRawUserInfos = BGGData::getUserInfos();
         Stats::getPlaysRelatedArrays($arrayRawGamesPlays);
         Stats::getCollectionArrays($arrayRawGamesOwned);
         Stats::getAcquisitionRelatedArrays($arrayRawGamesAndExpansionsOwned);
+        $arrayUserInfos = UserInfos::getUserInformations($arrayRawUserInfos);
 
         $params['table']['ownedRentable'] = Graphs::getOwnedRentable($page);
         $params['type'] = $type;
+        $params['userinfo'] = $arrayUserInfos;
 
         return \View::make('partials.lines-table-rentable', $params);
     }
@@ -293,8 +299,7 @@ class StatsController extends Controller
 
         echo json_encode($mostType);
     }
-
-
+    
     /**
      * @param $username
      * @param $page

@@ -17,7 +17,7 @@
                             <button type="button" class="btn btn-xs dropdown-toggle" data-toggle="dropdown">Voir les jeux</button>
                             <ul class="dropdown-menu" role="menu">
                                 @foreach ($designer['games'] as $gameId => $gameName)
-                                    <li><a target="_blank" href="http://boardgamegeek.com/boardgame/{{ $gameId }}">{{ $gameName }}</a></li>
+                                    <li><a href="{{ url('fiche', [$userinfo['username'], $gameId]) }}">{{ $gameName }}</a></li>
                                 @endforeach
                             </ul>
                         </div>

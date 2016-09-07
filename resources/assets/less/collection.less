@@ -1,10 +1,10 @@
 @width-box: 12em;
-@height-box: 12em;
+@height-box: 15em;
 
 .collection {
   .element-item {
     width: @width-box;
-    height: auto;
+    height: @height-box;
     float: left;
     text-align: center;
     color: @color-primary-0;
@@ -27,11 +27,25 @@
         color: @color-primary-1;
       }
     }
-
+  }
+}
+.collection.with-expansions {
+  .element-item {
+    width: 24em;
+    .col-left {
+      float: left;
+      width: 12em;
+    }
+    .col-right {
+      float: left;
+      width: 11em;
+    }
     .expansions {
       text-align: left;
       padding: 0px 10px 5px 10px;
       font-size: 0.9em;
+      margin-top: 22px;
+      background-color: white;
       ul {
         padding: 0px;
         margin: 0px;
