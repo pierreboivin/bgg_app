@@ -257,13 +257,15 @@ class Graphs
     {
         $arrayPlaysByRating = array_fill(0, 11, 0);
         $arrayCollectionByRating = array_fill(0, 11, 0);
-        foreach ($GLOBALS['data']['gamesRated'] as $idGame => $gameRated) {
-            if(isset($GLOBALS['data']['arrayTotalPlays'][$idGame])) {
-                $rating = floor($gameRated['rating']);
-                $arrayPlaysByRating[$rating] += $GLOBALS['data']['arrayTotalPlays'][$idGame]['nbPlayed'];
-            }
-            if(isset($GLOBALS['data']['gamesCollection'][$idGame])) {
-                $arrayCollectionByRating[$rating] += 1;
+        if($GLOBALS['data']['gamesRated']) {
+            foreach ($GLOBALS['data']['gamesRated'] as $idGame => $gameRated) {
+                if (isset($GLOBALS['data']['arrayTotalPlays'][$idGame])) {
+                    $rating = floor($gameRated['rating']);
+                    $arrayPlaysByRating[$rating] += $GLOBALS['data']['arrayTotalPlays'][$idGame]['nbPlayed'];
+                    if (isset($GLOBALS['data']['gamesCollection'][$idGame])) {
+                        $arrayCollectionByRating[$rating] += 1;
+                    }
+                }
             }
         }
 
