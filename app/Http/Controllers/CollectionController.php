@@ -122,13 +122,18 @@ class CollectionController extends Controller
 
         $arrayGame = $this->preProcessGameInfo($gameProperties);
 
-        $allPlays = $GLOBALS['data']['arrayTotalPlays'][$idGame]['plays'];
-        if($allPlays) {
-            uasort($allPlays, 'App\Lib\Utility::compareDate');
-            $params['lastPlayed']['date'] = $allPlays[0]['date'];
-            $params['lastPlayed']['since'] = Carbon::createFromTimestamp($allPlays[0]['date'])->diffForHumans();
+        if(isset($GLOBALS['data']['arrayTotalPlays'][$idGame])) {
+            $allPlays = $GLOBALS['data']['arrayTotalPlays'][$idGame]['plays'];
+            if ($allPlays) {
+                uasort($allPlays, 'App\Lib\Utility::compareDate');
+                $params['lastPlayed']['date'] = $allPlays[0]['date'];
+                $params['lastPlayed']['since'] = Carbon::createFromTimestamp($allPlays[0]['date'])->diffForHumans();
+            } else {
+                $params['lastPlayed'] = '';
+            }
         } else {
-            $params['lastPlayed'] = 'jamais';
+            $params['lastPlayed'] = '';
+            $allPlays = [];
         }
 
         $params['plays'] = $allPlays;
