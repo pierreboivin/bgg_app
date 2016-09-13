@@ -6,7 +6,7 @@ use App\Lib\BGGData;
 use App\Lib\SessionManager;
 use Closure;
 
-class AppAuth {
+class AppIsAdmin {
 
     /**
      * Handle an incoming request.
@@ -17,13 +17,8 @@ class AppAuth {
      */
     public function handle($request, Closure $next)
     {
-        $GLOBALS['parameters']['cache']['level'] = '';
-        SessionManager::guestConnexion($request->route()->username);
-
-        if(!isset($GLOBALS['parameters']['general']['username'])) {
+        if($GLOBALS['parameters']['general']['username'] != 'pboivin') {
             return redirect('/login');
-        } else {
-            $GLOBALS['parameters']['cache']['level'] = BGGData::getLevelOfLoading();
         }
 
         return $next($request);

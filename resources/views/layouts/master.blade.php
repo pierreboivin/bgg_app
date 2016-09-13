@@ -50,22 +50,22 @@
                         </li>
                     @endif
                 </ul>
-                @if(Auth::check())
+
                 <ul class="nav navbar-nav navbar-right">
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Connecté en tant que {{ $GLOBALS['parameters']['login']['username'] }} <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="/home/{{ $GLOBALS['parameters']['login']['username'] }}">Retour à votre page d'accueil</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="/logout">Se déconnecter</a></li>
-                        </ul>
-                    </li>
+                    <li id="background-loading"><img src="/assets/img/ajax-loader.gif" title="Chargement des nouvelles statistiques en cours" /></li>
+                    @if(Auth::check())
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Connecté en tant que {{ $GLOBALS['parameters']['login']['username'] }} <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/home/{{ $GLOBALS['parameters']['login']['username'] }}">Retour à votre page d'accueil</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="/logout">Se déconnecter</a></li>
+                            </ul>
+                        </li>
+                    @else
+                        <li><a href="/login">Se connecter</a></li>
+                    @endif
                 </ul>
-                @else
-               <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/login">Se connecter</a></li>
-               </ul>
-                @endif
             </div>
         </div>
     </nav>
@@ -73,6 +73,7 @@
     @if (isset($userinfo))
         <input type="hidden" id="username" value="{{ $userinfo['username'] }}">
     @endif
+    <input type="hidden" id="cacheLevel" value="{{ isset($GLOBALS['parameters']['cache']['level']) ? $GLOBALS['parameters']['cache']['level'] : '' }}">
 
     <div class="container-fluid">
         @if (Session::has('error'))

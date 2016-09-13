@@ -16,7 +16,7 @@
     <div class="list-group">
         <a href="/stats/{{ $GLOBALS['parameters']['general']['username'] }}" class="list-group-item desactivate-if-not-loaded">
             <h3 class="list-group-item-heading">Statistiques</h3>
-            <p class="list-group-item-text">Consultez des graphiques sur vos parties jouées, vos jeux préférés et plus encore .</p>
+            <p class="list-group-item-text">Consultez des graphiques sur vos parties jouées, vos jeux préférés et plus encore.</p>
         </a>
         <a href="/collection/{{ $GLOBALS['parameters']['general']['username'] }}" class="list-group-item desactivate-if-not-loaded">
             <h3 class="list-group-item-heading">Collection</h3>

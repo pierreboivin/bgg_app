@@ -25,7 +25,10 @@ Route::post('/userLogin', ['uses' => 'LoginController@userLogin']);
 Route::post('/guestLogin', ['uses' => 'LoginController@guestLogin']);
 Route::get('/logout', ['uses' => 'LoginController@logout']);
 
-Route::get('/tools/flushCaches', ['uses' => 'ToolsController@flushCaches']);
+Route::get('/admin/', ['uses' => 'AdminController@home', 'middleware' => ['app.auth', 'app.isAdmin']]);
+Route::get('/tools/flushCaches', ['uses' => 'ToolsController@flushCaches', 'middleware' => ['app.auth', 'app.isAdmin']]);
+Route::get('/tools/flushPersistentCaches', ['uses' => 'ToolsController@flushPersistentCaches', 'middleware' => ['app.auth', 'app.isAdmin']]);
+Route::get('/logs', ['uses' => '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index', 'middleware' => ['app.auth', 'app.isAdmin']]);
 
 Route::get('/stats/{username}', ['as' => 'stats', 'uses' => 'StatsController@home', 'middleware' => 'app.auth']);
 Route::get('/collection/{username}', ['as' => 'collection', 'uses' => 'CollectionController@home', 'middleware' => 'app.auth']);
@@ -60,6 +63,3 @@ Route::get('/error', function()
 {
     return 'Une erreur s\'est produite. Contactez l\'administrateur du site <a href="mailto:pierreboivin85@gmail.com">ici</a>.';
 });
-
-// Module pour voir les logs
-Route::get('logs', ['uses' => '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index', 'middleware' => 'app.auth']);

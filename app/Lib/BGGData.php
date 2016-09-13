@@ -135,8 +135,9 @@ class BGGData
                     $arrayAllPlay = array_merge($arrayAllPlay, $arrayPlay['play']);
                 }
             } else {
-                Cache::put('url_plays_' . $GLOBALS['parameters']['general']['username'] . '_' . $GLOBALS['parameters']['typeLogin'],
-                    true, self::CACHE_TIME_IN_MINUTES);
+                $switchPlay = 'url_' . md5('plays_' . $GLOBALS['parameters']['general']['username']) . '_' . $GLOBALS['parameters']['typeLogin'];
+                Cache::put($switchPlay, true, self::CACHE_TIME_IN_MINUTES);
+                PersistentCache::put($switchPlay, true);
                 break;
             }
 
@@ -148,29 +149,28 @@ class BGGData
     public static function getCurrentDataInCache()
     {
         $progression = 0;
+        $toRegenerate = false;
         $message = 'Chargement des informations utilisateurs';
-        if (self::dataExistInCache(BGGUrls::getUserInfos())) {
+        if (self::dataExistInCache(BGGUrls::getUserInfos(), $toRegenerate)) {
             $message = 'Chargement des jeux de la collection';
             $progression += 10;
         }
-        if (self::dataExistInCache(BGGUrls::getGamesOwned())) {
+        if (self::dataExistInCache(BGGUrls::getGamesOwned(), $toRegenerate)) {
             $message = 'Chargement des extensions de la collection';
             $progression += 30;
         }
-        if (self::dataExistInCache(BGGUrls::getGamesAndExpansionsOwned())) {
+        if (self::dataExistInCache(BGGUrls::getGamesAndExpansionsOwned(), $toRegenerate)) {
             $message = 'Chargement des jeux évalués';
             $progression += 20;
         }
-        if (self::dataExistInCache(BGGUrls::getGamesRated())) {
+        if (self::dataExistInCache(BGGUrls::getGamesRated(), $toRegenerate)) {
             $message = 'Chargement des jeux joués';
             $progression += 10;
         }
-        if (Cache::has('url_plays_' . $GLOBALS['parameters']['general']['username'] . '_' . $GLOBALS['parameters']['typeLogin'])
-            || Cache::has('url_plays_' . $GLOBALS['parameters']['general']['username'] . '_login')
-        ) {
+        if (self::dataExistInCache('plays_' . $GLOBALS['parameters']['general']['username'], $toRegenerate)) {
             $progression += 30;
         }
-        return array('progress' => $progression, 'message' => $message);
+        return array('progress' => $progression, 'message' => $message, 'regenerate' => $toRegenerate);
     }
 
     public static function getCurrentUserNameCollectionDataInCache($compare)
@@ -182,15 +182,47 @@ class BGGData
         }
     }
 
-    private static function dataExistInCache($url)
+    public static function getLevelOfLoading() {
+        $arrayUrls = [BGGUrls::getUserInfos(), BGGUrls::getGamesOwned(), BGGUrls::getGamesAndExpansionsOwned(), BGGUrls::getGamesRated(), 'plays_' . $GLOBALS['parameters']['general']['username']];
+        $inTempCache = true;
+        $inPersistentCache = true;
+        foreach($arrayUrls as $url) {
+            $tempKeyCache = 'url_' . md5($url) . '_login';
+            if (!Cache::has($tempKeyCache)) {
+                $inTempCache = false;
+            }
+        }
+        foreach($arrayUrls as $url) {
+            $tempKeyCache = 'url_' . md5($url) . '_login';
+            if (!PersistentCache::has($tempKeyCache)) {
+                $inPersistentCache = false;
+            }
+        }
+        if($inTempCache) {
+            return 'temp';
+        } elseif($inPersistentCache) {
+            return 'persistent';
+        } else {
+            return 'none';
+        }
+    }
+
+    private static function dataExistInCache($url, &$toRegenerate)
     {
         if ($GLOBALS['parameters']['typeLogin'] == 'guest') {
             $tempKeyCache = 'url_' . md5($url) . '_login';
-            if (Cache::has($tempKeyCache)) {
+            if(!Cache::has($tempKeyCache)) {
+                $toRegenerate = true;
+            }
+            if (Cache::has($tempKeyCache) || (PersistentCache::has($tempKeyCache) && !isset($_GET['force']))) {
                 return true;
             }
         }
-        if (Cache::has('url_' . md5($url) . '_' . $GLOBALS['parameters']['typeLogin'])) {
+        $tempKeyCache = 'url_' . md5($url) . '_' . $GLOBALS['parameters']['typeLogin'];
+        if(!Cache::has($tempKeyCache)) {
+            $toRegenerate = true;
+        }
+        if (Cache::has($tempKeyCache) || (PersistentCache::has($tempKeyCache) && !isset($_GET['force']))) {
             return true;
         } else {
             return false;
@@ -204,13 +236,15 @@ class BGGData
         // Si on est pas connecté, mais qu'il existe une cache pour l'utilisateur connecté, on obtient cette dernière
         if ($GLOBALS['parameters']['typeLogin'] == 'guest') {
             $tempKeyCache = 'url_' . md5($url) . '_login';
-            if (Cache::has($tempKeyCache)) {
+            if (Cache::has($tempKeyCache) || PersistentCache::has($tempKeyCache)) {
                 $keyCache = $tempKeyCache;
             }
         }
 
         if (Cache::has($keyCache)) {
             $contentUrl = Cache::get($keyCache);
+        } elseif(PersistentCache::has($keyCache) && !isset($_GET['force'])) {
+            $contentUrl = PersistentCache::get($keyCache);
         } else {
             try {
                 Log::info('Get info from bgg : ' . $url);
@@ -229,6 +263,7 @@ class BGGData
                 return redirect('home');
             }
             Cache::put($keyCache, $contentUrl, self::CACHE_TIME_IN_MINUTES);
+            PersistentCache::put($keyCache, $contentUrl);
         }
 
         @$simpleXmlObject = simplexml_load_string($contentUrl);
