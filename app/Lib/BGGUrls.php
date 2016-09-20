@@ -6,27 +6,31 @@ class BGGUrls {
 
     public static function getGamesOwned()
     {
-        return 'http://www.boardgamegeek.com/xmlapi2/collection?own=1&excludesubtype=boardgameexpansion&stats=1&showprivate=1&username=' . urlencode($GLOBALS['parameters']['general']['username']);
+        $showPrivate = SessionManager::ifLogin() == true ? '&showprivate=1' : '';
+        return 'http://www.boardgamegeek.com/xmlapi2/collection?own=1&excludesubtype=boardgameexpansion&stats=1' . $showPrivate . '&username=' . urlencode($GLOBALS['parameters']['general']['username']);
     }
 
     public static function getGamesPreviouslyOwned()
     {
-        return 'http://www.boardgamegeek.com/xmlapi2/collection?prevowned=1&excludesubtype=boardgameexpansion&stats=1&showprivate=1&username=' . urlencode($GLOBALS['parameters']['general']['username']);
+        $showPrivate = SessionManager::ifLogin() == true ? '&showprivate=1' : '';
+        return 'http://www.boardgamegeek.com/xmlapi2/collection?prevowned=1&excludesubtype=boardgameexpansion&stats=1' . $showPrivate . '&username=' . urlencode($GLOBALS['parameters']['general']['username']);
     }
 
     public static function getGamesOwnedByUserName($username)
     {
-        return 'http://www.boardgamegeek.com/xmlapi2/collection?own=1&excludesubtype=boardgameexpansion&stats=1&showprivate=1&username=' . urlencode($username);
+        $showPrivate = SessionManager::ifLogin() == true ? '&showprivate=1' : '';
+        return 'http://www.boardgamegeek.com/xmlapi2/collection?own=1&excludesubtype=boardgameexpansion&stats=1' . $showPrivate . '&username=' . urlencode($username);
     }
 
     public static function getGamesAndExpansionsOwned()
     {
-        return 'http://www.boardgamegeek.com/xmlapi2/collection?own=1&stats=1&showprivate=1&username=' . urlencode($GLOBALS['parameters']['general']['username']);
+        $showPrivate = SessionManager::ifLogin() == true ? '&showprivate=1' : '';
+        return 'http://www.boardgamegeek.com/xmlapi2/collection?own=1&stats=1' . $showPrivate . '&username=' . urlencode($GLOBALS['parameters']['general']['username']);
     }
 
     public static function getGamesRated()
     {
-        return 'http://www.boardgamegeek.com/xmlapi2/collection?stats=1&rated=1&username&excludesubtype=boardgameexpansion&username=' . urlencode($GLOBALS['parameters']['general']['username']);
+        return 'http://www.boardgamegeek.com/xmlapi2/collection?stats=1&rated=1&excludesubtype=boardgameexpansion&username=' . urlencode($GLOBALS['parameters']['general']['username']);
     }
 
     public static function getUserInfos()
@@ -41,7 +45,7 @@ class BGGUrls {
 
     public static function getDetail($i)
     {
-        return 'http://boardgamegeek.com/xmlapi2/thing?id=' . $i;
+        return 'http://boardgamegeek.com/xmlapi2/thing?id=' . $i . '&stats=1';
     }
 
     public static function getHot()

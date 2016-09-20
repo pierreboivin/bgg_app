@@ -79,6 +79,12 @@ class BGGData
         return $arrayHotGames;
     }
 
+    public static function getDetailOfGame($idGame) {
+        $urlBGG = BGGUrls::getDetail($idGame);
+        $fromBGG = self::getBGGUrl($urlBGG);
+        return $fromBGG['item'];
+    }
+
     public static function getDetailOfGames($games)
     {
         $arrayGamesDetails = [];
@@ -87,8 +93,13 @@ class BGGData
         $urlBGG = BGGUrls::getDetail($strIds);
 
         $fromBGG = self::getBGGUrl($urlBGG);
-        foreach ($fromBGG['item'] as $gameDetail) {
-            $arrayGamesDetails[$gameDetail['@attributes']['id']] = $gameDetail;
+
+        if($fromBGG['@attributes']) {
+            $arrayGamesDetails[$fromBGG['item']['@attributes']['id']] = $fromBGG['item'];
+        } else {
+            foreach ($fromBGG['item'] as $gameDetail) {
+                $arrayGamesDetails[$gameDetail['@attributes']['id']] = $gameDetail;
+            }
         }
         return $arrayGamesDetails;
     }
@@ -276,7 +287,7 @@ class BGGData
         if (self::dataInvalid($arrayData)) {
             if ($numTry < 3) {
                 Cache::forget($keyCache);
-                sleep($numTry * 10);
+                sleep($numTry * 15);
                 $arrayData = self::getBGGUrl($url, $mode, $parameter, ++$numTry);
             } else {
                 throw new \Exception('Can\'t get url ' . $url . ' after ' . $numTry . ' try.');

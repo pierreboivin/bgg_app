@@ -105,40 +105,45 @@ class CollectionController extends Controller
     {
         $paramsMenu = Page::getMenuParams();
 
-        $arrayRawGamesOwned = BGGData::getGamesOwned();
-        $arrayGamesDetails = BGGData::getDetailOwned($arrayRawGamesOwned);
         $arrayRawUserInfos = BGGData::getUserInfos();
         $arrayUserInfos = UserInfos::getUserInformations($arrayRawUserInfos);
-        $arrayRawGamesAndExpansionsOwned = BGGData::getGamesAndExpansionsOwned();
-        $arrayRawGamesPlays = BGGData::getPlays();
-        Stats::getCollectionArrays($arrayRawGamesOwned);
-        Stats::getOwnedRelatedArrays($arrayGamesDetails);
-        Stats::getOwnedExpansionLink($arrayRawGamesAndExpansionsOwned);
-        Stats::getPlaysRelatedArrays($arrayRawGamesPlays);
 
         $params['userinfo'] = $arrayUserInfos;
 
-        $gameProperties = $GLOBALS['data']['gamesCollection'][$idGame];
+        $arrayGameDetail = BGGData::getDetailOfGame($idGame);
+        $arrayGameDetail = Stats::convertBggDetailInfo($arrayGameDetail);
+        $arrayGameDetail = array_merge($arrayGameDetail, Stats::getDetailInfoGame($arrayGameDetail));
 
-        $arrayGame = $this->preProcessGameInfo($gameProperties);
+        $arrayRawGamesPlays = BGGData::getPlays();
+        $arrayRawGamesOwned = BGGData::getGamesOwned();
+        $arrayGamesDetails = BGGData::getDetailOwned($arrayRawGamesOwned);
+        $arrayRawGamesAndExpansionsOwned = BGGData::getGamesAndExpansionsOwned();
+        Stats::getCollectionArrays($arrayRawGamesOwned);
+        Stats::getOwnedRelatedArrays($arrayGamesDetails);
+        Stats::getOwnedExpansionLink($arrayRawGamesAndExpansionsOwned);
+        if(isset($GLOBALS['data']['gamesCollection'][$idGame])) {
+            $arrayGameDetail['collection'] = $GLOBALS['data']['gamesCollection'][$idGame];
+        }
+        Stats::getPlaysRelatedArrays($arrayRawGamesPlays);
 
         if(isset($GLOBALS['data']['arrayTotalPlays'][$idGame])) {
+            $arrayGameDetail['numplays'] = count($GLOBALS['data']['arrayTotalPlays'][$idGame]);
             $allPlays = $GLOBALS['data']['arrayTotalPlays'][$idGame]['plays'];
             if ($allPlays) {
                 uasort($allPlays, 'App\Lib\Utility::compareDate');
-                $params['lastPlayed']['date'] = $allPlays[0]['date'];
-                $params['lastPlayed']['since'] = Carbon::createFromTimestamp($allPlays[0]['date'])->diffForHumans();
+                $arrayGameDetail['lastPlayed']['date'] = $allPlays[0]['date'];
+                $arrayGameDetail['lastPlayed']['since'] = Carbon::createFromTimestamp($allPlays[0]['date'])->diffForHumans();
+                $arrayGameDetail['plays'] = $allPlays;
             } else {
-                $params['lastPlayed'] = '';
+                $arrayGameDetail['lastPlayed'] = '';
             }
         } else {
-            $params['lastPlayed'] = '';
-            $allPlays = [];
+            $arrayGameDetail['numplays'] = 0;
+            $arrayGameDetail['lastPlayed'] = '';
+            $arrayGameDetail['plays'] = [];
         }
 
-        $params['plays'] = $allPlays;
-
-        $params['game'] = $arrayGame;
+        $params['game'] = $arrayGameDetail;
 
         $params = array_merge($params, $paramsMenu);
 
@@ -158,12 +163,14 @@ class CollectionController extends Controller
         $arrayGame['minplayer'] = isset($gameProperties['minplayer']) ? $gameProperties['minplayer'] : 0;
         $arrayGame['maxplayer'] = isset($gameProperties['maxplayer']) ? $gameProperties['maxplayer'] : 0;
 
-        foreach ($gameProperties['expansions'] as $expansion) {
-            if ($expansion['minplayer'] < $arrayGame['minplayer']) {
-                $arrayGame['minplayer'] = $expansion['minplayer'];
-            }
-            if ($expansion['maxplayer'] > $arrayGame['maxplayer']) {
-                $arrayGame['maxplayer'] = $expansion['maxplayer'];
+        if(isset($gameProperties['expansions'])) {
+            foreach ($gameProperties['expansions'] as $expansion) {
+                if ($expansion['minplayer'] < $arrayGame['minplayer']) {
+                    $arrayGame['minplayer'] = $expansion['minplayer'];
+                }
+                if ($expansion['maxplayer'] > $arrayGame['maxplayer']) {
+                    $arrayGame['maxplayer'] = $expansion['maxplayer'];
+                }
             }
         }
 

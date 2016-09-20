@@ -1,6 +1,11 @@
 $(function () {
     $('[data-toggle="tooltip"]').tooltip();
 
+    // Buttons table more
+    $(".table-more-button").click(function (event) {
+        getReplaceTable($(this));
+    });
+
     if(getLevelLoad() == 'persistent') {
         var loadBackgroundData = function () {
             $.getJSON("/load/" + $("#username").val() + "?force=1", function (data) {
@@ -21,6 +26,14 @@ $(function () {
         };
         checkIfBackgroundLoaded();
         loadBackgroundData();
+    }
+    function getReplaceTable(obj) {
+        $.ajax({
+            url: obj.data('href') + '/' + obj.data('page')
+        }).done(function (ajaxReturn) {
+            obj.data('page', parseInt(obj.data('page')) + 1);
+            $(obj.data('replace')).html(ajaxReturn);
+        });
     }
 
 });

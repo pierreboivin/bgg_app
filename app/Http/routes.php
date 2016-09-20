@@ -32,6 +32,7 @@ Route::get('/logs', ['uses' => '\Rap2hpoutre\LaravelLogViewer\LogViewerControlle
 
 Route::get('/stats/{username}', ['as' => 'stats', 'uses' => 'StatsController@home', 'middleware' => 'app.auth']);
 Route::get('/collection/{username}', ['as' => 'collection', 'uses' => 'CollectionController@home', 'middleware' => 'app.auth']);
+Route::get('/resume/{username}', ['as' => 'resume', 'uses' => 'SummaryController@home', 'middleware' => 'app.auth']);
 Route::get('/fiche/{username}/{gameid}', ['as' => 'collection', 'uses' => 'CollectionController@game', 'middleware' => 'app.auth']);
 Route::get('/rapports/{username}', ['as' => 'rapports', 'uses' => 'RapportsController@home', 'middleware' => 'app.auth']);
 Route::match(['get', 'post'], '/rapports/mensuel/{username}', ['as' => 'rapports', 'uses' => 'RapportsController@mensuel', 'middleware' => 'app.auth']);
@@ -51,6 +52,8 @@ Route::get('ajaxMostTypePrevious/{username}/{page}', ['as' => 'ajaxMostTypePrevi
 Route::get('ajaxAcquisitionPrevious/{username}/{page}', ['as' => 'ajaxAcquisitionPrevious', 'uses' => 'StatsController@ajaxAcquisitionPrevious', 'middleware' => 'app.auth']);
 Route::get('ajaxTableTimeSince/{type}/{username}/{page}', ['as' => 'ajaxTableTimeSince', 'uses' => 'StatsController@ajaxTableTimeSince', 'middleware' => 'app.auth']);
 Route::get('ajaxTableRentable/{type}/{username}/{page}', ['as' => 'ajaxTableRentable', 'uses' => 'StatsController@ajaxTableRentable', 'middleware' => 'app.auth']);
+Route::get('ajaxTableLastPlay/{username}/{page}', ['as' => 'ajaxTableLastPlay', 'uses' => 'SummaryController@ajaxTableLastPlay', 'middleware' => 'app.auth']);
+Route::get('ajaxTableLastAcquisition/{username}/{page}', ['as' => 'ajaxTableLastAcquisition', 'uses' => 'SummaryController@ajaxTableLastAcquisition', 'middleware' => 'app.auth']);
 
 // Routes for getting URL in ajax
 Route::get('ajaxPlayByMonthGetUrl/{username}/{page}/{label}', ['as' => 'ajaxPlayByMonthGetUrl', 'uses' => 'StatsController@ajaxPlayByMonthGetUrl', 'middleware' => 'app.auth']);

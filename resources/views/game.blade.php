@@ -13,7 +13,7 @@
         <div class="row">
             <div class="col-md-2">
                 <div class="thumbnail">
-                    {!! HTML::image($game['image']) !!}
+                    {!! HTML::image($game['thumbnail']) !!}
                     <div class="caption text-center">
                         <a target="_blank" href="https://boardgamegeek.com/boardgame/{{ $game['id'] }}">Lien vers BGG</a>
                     </div>
@@ -26,15 +26,15 @@
                         <tr><td>Durée partie</td><td>{{ $game['playingtime'] . ' minutes' }}</td></tr>
                         <tr><td>Nombre de joueurs</td><td>{{ $game['minplayer'] . ' à ' . $game['maxplayer']}}</td></tr>
 
-                        @if(\App\Helpers\Helper::ifLogin())
-                            <tr><td>Date d'acquisition</td><td>{{ $game['acquisitiondate'] }}</td></tr>
+                        @if(\App\Helpers\Helper::ifLogin() && isset($game['collection']['privateinfo']['@attributes']['acquisitiondate']))
+                            <tr><td>Date d'acquisition</td><td>{{ $game['collection']['privateinfo']['@attributes']['acquisitiondate'] }}</td></tr>
                         @endif
 
-                        <tr><td>Évaluation BGG</td><td>{{ $game['rating_bgg'] }}</td></tr>
-                        <tr><td>Évaluation de {{ $userinfo['username'] }}</td><td>{{ $game['rating'] }}</td></tr>
+                        <tr><td>Évaluation BGG</td><td>{{ isset($game['ratings']['average']) ? $game['ratings']['average'] : 'N/A' }}</td></tr>
+                        <tr><td>Évaluation de {{ $userinfo['username'] }}</td><td>{{ isset($game['collection']['rating']) ? $game['collection']['rating'] : 'N/A' }}</td></tr>
                         <tr><td>Nombre de parties jouées</td><td>{{ $game['numplays'] }}</td></tr>
-                        @if($lastPlayed)
-                            <tr><td>Dernière partie jouée</td><td>{{ date('Y-m-d', $lastPlayed['date']) }} ({{ $lastPlayed['since'] }})</td></tr>
+                        @if($game['lastPlayed'])
+                            <tr><td>Dernière partie jouée</td><td>{{ date('Y-m-d', $game['lastPlayed']['date']) }} ({{ $game['lastPlayed']['since'] }})</td></tr>
                         @endif
                     </table>
                 </div>
@@ -46,9 +46,9 @@
                 <div class="panel panel-info">
                     <div class="panel-heading">Extensions possédées</div>
                     <div class="panel-body">
-                        @if($game['expansions'])
+                        @if(isset($game['collection']['expansions']))
                         <ul>
-                            @foreach($game['expansions'] as $expansion)
+                            @foreach($game['collection']['expansions'] as $expansion)
                                 <li>{{ $expansion['name'] }}</li>
                             @endforeach
                         </ul>
@@ -83,7 +83,7 @@
                 </div>
             </div>
         </div>
-        @if(count($plays) > 0)
+        @if(count($game['plays']) > 0)
         <div class="row">
             <div class="col-md-4">
                 <div class="panel panel-info">
@@ -94,7 +94,7 @@
                                 <tr><td>Date</td><td>Parties joués</td></tr>
                             </thead>
                             <tbody>
-                                @foreach($plays as $play)
+                                @foreach($game['plays'] as $play)
                                     <tr>
                                         <td>{{ date('Y-m-d', $play['date']) }}</td>
                                         <td>{{ $play['quantity'] }}</td>

@@ -16,7 +16,7 @@ class CreateCachesTable extends Migration {
 			$table->string('identifier');
 			$table->string('username');
 			$table->longText('data');
-			$table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
+			$table->timestamps();
 		});
 	}
 

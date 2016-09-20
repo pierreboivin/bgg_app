@@ -14,11 +14,6 @@ Chart.defaults.global.tooltipTemplate = "<%if (label){%><%=label%> : <%}%><%= va
 $(function() {
     if(is_page('stats')) {
 
-        // Buttons table more
-        $(".table-more-button").click(function (event) {
-            getReplaceTable($(this));
-        });
-
         // Graphs
         $.each($('.graph-handler'), function(key, value) {
             var parentObj = $(this).parent();
@@ -94,14 +89,6 @@ $(function() {
             } else {
                 btn.prop('disabled', false);
             }
-        }
-        function getReplaceTable(obj) {
-            $.ajax({
-                url: obj.data('href') + '/' + obj.data('page')
-            }).done(function (ajaxReturn) {
-                obj.data('page', parseInt(obj.data('page')) + 1);
-                $(obj.data('replace')).html(ajaxReturn);
-            });
         }
         function ajaxLinkTo(route, page, activePoints) {
             $.ajax({

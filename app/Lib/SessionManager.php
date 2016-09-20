@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 class SessionManager {
 
     public static function guestConnexion($username) {
+        $GLOBALS['parameters']['general']['getPrivateData'] = false;
         if (Auth::check()) {
             $GLOBALS['parameters']['login']['username'] = $GLOBALS['parameters']['general']['username'] = Auth::user()->bggusername;
             $GLOBALS['parameters']['login']['password'] = Auth::user()->bggpassword;

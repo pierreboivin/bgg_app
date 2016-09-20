@@ -86,7 +86,7 @@
             </div>
 
             <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="navbar-header">
                         <span class="navbar-brand">Trier</span>
                         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#nav-trier">
