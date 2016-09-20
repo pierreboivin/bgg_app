@@ -38,7 +38,6 @@
                         <li class="{{ \App\Helpers\Helper::set_active('home') }}"><a href="/home/{{ $GLOBALS['parameters']['general']['username'] }}">Présentation</a></li>
                         <li class="{{ \App\Helpers\Helper::set_active('stats') }}"><a class="desactivate-if-not-loaded" href="/stats/{{ $GLOBALS['parameters']['general']['username'] }}">Statistiques</a></li>
                         <li class="{{ \App\Helpers\Helper::set_active('collection') }}"><a class="desactivate-if-not-loaded" href="/collection/{{ $GLOBALS['parameters']['general']['username'] }}">Collection</a></li>
-                        <li class="{{ \App\Helpers\Helper::set_active('summary') }}"><a class="desactivate-if-not-loaded" href="/resume/{{ $GLOBALS['parameters']['general']['username'] }}">Résumé</a></li>
                         <li class="{{ \App\Helpers\Helper::set_active('rapports') }} dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Rapports <span class="caret"></span></a>
                             <ul class="dropdown-menu">
@@ -47,6 +46,7 @@
                                 <li><a class="desactivate-if-not-loaded" href="/rapports/vendre/{{ $GLOBALS['parameters']['general']['username'] }}">Jeux qui pourraient être vendus</a></li>
                                 <li><a class="desactivate-if-not-loaded" href="/rapports/tobuy/{{ $GLOBALS['parameters']['general']['username'] }}">Jeux qui pourraient être achetés</a></li>
                                 <li><a class="desactivate-if-not-loaded" href="/rapports/home_compare_user/{{ $GLOBALS['parameters']['general']['username'] }}">Comparaison à une autre personne</a></li>
+                                <li><a class="desactivate-if-not-loaded" href="/resume/{{ $GLOBALS['parameters']['general']['username'] }}">Résumé</a></li>
                             </ul>
                         </li>
                     @endif

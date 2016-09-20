@@ -5,9 +5,7 @@
 
 @section('content')
 
-    @include('partials.userInfo')
-
-    <div class="panel panel-success">
+    <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">Derniers jeux joués</h3>
         </div>
@@ -24,7 +22,8 @@
         </div>
     </div>
 
-    <div class="panel panel-success">
+    @if(\App\Helpers\Helper::ifLogin())
+    <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">Derniers jeux achetés</h3>
         </div>
@@ -40,6 +39,7 @@
             <button data-page="2" data-replace="table.last-acquisition tbody" data-href="{{ url('ajaxTableLastAcquisition/' . $GLOBALS['parameters']['general']['username']) }}" class="btn btn-primary btn-block table-more-button">Plus</button>
         </div>
     </div>
+    @endif
 
 
 @endsection

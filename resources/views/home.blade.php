@@ -22,10 +22,6 @@
             <h3 class="list-group-item-heading">Collection</h3>
             <p class="list-group-item-text">Consultez votre collection de jeux.</p>
         </a>
-        <a href="/resume/{{ $GLOBALS['parameters']['general']['username'] }}" class="list-group-item desactivate-if-not-loaded">
-            <h3 class="list-group-item-heading">Résumé</h3>
-            <p class="list-group-item-text">Informations sommaires sur vos statistiques.</p>
-        </a>
         <a href="/rapports/{{ $GLOBALS['parameters']['general']['username'] }}" class="list-group-item desactivate-if-not-loaded">
             <h3 class="list-group-item-heading">Rapports</h3>
             <p class="list-group-item-text">Rapports sur vos parties jouées.</p>

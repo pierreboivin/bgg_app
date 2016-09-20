@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests;
 use App\Lib\BGGData;
 use App\Lib\Page;
+use App\Lib\SessionManager;
 use App\Lib\Stats;
 use App\Lib\UserInfos;
 use App\Lib\Utility;
@@ -31,7 +32,12 @@ class SummaryController extends Controller
         Stats::getAcquisitionRelatedArrays($arrayRawGamesAndExpansionsOwned);
 
         $params['lastPlayed'] = $this->getLastPlays();
-        $params['lastAcquisition'] = $this->getLastAcquisition();
+
+        if(SessionManager::ifLogin()) {
+            $params['lastAcquisition'] = $this->getLastAcquisition();
+        } else {
+            $params['lastAcquisition'] = [];
+        }
 
         $arrayUserInfos = UserInfos::getUserInformations($arrayRawUserInfos);
 
@@ -75,16 +81,16 @@ class SummaryController extends Controller
         $arrayGames = [];
         foreach ($GLOBALS['data']['arrayPlaysByDate'] as $datePlay => $games) {
             foreach ($games as $idGame => $gameInfo) {
-                $arrayGames[] = [$idGame, $datePlay];
+                $arrayGames[] = ['id' => $idGame, 'date' => $datePlay];
             }
         }
         $arrayPlays = array_reverse(array_slice($arrayGames, count($arrayGames) - self::TABLE_NB_LAST_PLAY * $page));
         $dtoGames = [];
-        foreach ($arrayPlays as list($idGame, $datePlay)) {
-            $gameInfo = $GLOBALS['data']['arrayTotalPlays'][$idGame];
+        foreach ($arrayPlays as $play) {
+            $gameInfo = $GLOBALS['data']['arrayTotalPlays'][$play['id']];
 
-            $gameInfo['dateFormated'] = Carbon::createFromTimestamp($datePlay)->formatLocalized('%e %b %Y');
-            $gameInfo['since'] = Carbon::createFromTimestamp($datePlay)->diffForHumans();
+            $gameInfo['dateFormated'] = Carbon::createFromTimestamp($play['date'])->formatLocalized('%e %b %Y');
+            $gameInfo['since'] = Carbon::createFromTimestamp($play['date'])->diffForHumans();
 
             $dtoGames[] = $gameInfo;
         }
@@ -95,18 +101,16 @@ class SummaryController extends Controller
     {
         foreach ($GLOBALS['data']['acquisitionsByDay'] as $dateAcquisition => $games) {
             foreach ($games as $idGame => $name) {
-                $arrayGames[] = [$idGame, $name, $dateAcquisition];
+                $arrayGames[] = ['id' => $idGame, 'name' => $name, 'date' => $dateAcquisition];
             }
         }
         $arrayAcquisition = array_reverse(array_slice($arrayGames, count($arrayGames) - self::TABLE_NB_LAST_ACQUISITION * $page));
         $dtoGames = [];
-        foreach ($arrayAcquisition as list($idGame, $name, $dateAcquisition)) {
-            $gameInfo['id'] = $idGame;
-            $gameInfo['name'] = $name;
-            $gameInfo['dateFormated'] = Carbon::createFromTimestamp($dateAcquisition)->formatLocalized('%e %b %Y');
-            $gameInfo['since'] = Carbon::createFromTimestamp($dateAcquisition)->diffForHumans();
+        foreach ($arrayAcquisition as $acquisition) {
+            $acquisition['dateFormated'] = Carbon::createFromTimestamp($acquisition['date'])->formatLocalized('%e %b %Y');
+            $acquisition['since'] = Carbon::createFromTimestamp($acquisition['date'])->diffForHumans();
 
-            $dtoGames[] = $gameInfo;
+            $dtoGames[] = $acquisition;
         }
         return $dtoGames;
     }
