@@ -10,6 +10,10 @@ class BGGData
 {
     const CACHE_TIME_IN_MINUTES = 1440;
 
+    const LOAD_NUMBER_TRY = 5;
+
+    const LOAD_WAIT_BETWEEN_TRY = 10;
+
     public static function getGamesOwned()
     {
         $urlBGG = BGGUrls::getGamesOwned();
@@ -285,9 +289,9 @@ class BGGData
 
         // Retry if data is not valid
         if (self::dataInvalid($arrayData)) {
-            if ($numTry < 3) {
+            if ($numTry < self::LOAD_NUMBER_TRY) {
                 Cache::forget($keyCache);
-                sleep($numTry * 15);
+                sleep($numTry * self::LOAD_WAIT_BETWEEN_TRY);
                 $arrayData = self::getBGGUrl($url, $mode, $parameter, ++$numTry);
             } else {
                 throw new \Exception('Can\'t get url ' . $url . ' after ' . $numTry . ' try.');
