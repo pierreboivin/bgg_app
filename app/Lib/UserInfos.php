@@ -30,7 +30,8 @@ class UserInfos
         $arrayUserInfo = [];
         if (isset($arrayUserInfos[$key][$subkey])) {
             foreach ($arrayUserInfos[$key][$subkey] as $buddy) {
-                $arrayUserInfo[$buddy['@attributes']['id']] = $buddy['@attributes']['name'];
+                $buddy = Utility::bggGetSingleOrMultiple($buddy);
+                $arrayUserInfo[$buddy['id']] = $buddy['name'];
             }
             return $arrayUserInfo;
         }

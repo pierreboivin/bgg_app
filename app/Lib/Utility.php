@@ -203,4 +203,12 @@ class Utility
         return $array;
     }
 
+    public static function bggGetSingleOrMultiple($array) {
+        if(isset($array['@attributes'])) {
+            return $array['@attributes'];
+        } else {
+            return $array;
+        }
+    }
+
 }
