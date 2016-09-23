@@ -210,5 +210,16 @@ class Utility
             return $array;
         }
     }
+    public static function bggGetMultiple($array) {
+        if(isset($array['item'])) {
+            if($array['item']['@attributes']) {
+                return $array;
+            } else {
+                return ['item' => [$array]];
+            }
+        } else {
+            return [];
+        }
+    }
 
 }
