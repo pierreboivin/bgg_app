@@ -202,15 +202,21 @@ class BGGData
         $inTempCache = true;
         $inPersistentCache = true;
         foreach($arrayUrls as $url) {
-            $tempKeyCache = 'url_' . md5($url) . '_guest';
-            if (!Cache::has($tempKeyCache)) {
-                $inTempCache = false;
+            if (!Cache::has('url_' . md5($url) . '_' . $GLOBALS['parameters']['typeLogin'])) {
+                if($GLOBALS['parameters']['typeLogin'] == 'guest') {
+                    if (!Cache::has('url_' . md5($url) . '_login')) {
+                        $inTempCache = false;
+                    }
+                }
             }
         }
         foreach($arrayUrls as $url) {
-            $tempKeyCache = 'url_' . md5($url) . '_guest';
-            if (!PersistentCache::has($tempKeyCache)) {
-                $inPersistentCache = false;
+            if (!PersistentCache::has('url_' . md5($url) . '_' . $GLOBALS['parameters']['typeLogin'])) {
+                if($GLOBALS['parameters']['typeLogin'] == 'guest') {
+                    if (!PersistentCache::has('url_' . md5($url) . '_login')) {
+                        $inTempCache = false;
+                    }
+                }
             }
         }
         if($inTempCache) {
