@@ -41,7 +41,7 @@ class LoginController extends Controller
                 'password' => Input::get('password')
             );
 
-            if (Auth::attempt($userdata)) {
+            if (Auth::attempt($userdata, true)) {
                 Session::forget('username');
                 return Redirect::to('/home/' . Auth::user()->bggusername);
             } else {
