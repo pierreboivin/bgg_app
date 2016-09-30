@@ -202,11 +202,16 @@ class BGGData
         $inTempCache = true;
         $inPersistentCache = true;
         foreach($arrayUrls as $url) {
+            // Si pas dans la cache du type de login
             if (!Cache::has('url_' . md5($url) . '_' . $GLOBALS['parameters']['typeLogin'])) {
+                // Si non-connecté en tant que guest, vérifié dans la cache "login"
                 if($GLOBALS['parameters']['typeLogin'] == 'guest') {
                     if (!Cache::has('url_' . md5($url) . '_login')) {
                         $inTempCache = false;
                     }
+                // Si connecté, la cache doit être rechargé
+                } else {
+                    $inTempCache = false;
                 }
             }
         }
@@ -216,6 +221,8 @@ class BGGData
                     if (!PersistentCache::has('url_' . md5($url) . '_login')) {
                         $inTempCache = false;
                     }
+                } else {
+                    $inTempCache = false;
                 }
             }
         }
