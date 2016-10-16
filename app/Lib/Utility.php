@@ -222,4 +222,8 @@ class Utility
         }
     }
 
+    public static function printMemoryUsage($title = 'Memory') {
+        echo $title . ' : ' . memory_get_usage(true) / 1024 / 1024 . '<br>';
+    }
+
 }

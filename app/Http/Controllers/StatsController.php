@@ -17,19 +17,38 @@ class StatsController extends Controller
         $paramsMenu = Page::getMenuParams();
 
         $arrayRawUserInfos = BGGData::getUserInfos();
+
+        // Games owned
         $arrayRawGamesOwned = BGGData::getGamesOwned();
         $arrayGamesDetails = BGGData::getDetailOwned($arrayRawGamesOwned);
-        $arrayRawGamesAndExpansionsOwned = BGGData::getGamesAndExpansionsOwned();
-        $arrayRawGamesPlays = BGGData::getPlays();
-        $arrayRawGamesRated = BGGData::getGamesRated();
-
-        Stats::getPlaysRelatedArrays($arrayRawGamesPlays);
-        Stats::getAcquisitionRelatedArrays($arrayRawGamesAndExpansionsOwned);
         Stats::getCollectionArrays($arrayRawGamesOwned);
-        Stats::getOwnedRelatedArrays($arrayGamesDetails);
-        Stats::getRatedRelatedArrays($arrayRawGamesRated);
+        $params['stats']['nbGamesOwned'] = $arrayRawGamesOwned['@attributes']['totalitems'];
+        unset($arrayRawGamesOwned);
 
+        // Games and expansions owned
+        $arrayRawGamesAndExpansionsOwned = BGGData::getGamesAndExpansionsOwned();
+        Stats::getAcquisitionRelatedArrays($arrayRawGamesAndExpansionsOwned);
+        $params['stats']['nbGamesAndExpansionsOwned'] = $arrayRawGamesAndExpansionsOwned['@attributes']['totalitems'];
+        unset($arrayRawGamesAndExpansionsOwned);
+
+        // Games played
+        $arrayRawGamesPlays = BGGData::getPlays();
+        Stats::getPlaysRelatedArrays($arrayRawGamesPlays);
+        unset($arrayRawGamesPlays);
+
+        // Games rated
+        $arrayRawGamesRated = BGGData::getGamesRated();
+        Stats::getRatedRelatedArrays($arrayRawGamesRated);
+        unset($arrayRawGamesRated);
+
+        // Games details
+        Stats::getOwnedRelatedArrays($arrayGamesDetails);
+        unset($arrayGamesDetails);
+
+        // User infos
         $arrayUserInfos = UserInfos::getUserInformations($arrayRawUserInfos);
+        unset($arrayRawUserInfos);
+
 
         $totalPlayGameCollection = 0;
         $totalGameOwnedNotPlayed = 0;
@@ -43,8 +62,6 @@ class StatsController extends Controller
 
         $params['userinfo'] = $arrayUserInfos;
 
-        $params['stats']['nbGamesOwned'] = $arrayRawGamesOwned['@attributes']['totalitems'];
-        $params['stats']['nbGamesAndExpansionsOwned'] = $arrayRawGamesAndExpansionsOwned['@attributes']['totalitems'];
         $params['stats']['nbPlaysTotal'] = $GLOBALS['data']['countAllPlays'];
         $params['stats']['nbPlaysDifferentGame'] = count($GLOBALS['data']['arrayTotalPlays']);
         $params['stats']['averagePlayByMonth'] = 0;
