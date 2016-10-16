@@ -197,6 +197,7 @@ class Stats
         $GLOBALS['data']['totalWithAcquisitionDate'] = $totalWithAcquisitionDate;
         $GLOBALS['data']['arrayValuesGames'] = $arrayValuesGames;
         $GLOBALS['data']['totalGamesValue'] = $totalGamesValue;
+        $GLOBALS['data']['nbGamesAndExpansionsOwned'] = $arrayGamesAndExpansionsOwned['@attributes']['totalitems'];
     }
 
     /**

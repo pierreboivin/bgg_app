@@ -16,38 +16,23 @@ class StatsController extends Controller
     {
         $paramsMenu = Page::getMenuParams();
 
-        $arrayRawUserInfos = BGGData::getUserInfos();
-
         // Games owned
         $arrayRawGamesOwned = BGGData::getGamesOwned();
-        $arrayGamesDetails = BGGData::getDetailOwned($arrayRawGamesOwned);
         Stats::getCollectionArrays($arrayRawGamesOwned);
-        $params['stats']['nbGamesOwned'] = $arrayRawGamesOwned['@attributes']['totalitems'];
+        Stats::getOwnedRelatedArrays(BGGData::getDetailOwned($arrayRawGamesOwned));
         unset($arrayRawGamesOwned);
 
         // Games and expansions owned
-        $arrayRawGamesAndExpansionsOwned = BGGData::getGamesAndExpansionsOwned();
-        Stats::getAcquisitionRelatedArrays($arrayRawGamesAndExpansionsOwned);
-        $params['stats']['nbGamesAndExpansionsOwned'] = $arrayRawGamesAndExpansionsOwned['@attributes']['totalitems'];
-        unset($arrayRawGamesAndExpansionsOwned);
+        Stats::getAcquisitionRelatedArrays(BGGData::getGamesAndExpansionsOwned());
 
         // Games played
-        $arrayRawGamesPlays = BGGData::getPlays();
-        Stats::getPlaysRelatedArrays($arrayRawGamesPlays);
-        unset($arrayRawGamesPlays);
+        Stats::getPlaysRelatedArrays(BGGData::getPlays());
 
         // Games rated
-        $arrayRawGamesRated = BGGData::getGamesRated();
-        Stats::getRatedRelatedArrays($arrayRawGamesRated);
-        unset($arrayRawGamesRated);
-
-        // Games details
-        Stats::getOwnedRelatedArrays($arrayGamesDetails);
-        unset($arrayGamesDetails);
+        Stats::getRatedRelatedArrays(BGGData::getGamesRated());
 
         // User infos
-        $arrayUserInfos = UserInfos::getUserInformations($arrayRawUserInfos);
-        unset($arrayRawUserInfos);
+        $arrayUserInfos = UserInfos::getUserInformations(BGGData::getUserInfos());
 
 
         $totalPlayGameCollection = 0;
@@ -62,6 +47,8 @@ class StatsController extends Controller
 
         $params['userinfo'] = $arrayUserInfos;
 
+        $params['stats']['nbGamesOwned'] = count($GLOBALS['data']['gamesCollection']);
+        $params['stats']['nbGamesAndExpansionsOwned'] = $GLOBALS['data']['nbGamesAndExpansionsOwned'];
         $params['stats']['nbPlaysTotal'] = $GLOBALS['data']['countAllPlays'];
         $params['stats']['nbPlaysDifferentGame'] = count($GLOBALS['data']['arrayTotalPlays']);
         $params['stats']['averagePlayByMonth'] = 0;
