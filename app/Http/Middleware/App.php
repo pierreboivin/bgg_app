@@ -19,6 +19,7 @@ class App {
     {
         setlocale(LC_TIME, config('app.locale'));
         Carbon::setLocale('fr');
+        ini_set('memory_limit', '2048M');
 
         return $next($request);
     }

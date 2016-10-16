@@ -282,7 +282,7 @@ class Stats
     {
         $arrayGameRated = [];
         if (isset($arrayRawGamesRated['item'])) {
-            $arrayRawGamesRated['item'] = Utility::bggGetMultiple($arrayRawGamesRated['item']);
+            $arrayRawGamesRated = Utility::bggGetMultiple($arrayRawGamesRated);
             foreach ($arrayRawGamesRated['item'] as $game) {
                 if (isset($game['stats']['rating']['@attributes']['value']) && $game['stats']['rating']['@attributes']['value'] != 'N/A') {
                     $rating = $game['stats']['rating']['@attributes']['value'];

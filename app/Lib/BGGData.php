@@ -98,7 +98,7 @@ class BGGData
 
         $fromBGG = self::getBGGUrl($urlBGG);
 
-        if($fromBGG['@attributes']) {
+        if(isset($fromBGG['item']['@attributes'])) {
             $arrayGamesDetails[$fromBGG['item']['@attributes']['id']] = $fromBGG['item'];
         } else {
             foreach ($fromBGG['item'] as $gameDetail) {
@@ -204,7 +204,7 @@ class BGGData
         foreach($arrayUrls as $url) {
             // Si pas dans la cache du type de login
             if (!Cache::has('url_' . md5($url) . '_' . $GLOBALS['parameters']['typeLogin'])) {
-                // Si non-connecté en tant que guest, vérifié dans la cache "login"
+                // Si consulté en tant que guest, vérifié dans la cache "login"
                 if($GLOBALS['parameters']['typeLogin'] == 'guest') {
                     if (!Cache::has('url_' . md5($url) . '_login')) {
                         $inTempCache = false;

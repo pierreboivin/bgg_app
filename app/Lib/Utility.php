@@ -212,10 +212,10 @@ class Utility
     }
     public static function bggGetMultiple($array) {
         if(isset($array['item'])) {
-            if($array['item']['@attributes']) {
-                return $array;
+            if(isset($array['item']['@attributes'])) {
+                return ['item' => $array];
             } else {
-                return ['item' => [$array]];
+                return $array;
             }
         } else {
             return [];
