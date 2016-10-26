@@ -62,11 +62,15 @@
                 <div class="panel panel-info">
                     <div class="panel-heading">Mécaniques</div>
                     <div class="panel-body">
-                        <ul>
-                        @foreach($game['detail']['boardgamemechanic'] as $mechanic)
-                            <li>{{ $mechanic['value'] }}</li>
-                        @endforeach
-                        </ul>
+                        @if(isset($game['detail']['boardgamemechanic']))
+                            <ul>
+                                @foreach($game['detail']['boardgamemechanic'] as $mechanic)
+                                    <li>{{ $mechanic['value'] }}</li>
+                                @endforeach
+                            </ul>
+                        @else
+                            Aucune
+                        @endif
                     </div>
                 </div>
             </div>
@@ -74,11 +78,15 @@
                 <div class="panel panel-info">
                     <div class="panel-heading">Catégories du jeu</div>
                     <div class="panel-body">
-                        <ul>
-                            @foreach($game['detail']['boardgamecategory'] as $category)
-                                <li>{{ $category['value'] }}</li>
-                            @endforeach
-                        </ul>
+                        @if(isset($game['detail']['boardgamecategory']))
+                            <ul>
+                                @foreach($game['detail']['boardgamecategory'] as $category)
+                                    <li>{{ $category['value'] }}</li>
+                                @endforeach
+                            </ul>
+                        @else
+                            Aucune
+                        @endif
                     </div>
                 </div>
             </div>
