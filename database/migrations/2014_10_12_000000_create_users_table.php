@@ -21,8 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('password', 60);
             $table->string('type')->default('normal');
             $table->rememberToken();
-            $table->timestamp('created_at')->default(\DB::raw('CURRENT_TIMESTAMP'));
-            $table->timestamp('updated_at')->default(\DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamps(); // Pour Laravel openshift
         });
 
     }
