@@ -33,8 +33,8 @@
             </div>
             <div class="collapse navbar-collapse" id="navigation-bar">
                 <ul class="nav navbar-nav">
-                    @if(isset($GLOBALS['parameters']['general']['username']))
                         <li><a href="/">Accueil</a></li>
+                    @if(\App\Helpers\Helper::ifBGGInfo())
                         <li class="{{ \App\Helpers\Helper::set_active('home') }}"><a href="/home/{{ $GLOBALS['parameters']['general']['username'] }}">Présentation</a></li>
                         <li class="{{ \App\Helpers\Helper::set_active('stats') }}"><a class="desactivate-if-not-loaded" href="/stats/{{ $GLOBALS['parameters']['general']['username'] }}">Statistiques</a></li>
                         <li class="{{ \App\Helpers\Helper::set_active('collection') }}"><a class="desactivate-if-not-loaded" href="/collection/{{ $GLOBALS['parameters']['general']['username'] }}">Collection</a></li>
@@ -54,12 +54,15 @@
 
                 <ul class="nav navbar-nav navbar-right">
                     <li id="background-loading"><img src="/assets/img/ajax-loader.gif" title="Chargement des nouvelles statistiques en cours" /></li>
-                    @if(Auth::check())
+                    @if(\App\Helpers\Helper::ifAuthenticated())
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Connecté en tant que {{ $GLOBALS['parameters']['login']['username'] }} <span class="caret"></span></a>
                             <ul class="dropdown-menu">
+                                @if(\App\Helpers\Helper::ifAdmin())
                                 <li><a href="/admin/">Administration</a></li>
-                                <li><a href="/home/{{ $GLOBALS['parameters']['login']['username'] }}">Retour à votre page d'accueil</a></li>
+                                @endif
+                                <li><a href="/modules/">Modules</a></li>
+                                <li><a href="/home/">Retour à votre page d'accueil</a></li>
                                 <li role="separator" class="divider"></li>
                                 <li><a href="/logout">Se déconnecter</a></li>
                             </ul>
@@ -72,8 +75,12 @@
         </div>
     </nav>
 
-    @if (isset($userinfo))
-        <input type="hidden" id="username" value="{{ $userinfo['username'] }}">
+    @if (isset($userinfo['username']))
+        @if(\App\Helpers\Helper::ifBGGInfo())
+            <input type="hidden" id="username" value="{{ $userinfo['username'] }}">
+        @else
+            <input type="hidden" id="username" value="">
+        @endif
     @endif
     <input type="hidden" id="cacheLevel" value="{{ isset($GLOBALS['parameters']['cache']['level']) ? $GLOBALS['parameters']['cache']['level'] : '' }}">
 
@@ -81,6 +88,7 @@
         @if (Session::has('error'))
             <div class="alert alert-danger">{{ Session::get('error') }}</div>
         @endif
+
         @if (Session::has('success'))
             <div class="alert alert-success">{{ Session::get('success') }}</div>
         @endif
@@ -95,7 +103,6 @@
 
         ga('create', 'UA-77752482-1', 'auto');
         ga('send', 'pageview');
-
     </script>
 </body>
 </html>

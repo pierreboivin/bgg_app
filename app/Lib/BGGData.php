@@ -125,6 +125,9 @@ class BGGData
             $urlBGG = BGGUrls::getDetail($strIds);
 
             $fromBGG = self::getBGGUrl($urlBGG);
+
+            $fromBGG = Utility::bggGetMultiple($fromBGG);
+
             foreach ($fromBGG['item'] as $gameDetail) {
                 $arrayGamesDetails[$gameDetail['@attributes']['id']] = $gameDetail;
             }

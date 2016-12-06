@@ -18,7 +18,8 @@ class AppAuth {
     public function handle($request, Closure $next)
     {
         $GLOBALS['parameters']['cache']['level'] = '';
-        SessionManager::guestConnexion($request->route()->username);
+
+        SessionManager::manageConnexionInfo($request->route()->username);
 
         if(!isset($GLOBALS['parameters']['general']['username'])) {
             return redirect('/login');

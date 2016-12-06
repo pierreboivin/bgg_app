@@ -15,8 +15,17 @@ class Helper{
             return '<a href="#" data-toggle="tooltip" title="Vous devez être connecté pour voir cette statistique"><img src="/assets/img/icon_attention.png" /></a>';
         }
     }
-    public static function ifLogin() {
-        return SessionManager::ifLogin();
+    public static function ifLoginAsSelf() {
+        return SessionManager::ifLoginAsSelf();
+    }
+    public static function ifAuthenticated() {
+        return isset($GLOBALS['parameters']['login']['authenticated']) && $GLOBALS['parameters']['login']['authenticated'] === true;
+    }
+    public static function ifBGGInfo() {
+        return SessionManager::ifBggInfo();
+    }
+    public static function ifAdmin() {
+        return isset($GLOBALS['parameters']['login']['type']) && $GLOBALS['parameters']['login']['type'] === 'admin';
     }
     public static function asset_timed($path, $secure=null){
         $file = public_path($path);

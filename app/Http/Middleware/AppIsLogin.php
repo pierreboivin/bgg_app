@@ -2,11 +2,9 @@
 
 namespace App\Http\Middleware;
 
-use App\Lib\BGGData;
-use App\Lib\SessionManager;
 use Closure;
 
-class AppIsAdmin {
+class AppIsLogin {
 
     /**
      * Handle an incoming request.
@@ -17,7 +15,7 @@ class AppIsAdmin {
      */
     public function handle($request, Closure $next)
     {
-        if($GLOBALS['parameters']['login']['type'] != 'admin') {
+        if (!Auth::check()) {
             return redirect('/login');
         }
 

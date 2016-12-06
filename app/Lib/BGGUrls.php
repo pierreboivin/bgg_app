@@ -6,25 +6,25 @@ class BGGUrls {
 
     public static function getGamesOwned()
     {
-        $showPrivate = SessionManager::ifLogin() == true ? '&showprivate=1' : '';
+        $showPrivate = SessionManager::ifLoginAsSelf() == true ? '&showprivate=1' : '';
         return 'http://www.boardgamegeek.com/xmlapi2/collection?own=1&excludesubtype=boardgameexpansion&stats=1' . $showPrivate . '&username=' . urlencode($GLOBALS['parameters']['general']['username']);
     }
 
     public static function getGamesPreviouslyOwned()
     {
-        $showPrivate = SessionManager::ifLogin() == true ? '&showprivate=1' : '';
+        $showPrivate = SessionManager::ifLoginAsSelf() == true ? '&showprivate=1' : '';
         return 'http://www.boardgamegeek.com/xmlapi2/collection?prevowned=1&excludesubtype=boardgameexpansion&stats=1' . $showPrivate . '&username=' . urlencode($GLOBALS['parameters']['general']['username']);
     }
 
     public static function getGamesOwnedByUserName($username)
     {
-        $showPrivate = SessionManager::ifLogin() == true ? '&showprivate=1' : '';
+        $showPrivate = SessionManager::ifLoginAsSelf() == true ? '&showprivate=1' : '';
         return 'http://www.boardgamegeek.com/xmlapi2/collection?own=1&excludesubtype=boardgameexpansion&stats=1' . $showPrivate . '&username=' . urlencode($username);
     }
 
     public static function getGamesAndExpansionsOwned()
     {
-        $showPrivate = SessionManager::ifLogin() == true ? '&showprivate=1' : '';
+        $showPrivate = SessionManager::ifLoginAsSelf() == true ? '&showprivate=1' : '';
         return 'http://www.boardgamegeek.com/xmlapi2/collection?own=1&stats=1' . $showPrivate . '&username=' . urlencode($GLOBALS['parameters']['general']['username']);
     }
 

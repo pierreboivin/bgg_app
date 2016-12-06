@@ -33,7 +33,7 @@ class SummaryController extends Controller
 
         $params['lastPlayed'] = $this->getLastPlays();
 
-        if(SessionManager::ifLogin()) {
+        if(SessionManager::ifLoginAsSelf()) {
             $params['lastAcquisition'] = $this->getLastAcquisition();
         } else {
             $params['lastAcquisition'] = [];

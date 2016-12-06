@@ -197,7 +197,7 @@ class RapportsController extends Controller
         $nbToGetInEachCategory = floor(count($GLOBALS['data']['gamesCollection']) / 5);
 
         // Less rentable
-        if (SessionManager::ifLogin()) {
+        if (SessionManager::ifLoginAsSelf()) {
             $arrayRentable = Stats::getRentabiliteCollection();
             $lessRentable = array_reverse(array_slice($arrayRentable, count($arrayRentable) - $nbToGetInEachCategory));
             foreach ($lessRentable as &$game) {

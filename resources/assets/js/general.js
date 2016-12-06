@@ -6,26 +6,28 @@ $(function () {
         getReplaceTable($(this));
     });
 
-    if(getLevelLoad() == 'persistent') {
-        var loadBackgroundData = function () {
-            $.getJSON("/load/" + $("#username").val() + "?force=1", function (data) {
-            });
-        };
-        var checkIfBackgroundLoaded = function () {
-            $.getJSON("/check_loading/" + $("#username").val() + "?force=1", function (data) {
-                $('#background-loading').show();
-                if (data.progress < 100) {
-                    setTimeout(
-                      function () {
-                          checkIfBackgroundLoaded();
-                      }, 1000);
-                } else {
-                    $('#background-loading').hide();
-                }
-            });
-        };
-        checkIfBackgroundLoaded();
-        loadBackgroundData();
+    if($("#username").length) {
+        if (getLevelLoad() == 'persistent') {
+            var loadBackgroundData = function () {
+                $.getJSON("/load/" + $("#username").val() + "?force=1", function (data) {
+                });
+            };
+            var checkIfBackgroundLoaded = function () {
+                $.getJSON("/check_loading/" + $("#username").val() + "?force=1", function (data) {
+                    $('#background-loading').show();
+                    if (data.progress < 100) {
+                        setTimeout(
+                          function () {
+                              checkIfBackgroundLoaded();
+                          }, 2000);
+                    } else {
+                        $('#background-loading').hide();
+                    }
+                });
+            };
+            checkIfBackgroundLoaded();
+            loadBackgroundData();
+        }
     }
     function getReplaceTable(obj) {
         $.ajax({

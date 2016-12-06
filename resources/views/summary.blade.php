@@ -22,7 +22,7 @@
         </div>
     </div>
 
-    @if(\App\Helpers\Helper::ifLogin())
+    @if(\App\Helpers\Helper::ifLoginAsSelf())
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">Derniers jeux achetés</h3>

@@ -117,7 +117,7 @@
                         @include('partials.table-owned-mostdesigner')
                     </div>
                     <hr>
-                    @if(\App\Helpers\Helper::ifLogin())
+                    @if(\App\Helpers\Helper::ifLoginAsSelf())
                     <div class="chart-container">
                         @include('partials.graphs-acquisitionByMonth')
                     </div>

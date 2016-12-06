@@ -10,14 +10,17 @@ class UserInfos
      */
     public static function getUserInformations($arrayRawUserInfos)
     {
-        $arrayInfo = [
-            'username' => $arrayRawUserInfos['@attributes']['name'],
-            'firstname' => $arrayRawUserInfos['firstname']['@attributes']['value'],
-            'lastname' => $arrayRawUserInfos['lastname']['@attributes']['value'],
-            'stateorprovince' => $arrayRawUserInfos['stateorprovince']['@attributes']['value'],
-            'country' => $arrayRawUserInfos['country']['@attributes']['value'],
-            'yearregistered' => $arrayRawUserInfos['yearregistered']['@attributes']['value']
-        ];
+        $arrayInfo = [];
+        if(isset($arrayRawUserInfos['@attributes']['name'])) {
+            $arrayInfo = [
+                'username' => $arrayRawUserInfos['@attributes']['name'],
+                'firstname' => $arrayRawUserInfos['firstname']['@attributes']['value'],
+                'lastname' => $arrayRawUserInfos['lastname']['@attributes']['value'],
+                'stateorprovince' => $arrayRawUserInfos['stateorprovince']['@attributes']['value'],
+                'country' => $arrayRawUserInfos['country']['@attributes']['value'],
+                'yearregistered' => $arrayRawUserInfos['yearregistered']['@attributes']['value']
+            ];
+        }
         return $arrayInfo;
     }
 

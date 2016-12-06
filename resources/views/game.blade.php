@@ -26,7 +26,7 @@
                         <tr><td>Durée partie</td><td>{{ $game['playingtime'] . ' minutes' }}</td></tr>
                         <tr><td>Nombre de joueurs</td><td>{{ $game['minplayer'] . ' à ' . $game['maxplayer']}}</td></tr>
 
-                        @if(\App\Helpers\Helper::ifLogin() && isset($game['collection']['privateinfo']['@attributes']['acquisitiondate']))
+                        @if(\App\Helpers\Helper::ifLoginAsSelf() && isset($game['collection']['privateinfo']['@attributes']['acquisitiondate']))
                             <tr><td>Date d'acquisition</td><td>{{ $game['collection']['privateinfo']['@attributes']['acquisitiondate'] }}</td></tr>
                         @endif
 
@@ -46,7 +46,7 @@
                 <div class="panel panel-info">
                     <div class="panel-heading">Extensions possédées</div>
                     <div class="panel-body">
-                        @if(isset($game['collection']['expansions']))
+                        @if(isset($game['collection']['expansions']) && count($game['collection']['expansions']))
                         <ul>
                             @foreach($game['collection']['expansions'] as $expansion)
                                 <li>{{ $expansion['name'] }}</li>

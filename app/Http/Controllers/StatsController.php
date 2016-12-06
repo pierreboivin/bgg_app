@@ -59,14 +59,14 @@ class StatsController extends Controller
         }
         $params['stats']['hindex'] = $GLOBALS['data']['hindex'];
         $params['stats']['averageAcquisitionByMonth'] = '';
-        if (SessionManager::ifLogin()) {
+        if (SessionManager::ifLoginAsSelf()) {
             if(count($GLOBALS['data']['acquisitionsByMonth']) > 0) {
                 $params['stats']['averageAcquisitionByMonth'] = round($GLOBALS['data']['totalWithAcquisitionDate'] / count($GLOBALS['data']['acquisitionsByMonth']));
             }
         }
         $params['stats']['averageValueGames'] = '';
         $params['stats']['totalValueGames'] = '';
-        if (SessionManager::ifLogin()) {
+        if (SessionManager::ifLoginAsSelf()) {
             if(count($GLOBALS['data']['arrayValuesGames']) > 0) {
                 $params['stats']['averageValueGames'] = Utility::displayMoney($GLOBALS['data']['totalGamesValue'] / count($GLOBALS['data']['arrayValuesGames']));
             }

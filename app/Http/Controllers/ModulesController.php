@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests;
 
-class AdminController extends Controller
+class ModulesController extends Controller
 {
     public function home()
     {
-        return \View::make('admin.home');
+        return \View::make('modules.home');
     }
 
 }

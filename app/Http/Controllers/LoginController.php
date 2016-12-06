@@ -32,7 +32,7 @@ class LoginController extends Controller
         $validator = Validator::make(Input::all(), $rules, $messages);
 
         if ($validator->fails()) {
-            return Redirect::to('/')
+            return Redirect::to('/login')
                 ->withErrors($validator)
                 ->withInput(Input::except('password'));
         } else {
@@ -46,7 +46,7 @@ class LoginController extends Controller
                 return Redirect::to('/home/' . Auth::user()->bggusername);
             } else {
                 $validatorCustom[] = 'Erreur de connexion';
-                return Redirect::to('/')->withErrors(array('register' => $validatorCustom));
+                return Redirect::to('/login')->withErrors(array('register' => $validatorCustom));
             }
 
         }
