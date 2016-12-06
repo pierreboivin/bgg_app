@@ -38,7 +38,7 @@
                 @foreach($playsThisMonth as $idGame => $gameInfos)
                     <tr>
                         <td>
-                            <a href="http://boardgamegeek.com/boardgame/{{ $idGame }}" target="_blank">{{ $gameInfos['otherInfo']['name'] }}</a>
+                            <a href="{{ url('fiche', [$userinfo['username'], $idGame]) }}">{{ $gameInfos['otherInfo']['name'] }}</a>
                             @if($gameInfos['newGame'])
                                 <span class="label label-success">Nouveau jeu</span>
                             @endif
@@ -65,7 +65,7 @@
                 <tbody>
                 @foreach($acquisitionsThisMonth as $idGame => $gameName)
                     <tr>
-                        <td><a href="http://boardgamegeek.com/boardgame/{{ $idGame }}" target="_blank">{{ $gameName }}</a></td>
+                        <td><a href="{{ url('fiche', [$userinfo['username'], $idGame]) }}">{{ $gameName }}</a></td>
                     </tr>
                 @endforeach
                 </tbody>

@@ -13,7 +13,7 @@ echo "Setting environment variables..." 1>&2
 
 export APP_ENV="${APPLICATION_ENV:-production}"
 if [[ "${APPLICATION_ENV:-}" != "development" ]]; then
-  export APP_DEBUG=false
+  export APP_DEBUG=true
 else
   export APP_DEBUG=true
 fi

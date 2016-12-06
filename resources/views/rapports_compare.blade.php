@@ -25,7 +25,7 @@
         <tbody>
         @foreach($gamesInCommon['games'] as $game)
             <tr>
-                <td><a href="http://boardgamegeek.com/boardgame/{{ $game['id'] }}" target="_blank">{{ $game['name'] }}</a></td>
+                <td><a href="{{ url('fiche', [$userinfo['username'], $game['id']]) }}">{{ $game['name'] }}</a></td>
             </tr>
         @endforeach
         </tbody>
@@ -50,7 +50,7 @@
             <tr>
                 <td><a href="http://boardgamegeek.com/boardgame/{{ $game['id'] }}" target="_blank">{{ $game['name'] }}</a></td>
                 <td>{{ $game['rating_bgg'] }}</td>
-                <td>{{ $game['minplayer'] . ' - ' . $game['maxplayer'] }}</td>
+                <td>{{ \App\Helpers\Helper::displayNbPlayers($game['minplayer'], $game['maxplayer']) }}</td>
             </tr>
         @endforeach
         </tbody>

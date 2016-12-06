@@ -193,7 +193,8 @@ class BGGData
 
     public static function getCurrentUserNameCollectionDataInCache($compare)
     {
-        if (self::dataExistInCache(BGGUrls::getGamesOwnedByUserName($compare))) {
+        $toRegenerate = false;
+        if (self::dataExistInCache(BGGUrls::getGamesOwnedByUserName($compare), $toRegenerate)) {
             return true;
         } else {
             return false;

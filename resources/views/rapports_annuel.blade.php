@@ -40,7 +40,7 @@
                 @foreach($table['mostPlaysThisYear'] as $idGame => $gameInfos)
                     <tr>
                         <td>
-                            <a href="http://boardgamegeek.com/boardgame/{{ $idGame }}" target="_blank">{{ $gameInfos['otherInfo']['name'] }}</a>
+                            <a href="{{ url('fiche', [$userinfo['username'], $idGame]) }}">{{ $gameInfos['otherInfo']['name'] }}</a>
                         </td>
                         <td>{{ $gameInfos['nbPlayed'] }}</td>
                     </tr>
@@ -63,7 +63,7 @@
                 @foreach($table['firstTryAndGoodRated'] as $idGame => $gameInfos)
                     <tr>
                         <td>
-                            <a href="http://boardgamegeek.com/boardgame/{{ $idGame }}" target="_blank">{{ $gameInfos['name'] }}</a>
+                            <a href="{{ url('fiche', [$userinfo['username'], $idGame]) }}">{{ $gameInfos['name'] }}</a>
                         </td>
                         <td>{{ $gameInfos['rating'] }}</td>
                     </tr>
@@ -86,7 +86,7 @@
                 @foreach($table['gameCollectionNotPlayed'] as $idGame => $gameInfos)
                     <tr>
                         <td>
-                            <a href="http://boardgamegeek.com/boardgame/{{ $idGame }}" target="_blank">{{ $gameInfos['name'] }}</a>
+                            <a href="{{ url('fiche', [$userinfo['username'], $idGame]) }}">{{ $gameInfos['name'] }}</a>
                         </td>
                         <td>{{ $gameInfos['rating'] }}</td>
                     </tr>
