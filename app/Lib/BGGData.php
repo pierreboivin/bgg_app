@@ -118,18 +118,20 @@ class BGGData
             }
         }
 
-        $arrayChunk = array_chunk($arrayId, 40, true);
-        foreach ($arrayChunk as $key => $arrayIds) {
-            $strIds = implode(',', $arrayIds);
+        if($arrayId[0] !== null) {
+            $arrayChunk = array_chunk($arrayId, 40, true);
+            foreach ($arrayChunk as $key => $arrayIds) {
+                $strIds = implode(',', $arrayIds);
 
-            $urlBGG = BGGUrls::getDetail($strIds);
+                $urlBGG = BGGUrls::getDetail($strIds);
 
-            $fromBGG = self::getBGGUrl($urlBGG);
+                $fromBGG = self::getBGGUrl($urlBGG);
 
-            $fromBGG = Utility::bggGetMultiple($fromBGG);
+                $fromBGG = Utility::bggGetMultiple($fromBGG);
 
-            foreach ($fromBGG['item'] as $gameDetail) {
-                $arrayGamesDetails[$gameDetail['@attributes']['id']] = $gameDetail;
+                foreach ($fromBGG['item'] as $gameDetail) {
+                    $arrayGamesDetails[$gameDetail['@attributes']['id']] = $gameDetail;
+                }
             }
         }
 
@@ -320,6 +322,9 @@ class BGGData
 
     private static function dataInvalid($arrayData)
     {
+        if($arrayData === false) {
+            return true;
+        }
         if (isset($arrayData[0]) && strpos($arrayData[0], 'will be processed') !== false) {
             return true;
         }

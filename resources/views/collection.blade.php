@@ -7,6 +7,8 @@
 
     @include('partials.userInfo')
 
+    <input type="hidden" name="collectionUrl" value="{{ url('collection', [$userinfo['username']]) }}" />
+
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="row">
@@ -20,7 +22,7 @@
                         </button>
                     </div>
                     <div class="collapse navbar-collapse" id="nav-filtrer">
-                        <div class="btn-group option-set filter-playingtime" role="group" data-filter-group="type-game">
+                        <div class="btn-group option-set filter-playingtime" role="group" data-filter-group="time">
                             <button type="button" class="navbar-btn btn btn-default active" data-filter-value="">Tous</button>
                             <button type="button" class="navbar-btn btn btn-default" data-filter-value=".30minus">30 minutes et moins</button>
                             <button type="button" class="navbar-btn btn btn-default" data-filter-value=".31to60">Entre 31 et 60 minutes</button>
@@ -64,18 +66,18 @@
                         <div class="pull-left">
                             <div class="btn-group option-set filter-players" role="group" data-filter-group="players">
                                 <button type="button" class="navbar-btn btn btn-default active" data-filter-value="">Tous</button>
-                                <button type="button" class="navbar-btn btn btn-default" data-filter-value=".players_solo">Solo</button>
-                                <button type="button" class="navbar-btn btn btn-default" data-filter-value=".players_2">2</button>
-                                <button type="button" class="navbar-btn btn btn-default" data-filter-value=".players_3">3</button>
-                                <button type="button" class="navbar-btn btn btn-default" data-filter-value=".players_4">4</button>
-                                <button type="button" class="navbar-btn btn btn-default" data-filter-value=".players_5">5</button>
-                                <button type="button" class="navbar-btn btn btn-default" data-filter-value=".players_6">6</button>
-                                <button type="button" class="navbar-btn btn btn-default" data-filter-value=".players_plus">7 et plus</button>
+                                <button type="button" class="navbar-btn btn btn-default" data-filter-value=".players1">Solo</button>
+                                <button type="button" class="navbar-btn btn btn-default" data-filter-value=".players2">2</button>
+                                <button type="button" class="navbar-btn btn btn-default" data-filter-value=".players3">3</button>
+                                <button type="button" class="navbar-btn btn btn-default" data-filter-value=".players4">4</button>
+                                <button type="button" class="navbar-btn btn btn-default" data-filter-value=".players5">5</button>
+                                <button type="button" class="navbar-btn btn btn-default" data-filter-value=".players6">6</button>
+                                <button type="button" class="navbar-btn btn btn-default" data-filter-value=".playersplus">7 et plus</button>
                                 <input type="hidden" class="selector-players" value="">
                             </div>
                         </div>
                         <div class="pull-left">
-                            <select class="form-control option-set" id="players-type-filter" name="players-type-filter">
+                            <select class="form-control option-set filter-players-type" id="filter-players-type" name="filter-players-type">
                                 <option value="">Tous</option>
                                 <option value="best">Meilleurs selon les votes</option>
                                 <option value="recommended">Recommandés selon les votes</option>

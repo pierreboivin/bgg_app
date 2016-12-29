@@ -41,7 +41,7 @@ Route::group(['middleware' => ['app.auth']], function()
     Route::get('/load/{username}', ['as' => 'load', 'uses' => 'HomeController@load']);
 
     Route::get('/stats/{username}', ['as' => 'stats', 'uses' => 'StatsController@home']);
-    Route::get('/collection/{username}', ['as' => 'collection', 'uses' => 'CollectionController@home']);
+    Route::get('/collection/{username}/{filter?}/{sorting?}/{typeDisplay?}', ['as' => 'collection', 'uses' => 'CollectionController@home']);
     Route::get('/resume/{username}', ['as' => 'resume', 'uses' => 'SummaryController@home']);
     Route::get('/fiche/{username}/{gameid}', ['as' => 'collection', 'uses' => 'CollectionController@game']);
     Route::get('/rapports/{username}', ['as' => 'rapports', 'uses' => 'RapportsController@home']);

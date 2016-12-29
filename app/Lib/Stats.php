@@ -261,9 +261,10 @@ class Stats
     }
 
     public static function convertBggDetailInfo($game) {
+        $name = isset($game['name'][0]) ? $game['name'][0]['@attributes']['value'] : $game['name']['@attributes']['value'];
         $gameInfo = [
             'id' => $game['@attributes']['id'],
-            'name' => $game['name'][0]['@attributes']['value'],
+            'name' => $name,
             'thumbnail' => isset($game['thumbnail']) ? $game['thumbnail'] : '',
             'minplayer' => isset($game['minplayers']['@attributes']['value']) ? $game['minplayers']['@attributes']['value'] : 0,
             'maxplayer' => isset($game['maxplayers']['@attributes']['value']) ? $game['maxplayers']['@attributes']['value'] : 0,

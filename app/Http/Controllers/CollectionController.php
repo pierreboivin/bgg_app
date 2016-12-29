@@ -56,19 +56,19 @@ class CollectionController extends Controller
                 $end = (int)$arrayGame['maxplayer'];
 
                 if ($begin == 1) {
-                    $classes[] = 'players_solo';
+                    $classes[] = 'players1';
                 }
                 if ($end >= 7) {
-                    $classes[] = 'players_plus';
+                    $classes[] = 'playersplus';
                 }
                 for ($i = $begin; $i <= $end; $i++) {
-                    $classes[] = 'players_' . $i;
+                    $classes[] = 'players' . $i;
 
                     if(isset($gameProperties['poll']['process_suggested_numplayers']['best']) && $gameProperties['poll']['process_suggested_numplayers']['best'] == $i) {
-                        $classes[] = 'players_' . $i . '_best';
+                        $classes[] = 'players' . $i . 'best';
                     }
                     if(isset($gameProperties['poll']['process_suggested_numplayers']['recommended']) && $gameProperties['poll']['process_suggested_numplayers']['recommended'] == $i) {
-                        $classes[] = 'players_' . $i . '_recommended';
+                        $classes[] = 'players' . $i . 'recommended';
                     }
                 }
             }
@@ -127,7 +127,7 @@ class CollectionController extends Controller
         Stats::getPlaysRelatedArrays($arrayRawGamesPlays);
 
         if(isset($GLOBALS['data']['arrayTotalPlays'][$idGame])) {
-            $arrayGameDetail['numplays'] = count($GLOBALS['data']['arrayTotalPlays'][$idGame]);
+            $arrayGameDetail['numplays'] = $GLOBALS['data']['arrayTotalPlays'][$idGame]['nbPlayed'];
             $allPlays = $GLOBALS['data']['arrayTotalPlays'][$idGame]['plays'];
             if ($allPlays) {
                 uasort($allPlays, 'App\Lib\Utility::compareDate');
