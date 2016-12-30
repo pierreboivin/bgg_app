@@ -287,6 +287,7 @@ class BGGData
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                     curl_setopt($ch, CURLOPT_COOKIE, $parameter['cookie']);
                     curl_setopt($ch, CURLOPT_URL, $url);
+                    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
                     $contentUrl = curl_exec($ch);
                 } else {
                     $contentUrl = file_get_contents($url);
