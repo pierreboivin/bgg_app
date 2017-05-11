@@ -5,7 +5,7 @@
 
 @section('content')
 
-    <div class="panel panel-default">
+    <div class="panel panel-success">
         <div class="panel-heading">
             <h3 class="panel-title">Derniers jeux joués</h3>
         </div>
@@ -23,7 +23,7 @@
     </div>
 
     @if(\App\Helpers\Helper::ifLoginAsSelf())
-    <div class="panel panel-default">
+    <div class="panel panel-success">
         <div class="panel-heading">
             <h3 class="panel-title">Derniers jeux achetés</h3>
         </div>
@@ -40,6 +40,17 @@
         </div>
     </div>
     @endif
+
+    <div class="table-container">
+        <div class="row">
+            <div class="col-md-6">
+                @include('partials.table-owned-lesstime')
+            </div>
+            <div class="col-md-6">
+                @include('partials.table-owned-mosttime')
+            </div>
+        </div>
+    </div>
 
 
 @endsection

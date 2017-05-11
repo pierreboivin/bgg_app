@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use App\Lib\BGGData;
+use App\Lib\Graphs;
 use App\Lib\Page;
 use App\Lib\SessionManager;
 use App\Lib\Stats;
@@ -38,6 +39,8 @@ class SummaryController extends Controller
         } else {
             $params['lastAcquisition'] = [];
         }
+
+        $params['table']['ownedTimePlayed'] = Graphs::getOwnedTimePlayed();
 
         $arrayUserInfos = UserInfos::getUserInformations($arrayRawUserInfos);
 
@@ -99,6 +102,7 @@ class SummaryController extends Controller
 
     private function getLastAcquisition($page = 1)
     {
+        $arrayGames = [];
         foreach ($GLOBALS['data']['acquisitionsByDay'] as $dateAcquisition => $games) {
             foreach ($games as $idGame => $name) {
                 $arrayGames[] = ['id' => $idGame, 'name' => $name, 'date' => $dateAcquisition];
