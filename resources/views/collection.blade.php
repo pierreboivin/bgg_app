@@ -130,7 +130,7 @@
                 <div class="col-left">
                     <a href="{{ url('fiche', [$userinfo['username'], $idGame]) }}">
                         <div class="name">{{ $game['name'] }}</div>
-                        <div class="image"><img src="{{ $game['image'] }}" /></div>
+                        <div class="image">{!! HTML::image($game['image']) !!}</div>
                         <span class="hidden rating">{{ $game['rating'] }}</span>
                         @if(\App\Helpers\Helper::ifLoginAsSelf())
                             <span class="hidden acquisitiondate">{{ $game['acquisitiondate'] }}</span>

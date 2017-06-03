@@ -158,7 +158,7 @@ class CollectionController extends Controller
     public function preProcessGameInfo($gameProperties)
     {
         $arrayGame = $gameProperties;
-        $arrayGame['image'] = 'http://' . $gameProperties['thumbnail'];
+        $arrayGame['image'] = $gameProperties['thumbnail'];
         $arrayGame['playingtime'] = isset($gameProperties['playingtime']) ? $gameProperties['playingtime'] : 0;
         $arrayGame['minplayer'] = isset($gameProperties['minplayer']) ? $gameProperties['minplayer'] : 0;
         $arrayGame['maxplayer'] = isset($gameProperties['maxplayer']) ? $gameProperties['maxplayer'] : 0;
