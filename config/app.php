@@ -2,6 +2,8 @@
 
 return [
 
+	'env' => env('APP_ENV', 'development'),
+
 	/*
 	|--------------------------------------------------------------------------
 	| Application Debug Mode
@@ -13,7 +15,7 @@ return [
 	|
 	*/
 
-	'debug' => env('APP_DEBUG'),
+	'debug' => env('APP_DEBUG', true),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -26,7 +28,7 @@ return [
 	|
 	*/
 
-	'url' => env('APP_URL', 'http://bgg.app'),
+	'url' => env('OPENSHIFT_BUILD_NAME') ? ( 'http://'.preg_replace('/^(.*)-[\d]+$/','${1}',env('OPENSHIFT_BUILD_NAME', 'laravel-mysql-example-1')).'-'.env('OPENSHIFT_BUILD_NAMESPACE').'.'.env('ROUTER_SHARD', '44fs').'.'.env('CLUSTER_NAME', 'preview').'.openshiftapps.com' ) : env('APP_URL', 'http://localhost'),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -80,7 +82,7 @@ return [
 
 	'key' => env('APP_KEY', 'eaAJlaAlABGDmSOIOoBKZBuwZnGdjYMn'),
 
-	'cipher' => MCRYPT_RIJNDAEL_128,
+	'cipher' => 'AES-256-CBC',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -95,7 +97,7 @@ return [
 	|
 	*/
 
-	'log' => 'daily',
+	'log' => env('APP_LOG', 'daily'),
 
 	'log_level' => env('APP_LOG_LEVEL', 'error'),
 

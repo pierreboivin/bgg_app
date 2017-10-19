@@ -49,36 +49,38 @@ return [
 
 	'connections' => [
 
-		'sqlite' => [
-			'driver'   => 'sqlite',
-			'database' => storage_path().'/database.sqlite3',
-			'prefix'   => '',
-		],
+        'sqlite' => [
+            'driver' => 'sqlite',
+            'database' => env('DB_DATABASE', database_path('database.sqlite')),
+            'prefix' => '',
+        ],
 
-		'mysql' => [
-			'driver'    => 'mysql',
-			'host'      => env('DB_HOST', env('OPENSHIFT_MYSQL_DB_HOST', 'localhost')),
-			'port'      => env('DB_PORT', env('OPENSHIFT_MYSQL_DB_PORT', 3306)),
-			'database'  => env('DB_DATABASE', env('OPENSHIFT_APP_NAME', 'forge')),
-			'username'  => env('DB_USERNAME', env('OPENSHIFT_MYSQL_DB_USERNAME', 'forge')),
-			'password'  => env('DB_PASSWORD', env('OPENSHIFT_MYSQL_DB_PASSWORD', '')),
-			'charset'   => 'utf8',
-			'collation' => 'utf8_unicode_ci',
-			'prefix'    => '',
-			'strict'    => false,
-		],
+        'mysql' => [
+            'driver' => 'mysql',
+            'host' => env(strtoupper(env('DB_SERVICE_NAME', 'MYSQL')).'_SERVICE_HOST', env('DB_HOST', 'localhost')),
+            'port' => env(strtoupper(env('DB_SERVICE_NAME', 'MYSQL')).'_SERVICE_PORT', env('DB_PORT', '3306')),
+            'database' => env('DB_DATABASE', 'forge'),
+            'username' => env('DB_USERNAME', 'forge'),
+            'password' => env('DB_PASSWORD', ''),
+            'charset' => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix' => '',
+            'strict' => false,
+            'engine' => null,
+        ],
 
-		'pgsql' => [
-			'driver'   => 'pgsql',
-			'host'     => env('DB_HOST', env('OPENSHIFT_POSTGRESQL_DB_HOST', 'localhost')),
-			'port'     => env('DB_PORT', env('OPENSHIFT_POSTGRESQL_DB_PORT', 5432)),
-			'database' => env('DB_DATABASE', env('OPENSHIFT_APP_NAME', 'forge')),
-			'username' => env('DB_USERNAME', env('OPENSHIFT_POSTGRESQL_DB_USERNAME', 'forge')),
-			'password' => env('DB_PASSWORD', env('OPENSHIFT_POSTGRESQL_DB_PASSWORD', '')),
-			'charset'  => 'utf8',
-			'prefix'   => '',
-			'schema'   => 'public',
-		]
+        'pgsql' => [
+            'driver' => 'pgsql',
+            'host' => env(strtoupper(env('DB_SERVICE_NAME', 'PGSQL')).'_SERVICE_HOST', env('DB_HOST', 'localhost')),
+            'port' => env(strtoupper(env('DB_SERVICE_NAME', 'PGSQL')).'_SERVICE_PORT', env('DB_PORT', '5432')),
+            'database' => env('DB_DATABASE', 'forge'),
+            'username' => env('DB_USERNAME', 'forge'),
+            'password' => env('DB_PASSWORD', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'schema' => 'public',
+        ],
+
 
 	],
 
@@ -104,22 +106,23 @@ return [
 	| provides a richer set of commands than a typical key-value systems
 	| such as APC or Memcached. Laravel makes it easy to dig right in.
 	|
-	| OpenShift Notes: 
+	| OpenShift Notes:
 	|   Redis:       https://hub.openshift.com/addons/34-redis
 	|   Redis Cloud: https://hub.openshift.com/addons/17-rediscloud
 	|
 	*/
 
-	'redis' => [
+  'redis' => [
 
-		'cluster' => false,
+      'cluster' => false,
 
-		'default' => [
-			'host'     => '127.0.0.1',
-			'port'     => 6379,
-			'database' => 0,
-		],
+      'default' => [
+          'host' => env('REDIS_HOST', 'localhost'),
+          'password' => env('REDIS_PASSWORD', null),
+          'port' => env('REDIS_PORT', 6379),
+          'database' => 0,
+      ],
 
-	],
+  ],
 
 ];
