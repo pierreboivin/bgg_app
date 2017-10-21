@@ -54,7 +54,7 @@
                             <div class="panel-body">
                                 <ul>
                                     @foreach ($userinfo['lists']['buddies'] as $id => $name)
-                                        <li>{!! HTML::linkRoute('home', $name, array($name)) !!}</li>
+                                        <li>{!! Html::linkRoute('home', $name, array($name)) !!}</li>
                                     @endforeach
                                 </ul>
                             </div>

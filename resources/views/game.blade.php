@@ -13,7 +13,7 @@
         <div class="row">
             <div class="col-md-2">
                 <div class="thumbnail">
-                    {!! HTML::image($game['thumbnail']) !!}
+                    {!! Html::image($game['thumbnail']) !!}
                     <div class="caption text-center">
                         <a target="_blank" href="https://boardgamegeek.com/boardgame/{{ $game['id'] }}">Lien vers BGG</a>
                     </div>
