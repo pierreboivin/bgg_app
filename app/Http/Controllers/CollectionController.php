@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests;
 use App\Lib\BGGData;
 use App\Lib\Page;
 use App\Lib\Stats;

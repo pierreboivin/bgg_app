@@ -22,6 +22,8 @@ Route::post('/userLogin', ['uses' => 'LoginController@userLogin']);
 Route::post('/guestLogin', ['uses' => 'LoginController@guestLogin']);
 Route::get('/logout', ['uses' => 'LoginController@logout']);
 
+Route::get('/status', ['uses' => 'StatusController@dashboard']);
+
 // Administration
 Route::group(['middleware' => ['app.auth', 'app.isAdmin']], function()
 {
