@@ -151,6 +151,9 @@ class Stats
                 }
             }
         }
+        if (isset($gameDetail['statistics']['ratings']['averageweight']['@attributes']['value'])) {
+            $game['weight'] = $gameDetail['statistics']['ratings']['averageweight']['@attributes']['value'];
+        }
         return $game;
     }
 

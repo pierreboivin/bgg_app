@@ -36,6 +36,7 @@
                             <p>Moyenne de parties jouées sur l'ensemble des jeux possédés : {!! $stats['nbPlayAveragePlayCollectionGame'] !!}</p>
                             <p>Nombre d'acquisitions moyennes par mois : {!! \App\Helpers\Helper::ifEmptyToolTip($stats['averageAcquisitionByMonth']) !!}</p>
                             <p>Nombre de jeux possédés non joués : {{ $stats['nbGameOwnedNotPlayed'] }} ({{$stats['percentGameOwnedNotPlayed']}})</p>
+                            <p>Moyenne de la complexité des jeux possédés : {{ $stats['averageWeightGamesOwned'] }}</p>
                         </div>
                         <div class="col-md-4">
                             <h3>Valeur collection</h3>

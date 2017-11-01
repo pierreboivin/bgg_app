@@ -79,6 +79,7 @@ class CollectionController extends Controller
                 $arrayGame['tooltip'] .= '<br>Nombre de joueurs : ' . $arrayGame['minplayer'] . ' à ' . $arrayGame['maxplayer'];
             }
             $arrayGame['tooltip'] .= '<br>Durée d\'une partie : ' . $arrayGame['playingtime'] . ' minutes';
+            $arrayGame['tooltip'] .= '<br>Complexité : ' . round($gameProperties['weight'], 2) . ' / 5';
             $arrayGame['tooltip'] .= '<br>Évaluation : ' . $gameProperties['rating'] . ' / 10';
             if (isset($gameProperties['privateinfo']['@attributes']['acquisitiondate'])) {
                 $arrayGame['tooltip'] .= '<br>Date d\'acquisition : ' . $gameProperties['privateinfo']['@attributes']['acquisitiondate'];

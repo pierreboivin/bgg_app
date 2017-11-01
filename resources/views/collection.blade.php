@@ -101,6 +101,7 @@
                         <div class="btn-group sort-by-button-group" role="group">
                             <button type="button" class="navbar-btn btn btn-default active" data-sort-by="original-order">Alphabétique</button>
                             <button type="button" class="navbar-btn btn btn-default" data-sort-by="rating" date-sort-direction="desc">Évaluation personnel</button>
+                            <button type="button" class="navbar-btn btn btn-default" data-sort-by="weight" date-sort-direction="desc">Complexité</button>
                             @if(\App\Helpers\Helper::ifLoginAsSelf())
                                 <button type="button" class="navbar-btn btn btn-default" data-sort-by="acquisitiondate" date-sort-direction="desc">Date d'acquisition</button>
                             @endif
@@ -132,6 +133,7 @@
                         <div class="name">{{ $game['name'] }}</div>
                         <div class="image">{!! Html::image($game['image']) !!}</div>
                         <span class="hidden rating">{{ $game['rating'] }}</span>
+                        <span class="hidden weight">{{ $game['weight'] }}</span>
                         @if(\App\Helpers\Helper::ifLoginAsSelf())
                             <span class="hidden acquisitiondate">{{ $game['acquisitiondate'] }}</span>
                         @endif

@@ -37,17 +37,21 @@ class StatsController extends Controller
 
         $totalPlayGameCollection = 0;
         $totalGameOwnedNotPlayed = 0;
+        $totalWeightOwnedGame = 0;
         foreach($GLOBALS['data']['gamesCollection'] as $idGame => $game) {
             if(isset($GLOBALS['data']['arrayTotalPlays'][$idGame])) {
                 $totalPlayGameCollection += $GLOBALS['data']['arrayTotalPlays'][$idGame]['nbPlayed'];
             } else {
                 $totalGameOwnedNotPlayed++;
             }
+            $totalWeightOwnedGame += $game['weight'];
         }
+
+        $nbTotalOwnedGames = count($GLOBALS['data']['gamesCollection']);
 
         $params['userinfo'] = $arrayUserInfos;
 
-        $params['stats']['nbGamesOwned'] = count($GLOBALS['data']['gamesCollection']);
+        $params['stats']['nbGamesOwned'] = $nbTotalOwnedGames;
         $params['stats']['nbGamesAndExpansionsOwned'] = $GLOBALS['data']['nbGamesAndExpansionsOwned'];
         $params['stats']['nbPlaysTotal'] = $GLOBALS['data']['countAllPlays'];
         $params['stats']['nbPlaysDifferentGame'] = count($GLOBALS['data']['arrayTotalPlays']);
@@ -73,7 +77,7 @@ class StatsController extends Controller
             $params['stats']['totalValueGames'] = Utility::displayMoney($GLOBALS['data']['totalGamesValue']);
         }
 
-        $params['stats']['nbPlayAveragePlayCollectionGame'] = round($totalPlayGameCollection / count($GLOBALS['data']['gamesCollection']), 2);
+        $params['stats']['nbPlayAveragePlayCollectionGame'] = round($totalPlayGameCollection / $nbTotalOwnedGames, 2);
         $params['stats']['nbPlayAverageByDay'] = 0;
         $params['stats']['nbPlayDifferentAverageByDay'] = 0;
         if(isset($GLOBALS['data']['nbDaysSinceFirstPlay'])) {
@@ -82,10 +86,11 @@ class StatsController extends Controller
             $params['stats']['nbPlayDifferentAverageByDay'] = round(count($GLOBALS['data']['arrayTotalPlays']) / $GLOBALS['data']['nbDaysSinceFirstPlay'], 2);
         }
         $params['stats']['nbGameOwnedNotPlayed'] = $totalGameOwnedNotPlayed;
-        if(count($GLOBALS['data']['gamesCollection']) > 0) {
-            $params['stats']['percentGameOwnedNotPlayed'] = Utility::displayPercent(round($totalGameOwnedNotPlayed / count($GLOBALS['data']['gamesCollection']) * 100,
+        if($nbTotalOwnedGames > 0) {
+            $params['stats']['percentGameOwnedNotPlayed'] = Utility::displayPercent(round($totalGameOwnedNotPlayed / $nbTotalOwnedGames * 100,
                 2));
         }
+        $params['stats']['averageWeightGamesOwned'] = round($totalWeightOwnedGame / $nbTotalOwnedGames, 2);
 
         $params['graphs']['byMonth'] = Graphs::getPlayByMonth();
         $params['graphs']['byYear'] = Graphs::getPlayByYear();
