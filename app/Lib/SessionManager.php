@@ -31,10 +31,14 @@ class SessionManager {
         }
     }
     public static function ifLoginAsSelf() {
-        return $GLOBALS['parameters']['login']['authenticated'] && $GLOBALS['parameters']['general']['username'] == $GLOBALS['parameters']['login']['username'];
+        return isset($GLOBALS['parameters']['login']['authenticated'])
+            && $GLOBALS['parameters']['login']['authenticated']
+            && $GLOBALS['parameters']['general']['username'] == $GLOBALS['parameters']['login']['username'];
     }
     public static function ifBggInfo() {
-        return (isset($GLOBALS['parameters']['login']['type']) && $GLOBALS['parameters']['login']['type'] !== 'nobgg') || (isset($GLOBALS['parameters']['general']['username']) && $GLOBALS['parameters']['general']['username']);
+        return
+            (isset($GLOBALS['parameters']['login']['type']) && !in_array($GLOBALS['parameters']['login']['type'], ['nobgg', 'guest']))
+            || (isset($GLOBALS['parameters']['general']['username']) && $GLOBALS['parameters']['general']['username']);
     }
 
 }

@@ -75,15 +75,22 @@ Route::group(['middleware' => ['app.auth']], function()
 
 });
 
-// Connected
+// Connected any user
 Route::group(['middleware' => ['app.auth']], function()
 {
-    Route::get('/modules', ['uses' => 'ModulesListsController@home']);
+    Route::get('/modules', ['uses' => 'ModulesController@home']);
 
     Route::group(['namespace' => 'Modules'], function() {
-        Route::resource('/modules/lists', 'ListsController');
+        Route::resource('/modules/lists/admin', 'AdminListsController');
     });
 });
+
+// Modules public
+Route::group(['namespace' => 'Modules', 'middleware' => ['app.public']], function() {
+    Route::get('/lists', ['uses' => 'ViewListsController@index']);
+    Route::get('/lists/{slug}/{filter?}/{sorting?}/{typeDisplay?}', ['as' => 'modules.lists.view.show', 'uses' => 'ViewListsController@show']);
+});
+
 
 // Gestion d'erreur critique
 Route::get('/error', function()

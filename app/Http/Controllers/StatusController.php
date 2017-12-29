@@ -11,8 +11,6 @@ class StatusController extends Controller
     {
         echo '<p>Number of users in database : ' . count(User::all()) . '</p>';
 
-        echo '<p>Number of cache record in database : ' . count(Cache::all()) . '</p>';
-
         $caches = Cache::distinct()->get(['username']);
 
         echo '<ul>';

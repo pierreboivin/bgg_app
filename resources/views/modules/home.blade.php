@@ -6,7 +6,7 @@
 @section('content')
 
     <div class="list-group">
-        <a href="/modules/lists" class="list-group-item">
+        <a href="/modules/lists/admin" class="list-group-item">
             <h3 class="list-group-item-heading">Liste de jeux</h3>
             <p class="list-group-item-text">Gérer l'affichage de liste de jeux</p>
         </a>

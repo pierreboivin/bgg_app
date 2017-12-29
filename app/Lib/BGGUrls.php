@@ -48,6 +48,18 @@ class BGGUrls {
         return 'http://boardgamegeek.com/xmlapi2/thing?id=' . $i . '&stats=1';
     }
 
+    public static function getListOfGames($i)
+    {
+        if(is_array($i)) {
+            $i = array_map('intval', $i);
+            $i = array_filter($i, function($a) { return ($a !== 0); });
+            $i = implode(',', $i);
+        } else {
+            $i = intval($i);
+        }
+        return 'http://boardgamegeek.com/xmlapi2/thing?id=' . $i . '&stats=1';
+    }
+
     public static function getHot()
     {
         return 'http://boardgamegeek.com/xmlapi2/hot?type=boardgame';

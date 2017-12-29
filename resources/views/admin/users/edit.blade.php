@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Administration > Utilisateurs > Création')
+@section('title', 'Administration > Utilisateurs > Édition')
 @section('class', 'admin')
 
 @section('content')

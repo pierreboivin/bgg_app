@@ -29,7 +29,7 @@ class BGGData
         return BGGData::manageSingleMultiple(self::getBGGUrl($urlBGG, 'curl',
             ['cookie' => 'bggusername=' . $GLOBALS['parameters']['general']['username'] . '; bggpassword=' . $GLOBALS['parameters']['login']['password']]));
     }
-    
+
     public static function getGamesOwnedByUserName($username)
     {
         $urlBGG = BGGUrls::getGamesOwnedByUserName($username);
@@ -66,15 +66,15 @@ class BGGData
         $arrayRawGamesHot = self::getBGGUrl($urlBGG);
 
         $arrayHotGames = [];
-        foreach($arrayRawGamesHot['item'] as $game) {
+        foreach ($arrayRawGamesHot['item'] as $game) {
             $arrayHotGames[$game['@attributes']['id']] = ['name' => $game['name']['@attributes']['value']];
         }
 
         $arrayHotGamesDetails = BGGData::getDetailOfGames($arrayHotGames);
 
-        foreach($arrayHotGamesDetails as $gameId => $gameDetail) {
+        foreach ($arrayHotGamesDetails as $gameId => $gameDetail) {
             $arrayHotGames[$gameId]['id'] = $gameId;
-            foreach($gameDetail['link'] as $link) {
+            foreach ($gameDetail['link'] as $link) {
                 $attributes = $link['@attributes'];
                 $label = $attributes['value'];
                 $arrayHotGames[$gameId]['detail'][$attributes['type']][] = ['value' => $label, 'id' => $attributes['id']];
@@ -83,7 +83,15 @@ class BGGData
         return $arrayHotGames;
     }
 
-    public static function getDetailOfGame($idGame) {
+    public static function getListOfGames($arrayIds)
+    {
+        $urlBGG = BGGUrls::getListOfGames($arrayIds);
+        $fromBGG = self::getBGGUrl($urlBGG);
+        return $fromBGG;
+    }
+
+    public static function getDetailOfGame($idGame)
+    {
         $urlBGG = BGGUrls::getDetail($idGame);
         $fromBGG = self::getBGGUrl($urlBGG);
         return $fromBGG['item'];
@@ -98,7 +106,7 @@ class BGGData
 
         $fromBGG = self::getBGGUrl($urlBGG);
 
-        if(isset($fromBGG['item']['@attributes'])) {
+        if (isset($fromBGG['item']['@attributes'])) {
             $arrayGamesDetails[$fromBGG['item']['@attributes']['id']] = $fromBGG['item'];
         } else {
             foreach ($fromBGG['item'] as $gameDetail) {
@@ -113,12 +121,12 @@ class BGGData
         $arrayGamesDetails = [];
         if (isset($arrayRawGamesOwned['item'])) {
             foreach ($arrayRawGamesOwned['item'] as $key => $game) {
-                $arrayId[] = $game['@attributes']['objectid'];
+                $arrayId[] = isset($game['@attributes']['objectid']) ? $game['@attributes']['objectid'] : $game['@attributes']['id'];
                 $arrayRawGamesOwned['item'][$key]['detail'] = [];
             }
         }
 
-        if($arrayId[0] !== null) {
+        if ($arrayId[0] !== null) {
             $arrayChunk = array_chunk($arrayId, 40, true);
             foreach ($arrayChunk as $key => $arrayIds) {
                 $strIds = implode(',', $arrayIds);
@@ -142,14 +150,14 @@ class BGGData
     {
         $arrayAllPlay = array();
         $i = 1;
-        while ($i < 100) {
+        while ($i < 50) {
             $urlBGG = BGGUrls::getPlays($i);
 
             $arrayPlay = self::getBGGUrl($urlBGG);
 
             if (isset($arrayPlay['play'])) {
                 // Only one item
-                if(isset($arrayPlay['play']['@attributes'])) {
+                if (isset($arrayPlay['play']['@attributes'])) {
                     $arrayAllPlay[] = $arrayPlay['play'];
                 } else {
                     $arrayAllPlay = array_merge($arrayAllPlay, $arrayPlay['play']);
@@ -203,27 +211,28 @@ class BGGData
         }
     }
 
-    public static function getLevelOfLoading() {
+    public static function getLevelOfLoading()
+    {
         $arrayUrls = [BGGUrls::getUserInfos(), BGGUrls::getGamesOwned(), BGGUrls::getGamesAndExpansionsOwned(), BGGUrls::getGamesRated(), 'plays_' . $GLOBALS['parameters']['general']['username']];
         $inTempCache = true;
         $inPersistentCache = true;
-        foreach($arrayUrls as $url) {
+        foreach ($arrayUrls as $url) {
             // Si pas dans la cache du type de login
             if (!Cache::has('url_' . md5($url) . '_' . $GLOBALS['parameters']['typeLogin'])) {
                 // Si consulté en tant que guest, vérifié dans la cache "login"
-                if($GLOBALS['parameters']['typeLogin'] == 'guest') {
+                if ($GLOBALS['parameters']['typeLogin'] == 'guest') {
                     if (!Cache::has('url_' . md5($url) . '_login')) {
                         $inTempCache = false;
                     }
-                // Si connecté, la cache doit être rechargé
+                    // Si connecté, la cache doit être rechargé
                 } else {
                     $inTempCache = false;
                 }
             }
         }
-        foreach($arrayUrls as $url) {
+        foreach ($arrayUrls as $url) {
             if (!PersistentCache::has('url_' . md5($url) . '_' . $GLOBALS['parameters']['typeLogin'])) {
-                if($GLOBALS['parameters']['typeLogin'] == 'guest') {
+                if ($GLOBALS['parameters']['typeLogin'] == 'guest') {
                     if (!PersistentCache::has('url_' . md5($url) . '_login')) {
                         $inTempCache = false;
                     }
@@ -232,9 +241,9 @@ class BGGData
                 }
             }
         }
-        if($inTempCache) {
+        if ($inTempCache) {
             return 'temp';
-        } elseif($inPersistentCache) {
+        } elseif ($inPersistentCache) {
             return 'persistent';
         } else {
             return 'none';
@@ -245,7 +254,7 @@ class BGGData
     {
         if ($GLOBALS['parameters']['typeLogin'] == 'guest') {
             $tempKeyCache = 'url_' . md5($url) . '_login';
-            if(!Cache::has($tempKeyCache)) {
+            if (!Cache::has($tempKeyCache)) {
                 $toRegenerate = true;
             }
             if (Cache::has($tempKeyCache) || (PersistentCache::has($tempKeyCache) && !isset($_GET['force']))) {
@@ -253,7 +262,7 @@ class BGGData
             }
         }
         $tempKeyCache = 'url_' . md5($url) . '_' . $GLOBALS['parameters']['typeLogin'];
-        if(!Cache::has($tempKeyCache)) {
+        if (!Cache::has($tempKeyCache)) {
             $toRegenerate = true;
         }
         if (Cache::has($tempKeyCache) || (PersistentCache::has($tempKeyCache) && !isset($_GET['force']))) {
@@ -265,19 +274,22 @@ class BGGData
 
     private static function getBGGUrl($url, $mode = 'url', $parameter = [], $numTry = 0)
     {
-        $keyCache = 'url_' . md5($url) . '_' . $GLOBALS['parameters']['typeLogin'];
+        $keyCache = 'url_' . md5($url);
+        if(isset($GLOBALS['parameters']['typeLogin'])) {
+            $keyCache .= '_' . $GLOBALS['parameters']['typeLogin'];
 
-        // Si on est pas connecté, mais qu'il existe une cache pour l'utilisateur connecté, on obtient cette dernière
-        if ($GLOBALS['parameters']['typeLogin'] == 'guest') {
-            $tempKeyCache = 'url_' . md5($url) . '_login';
-            if (Cache::has($tempKeyCache) || PersistentCache::has($tempKeyCache)) {
-                $keyCache = $tempKeyCache;
+            // Si on est pas connecté, mais qu'il existe une cache pour l'utilisateur connecté, on obtient cette dernière
+            if ($GLOBALS['parameters']['typeLogin'] == 'guest') {
+                $tempKeyCache = 'url_' . md5($url) . '_login';
+                if (Cache::has($tempKeyCache) || PersistentCache::has($tempKeyCache)) {
+                    $keyCache = $tempKeyCache;
+                }
             }
         }
 
         if (Cache::has($keyCache)) {
             $contentUrl = Cache::get($keyCache);
-        } elseif(PersistentCache::has($keyCache) && !isset($_GET['force'])) {
+        } elseif (PersistentCache::has($keyCache) && !isset($_GET['force'])) {
             $contentUrl = PersistentCache::get($keyCache);
         } else {
             try {
@@ -323,7 +335,7 @@ class BGGData
 
     private static function dataInvalid($arrayData)
     {
-        if($arrayData === false) {
+        if ($arrayData === false) {
             return true;
         }
         if (isset($arrayData[0]) && strpos($arrayData[0], 'will be processed') !== false) {
@@ -334,7 +346,7 @@ class BGGData
 
     private static function manageSingleMultiple($getBGGUrl)
     {
-        if(isset($getBGGUrl['item'][0])) {
+        if (isset($getBGGUrl['item'][0])) {
             return $getBGGUrl;
         } else {
             $temp = $getBGGUrl['item'];

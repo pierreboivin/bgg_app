@@ -8,8 +8,13 @@ class PersistentCache
 {
     public static function put($keyCache, $content)
     {
+        if(isset($GLOBALS['parameters']['general']['username'])) {
+            $username = $GLOBALS['parameters']['general']['username'];
+        } else {
+            $username = 'none';
+        }
         Cache::createOrUpdate(
-            array('identifier' => $keyCache, 'data' => $content, 'username' => $GLOBALS['parameters']['general']['username']),
+            array('identifier' => $keyCache, 'data' => $content, 'username' => $username),
             array('identifier' => $keyCache)
         );
     }

@@ -1,31 +1,61 @@
 <?php namespace App;
 
-use Illuminate\Auth\Authenticatable;
+use Cviebrock\EloquentSluggable\Sluggable;
+use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Auth\Passwords\CanResetPassword;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
-use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
-class Lists extends Model {
+class Lists extends Model
+{
+    use Sluggable, SluggableScopeHelpers;
 
-	/**
-	 * The database table used by the model.
-	 *
-	 * @var string
-	 */
-	protected $table = 'lists';
+    /**
+     * The database table used by the model.
+     *
+     * @var string
+     */
+    protected $table = 'lists';
 
-	/**
-	 * The attributes that are mass assignable.
-	 *
-	 * @var array
-	 */
-	protected $fillable = ['name', 'data'];
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['name', 'data', 'user_id'];
 
-	public static $rules = array(
-		'name' => 'required',
-		'data' => 'required'
-	);
+    public static $rules = array(
+        'name' => 'required',
+        'data' => 'required'
+    );
+
+    public static function findAllOnlyAccess()
+    {
+        if (Auth::user()->type == 'admin') {
+            return self::all();
+        } else {
+            return self::where('user_id', Auth::user()->id)->get();
+        }
+    }
+
+    public static function findOnlyAccess($id)
+    {
+        $list = self::find($id);
+        if (Auth::user()->type == 'admin' || ($list && $list->user_id == Auth::user()->id)) {
+            return $list;
+        }
+        return null;
+    }
+
+    /**
+     * @return array
+     */
+    public function sluggable()
+    {
+        return [
+            'slug' => [
+                'source' => 'name'
+            ]
+        ];
+    }
 
 }

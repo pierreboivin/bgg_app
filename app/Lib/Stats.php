@@ -89,10 +89,10 @@ class Stats
     /**
      * @param $arrayGamesDetails
      */
-    public static function getOwnedRelatedArrays($arrayGamesDetails)
+    public static function getOwnedRelatedArrays($arrayGamesDetails, $keyGlobal = 'gamesCollection')
     {
-        foreach ($GLOBALS['data']['gamesCollection'] as $gameId => $game) {
-            $GLOBALS['data']['gamesCollection'][$gameId] = array_merge($game, self::getDetailInfoGame($arrayGamesDetails[$gameId]));
+        foreach ($GLOBALS['data'][$keyGlobal] as $gameId => $game) {
+            $GLOBALS['data'][$keyGlobal][$gameId] = array_merge($game, self::getDetailInfoGame($arrayGamesDetails[$gameId]));
         }
     }
 
@@ -228,9 +228,10 @@ class Stats
         $arrayGameCollection = [];
         if (isset($arrayRawGamesOwned['item'])) {
             foreach ($arrayRawGamesOwned['item'] as $game) {
-                $arrayGameCollection[$game['@attributes']['objectid']] = self::convertBggCollectionInfo($game);
+                $idObject = isset($game['@attributes']['objectid']) ? $game['@attributes']['objectid'] : $game['@attributes']['id'];
+                $arrayGameCollection[$idObject] = self::convertBggCollectionInfo($game);
                 if (isset($game['privateinfo'])) {
-                    $arrayGameCollection[$game['@attributes']['objectid']]['privateinfo'] = $game['privateinfo'];
+                    $arrayGameCollection[$idObject]['privateinfo'] = $game['privateinfo'];
                 }
             }
         }
@@ -239,8 +240,9 @@ class Stats
     }
 
     public static function convertBggCollectionInfo($game) {
+        $idObject = isset($game['@attributes']['objectid']) ? $game['@attributes']['objectid'] : $game['@attributes']['id'];
         $gameInfo = [
-            'id' => $game['@attributes']['objectid'],
+            'id' => $idObject,
             'name' => $game['name'],
             'thumbnail' => isset($game['thumbnail']) ? $game['thumbnail'] : '',
             'minplayer' => isset($game['stats']['@attributes']['minplayers']) ? $game['stats']['@attributes']['minplayers'] : 0,
@@ -275,6 +277,7 @@ class Stats
             'minage' => isset($game['minage']['@attributes']['value']) ? $game['minage']['@attributes']['value'] : 0,
             'poll' => $game['poll'],
             'link' => $game['link'],
+            'statistics' => $game['statistics'],
             'ratings' => ['average' => round($game['statistics']['ratings']['average']['@attributes']['value'], 2)]
         ];
         return $gameInfo;

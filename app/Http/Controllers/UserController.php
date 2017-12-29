@@ -50,11 +50,13 @@ class UserController extends Controller
     {
         $input = Input::all();
         $validation = Validator::make($input, User::$rules);
-        if ($validation->passes())
-        {
+        if ($validation->passes()) {
             $user = User::find($id);
-            if($input['password']) {
+            if ($input['password']) {
                 $input['password'] = Hash::make($input['password']);
+            } else {
+                unset($input['password']);
+                unset($input['password_confirmation']);
             }
             $user->update($input);
             return Redirect::route('admin.users.index', $id);

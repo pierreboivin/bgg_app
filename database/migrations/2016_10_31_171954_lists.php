@@ -16,6 +16,7 @@ class Lists extends Migration {
 		{
 			$table->increments('id');
 			$table->string('name');
+			$table->string('slug');
 			$table->longText('data');
 			$table->integer('user_id')->unsigned();
 			$table->timestamps(); // Pour Laravel openshift
