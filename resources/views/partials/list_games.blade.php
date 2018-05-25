@@ -123,7 +123,9 @@
                 @if(isset($userinfo))
                     <a href="{{ url('fiche', [$userinfo['username'], $idGame]) }}">
                         <div class="name">{{ $game['name'] }}</div>
-                        <div class="image">{!! Html::image($game['image']) !!}</div>
+                        @if($game['image'])
+                            <div class="image">{!! Html::image($game['image']) !!}</div>
+                        @endif
                         <span class="hidden rating">{{ $game['rating'] }}</span>
                         <span class="hidden weight">{{ $game['weight'] }}</span>
                         @if(\App\Helpers\Helper::ifLoginAsSelf())
@@ -133,7 +135,9 @@
                 @else
                     <a href="http://boardgamegeek.com/boardgame/{{ $idGame }}" target="_blank">
                         <div class="name">{{ $game['name'] }}</div>
-                        <div class="image">{!! Html::image($game['image']) !!}</div>
+                        @if($game['image'])
+                            <div class="image">{!! Html::image($game['image']) !!}</div>
+                        @endif
                         <span class="hidden rating">{{ $game['rating'] }}</span>
                         <span class="hidden weight">{{ $game['weight'] }}</span>
                         @if(\App\Helpers\Helper::ifLoginAsSelf())
