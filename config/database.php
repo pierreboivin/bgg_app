@@ -1,6 +1,6 @@
 <?php
 
-$url = parse_url(getenv("CLEARDB_DATABASE_URL"));
+$url = parse_url(getenv("DATABASE_URL"));
 
 $host = $url["host"];
 $username = $url["user"];
@@ -33,7 +33,7 @@ return [
 	|
 	*/
 
-	'default' => env('DB_DRIVER', 'mysql'),
+	'default' => 'pgsql',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -78,11 +78,11 @@ return [
 
         'pgsql' => [
             'driver' => 'pgsql',
-            'host' => env(strtoupper(env('DB_SERVICE_NAME', 'PGSQL')).'_SERVICE_HOST', env('DB_HOST', 'localhost')),
-            'port' => env(strtoupper(env('DB_SERVICE_NAME', 'PGSQL')).'_SERVICE_PORT', env('DB_PORT', '5432')),
-            'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
+            'host' => $host,
+            'port' => '5432',
+            'database' => $database,
+            'username' => $username,
+            'password' => $password,
             'charset' => 'utf8',
             'prefix' => '',
             'schema' => 'public',
