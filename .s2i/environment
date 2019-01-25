@@ -1,3 +1,0 @@
-DOCUMENTROOT=/public
-SHORT_OPEN_TAG=ON
-APP_LOG=errorlog
