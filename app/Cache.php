@@ -8,6 +8,8 @@ class Cache extends Model {
 
     protected $fillable = ['identifier', 'data', 'username'];
 
+    protected $primaryKey = 'identifier';
+
     static function createOrUpdate($data, $keys) {
         $record = self::where($keys)->first();
         if (is_null($record)) {
