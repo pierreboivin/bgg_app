@@ -28,7 +28,10 @@ class Utility
 
     public static function compareDate($a, $b)
     {
-        return $a['date'] - $b['date'];
+        if ($a['date'] && $b['date']) {
+            return $a['date'] - $b['date'];
+        }
+        return 0;
     }
 
     public static function compareRentabilite($a, $b)
