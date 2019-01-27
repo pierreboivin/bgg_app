@@ -1,7 +1,13 @@
 <h3>Nombre de parties par jeux joués (Jeux les plus joués)</h3>
 <div style="width: calc(100% - 20px);">
-    <button class="btn btn-primary graph-previous">Jeux précédents</button>
-    <button class="btn btn-primary graph-next">Jeux suivants</button>
+    <div class="row">
+        <div class="col-md-6">
+            <button class="btn btn-primary graph-next">Jeux suivants</button>
+        </div>
+        <div class="col-md-6 text-right">
+            <button class="btn btn-primary graph-previous">Jeux précédents</button>
+        </div>
+    </div>
 
     <canvas class="graph-handler" id="mostPlayed"></canvas>
 

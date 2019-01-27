@@ -153,6 +153,7 @@ class Stats
         }
         if (isset($gameDetail['statistics']['ratings']['averageweight']['@attributes']['value'])) {
             $game['weight'] = $gameDetail['statistics']['ratings']['averageweight']['@attributes']['value'];
+            $game['weightOn100'] = ((float) $game['weight']) * 100;
         }
         return $game;
     }
@@ -251,11 +252,12 @@ class Stats
             'numplays' => isset($game['numplays']) ? $game['numplays'] : 0
         ];
         if (isset($game['stats']['rating']['@attributes']['value']) && $game['stats']['rating']['@attributes']['value'] != 'N/A') {
-            $rating = $game['stats']['rating']['@attributes']['value'];
+            $rating = round($game['stats']['rating']['@attributes']['value'], 2);
         } else {
             $rating = 0;
         }
         $gameInfo['rating'] = $rating;
+        $gameInfo['ratingOn100'] = $rating * 100;
         if (isset($game['stats']['rating']['average']['@attributes']['value']) && $game['stats']['rating']['average']['@attributes']['value'] != 'N/A') {
             $rating = round($game['stats']['rating']['average']['@attributes']['value'], 2);
         } else {

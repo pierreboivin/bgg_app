@@ -126,8 +126,8 @@
                         @if($game['image'])
                             <div class="image">{!! Html::image($game['image']) !!}</div>
                         @endif
-                        <span class="hidden rating">{{ $game['rating'] }}</span>
-                        <span class="hidden weight">{{ $game['weight'] }}</span>
+                        <span class="hidden rating">{{ $game['ratingOn100'] }}</span>
+                        <span class="hidden weight">{{ $game['weightOn100'] }}</span>
                         @if(\App\Helpers\Helper::ifLoginAsSelf())
                             <span class="hidden acquisitiondate">{{ $game['acquisitiondate'] }}</span>
                         @endif
@@ -138,8 +138,8 @@
                         @if($game['image'])
                             <div class="image">{!! Html::image($game['image']) !!}</div>
                         @endif
-                        <span class="hidden rating">{{ $game['rating'] }}</span>
-                        <span class="hidden weight">{{ $game['weight'] }}</span>
+                        <span class="hidden rating">{{ $game['ratingOn100'] }}</span>
+                        <span class="hidden weight">{{ $game['weightOn100'] }}</span>
                         @if(\App\Helpers\Helper::ifLoginAsSelf())
                             <span class="hidden acquisitiondate">{{ $game['acquisitiondate'] }}</span>
                         @endif

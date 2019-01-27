@@ -1,7 +1,14 @@
 <h3>Nombre de jeux par type</h3>
 <div style="width: calc(100% - 20px);">
-    <button class="btn btn-primary graph-previous">Types précédents</button>
-    <button class="btn btn-primary graph-next">Types suivants</button>
+
+    <div class="row">
+        <div class="col-md-6">
+            <button class="btn btn-primary graph-next">Types suivants</button>
+        </div>
+        <div class="col-md-6 text-right">
+            <button class="btn btn-primary graph-previous">Types précédents</button>
+        </div>
+    </div>
 
     <canvas class="graph-handler" id="mostType"></canvas>
 
