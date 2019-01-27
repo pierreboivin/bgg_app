@@ -1,0 +1,18 @@
+web:
+  image: laravel
+  container_name: web
+  links:
+  - database
+  ports:
+  - 8000:8000
+  volumes:
+  - ./:/app
+
+database:
+  image: postgres:9.6
+  container_name: postgres
+  ports:
+  - 5432:5432
+  env_file: .env
+  environment:
+    LC_ALL: C.UTF-8
