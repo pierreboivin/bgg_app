@@ -1,18 +1,28 @@
-web:
-  image: laravel
-  container_name: web
-  links:
-  - database
-  ports:
-  - 8000:8000
-  volumes:
-  - ./:/app
+version: "3.5"
+services:
+  web:
+    build: .
+    container_name: web
+    networks:
+      - backend
+    links:
+    - database
+    ports:
+    - 8000:8000
+    volumes:
+    - ./:/app
 
-database:
-  image: postgres:9.6
-  container_name: postgres
-  ports:
-  - 5432:5432
-  env_file: .env
-  environment:
-    LC_ALL: C.UTF-8
+  database:
+    image: postgres:9.6
+    container_name: postgres
+    networks:
+      - backend
+    ports:
+    - 5432:5432
+    env_file: .env
+    environment:
+      LC_ALL: C.UTF-8
+
+networks:
+  backend:
+    driver: bridge
