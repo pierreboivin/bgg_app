@@ -1,28 +1,62 @@
 version: "3.5"
 services:
-  web:
-    build: .
-    container_name: web
-    networks:
-      - backend
+  app:
+    build:
+      context: .
+      dockerfile: ./php/Dockerfile
+    container_name: app
+    tty: true
     links:
-    - database
-    ports:
-    - 8000:8000
+      - db
+    working_dir: /var/www/
     volumes:
-    - ./:/app
-
-  database:
-    image: postgres:9.6
-    container_name: postgres
+      - ./src/:/var/www/
+      - ./env/php/local.ini:/usr/local/etc/php/conf.d/local.ini
     networks:
       - backend
+
+  webserver:
+    image: nginx:alpine
+    container_name: webserver
+    restart: unless-stopped
+    tty: true
     ports:
-    - 5432:5432
-    env_file: .env
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./src:/var/www
+      - ./env/nginx/conf.d/:/etc/nginx/conf.d/
+    networks:
+      - backend
+
+  db:
+    image: mysql:5.7
+    container_name: db
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "3306:3306"
     environment:
-      LC_ALL: C.UTF-8
+      MYSQL_DATABASE: docker_laravel
+      MYSQL_ROOT_PASSWORD: 123
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - backend
+
+  npm:
+    image: node:10
+    working_dir: /var/www/
+    entrypoint: ["npm"]
+    volumes:
+      - "./src/:/var/www/"
 
 networks:
   backend:
     driver: bridge
+
+volumes:
+  dbdata:
+    driver: local

@@ -1,5 +1,4 @@
-/vendor
-/node_modules
-/bower_components
+/src/vendor
+/src/node_modules
+/src/bower_components
 .idea
-app/Debug/*
