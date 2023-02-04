@@ -9,7 +9,7 @@ Version 1.1
 docker-compose up -d
 docker-compose exec app composer update
 
-http://localhost:8000
+http://localhost:8181
 
 ## Autre commandes
 
@@ -20,3 +20,10 @@ docker-compose exec app php artisan
 docker-compose run --rm npm install
 
 docker-compose run --rm npm run dev
+
+## Installation serveur
+
+docker-compose up -d
+docker-compose exec app composer install
+docker-compose exec app php artisan migrate
+docker-compose exec app php artisan db:seed
