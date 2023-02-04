@@ -3,7 +3,7 @@ services:
   app:
     build:
       context: .
-      dockerfile: ./php/Dockerfile
+      dockerfile: ./env/php/Dockerfile
     container_name: app
     tty: true
     links:
@@ -21,8 +21,8 @@ services:
     restart: unless-stopped
     tty: true
     ports:
-      - "80:80"
-      - "443:443"
+      - "8181:80"
+      - "8282:443"
     volumes:
       - ./src:/var/www
       - ./env/nginx/conf.d/:/etc/nginx/conf.d/

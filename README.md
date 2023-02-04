@@ -11,14 +11,12 @@ docker-compose exec app composer update
 
 http://localhost:8000
 
-# Autre commandes
+## Autre commandes
 
 docker-compose exec app php artisan
 
-# Compilation des assets
+## Compilation des assets
 
 docker-compose run --rm npm install
 
 docker-compose run --rm npm run dev
-
-

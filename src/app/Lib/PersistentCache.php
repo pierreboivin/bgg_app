@@ -8,9 +8,6 @@ class PersistentCache
 {
     public static function put($keyCache, $content)
     {
-        // Deactivate persistent cache
-        return false;
-
         if(isset($GLOBALS['parameters']['general']['username'])) {
             $username = $GLOBALS['parameters']['general']['username'];
         } else {
@@ -24,8 +21,6 @@ class PersistentCache
 
     public static function has($keyCache)
     {
-        return false;
-
         return Cache::where(array('identifier' => $keyCache))->first() != null;
     }
 

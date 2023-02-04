@@ -39,7 +39,7 @@ Route::group(['middleware' => ['app.auth', 'app.isAdmin']], function()
 // Connected or guest user
 Route::group(['middleware' => ['app.auth']], function()
 {
-    Route::get('/home', ['as' => 'home', 'uses' => 'App\Http\Controllers\HomeController@home']);
+    Route::get('/home', ['as' => 'default_home', 'uses' => 'App\Http\Controllers\HomeController@home']);
     Route::get('/home/{username}', ['as' => 'home', 'uses' => 'App\Http\Controllers\HomeController@home']);
     Route::get('/check_loading/{username}', ['as' => 'check_loading', 'uses' => 'App\Http\Controllers\HomeController@check_loading']);
     Route::get('/load/{username}', ['as' => 'load', 'uses' => 'App\Http\Controllers\HomeController@load']);
@@ -47,16 +47,16 @@ Route::group(['middleware' => ['app.auth']], function()
     Route::get('/stats/{username}', ['as' => 'stats', 'uses' => 'App\Http\Controllers\StatsController@home']);
     Route::get('/collection/{username}/{filter?}/{sorting?}/{typeDisplay?}', ['as' => 'collection', 'uses' => 'App\Http\Controllers\CollectionController@home']);
     Route::get('/resume/{username}', ['as' => 'resume', 'uses' => 'App\Http\Controllers\SummaryController@home']);
-    Route::get('/fiche/{username}/{gameid}', ['as' => 'collection', 'uses' => 'App\Http\Controllers\CollectionController@game']);
+    Route::get('/fiche/{username}/{gameid}', ['as' => 'collectiongame', 'uses' => 'App\Http\Controllers\CollectionController@game']);
     Route::get('/rapports/{username}', ['as' => 'rapports', 'uses' => 'App\Http\Controllers\RapportsController@home']);
-    Route::match(['get', 'post'], '/rapports/mensuel/{username}', ['as' => 'rapports', 'uses' => 'App\Http\Controllers\RapportsController@mensuel']);
-    Route::match(['get', 'post'], '/rapports/annuel/{username}', ['as' => 'rapports', 'uses' => 'App\Http\Controllers\RapportsController@annuel']);
-    Route::get('/rapports/vendre/{username}', ['as' => 'rapports', 'uses' => 'App\Http\Controllers\RapportsController@vendre']);
-    Route::get('/rapports/tobuy/{username}', ['as' => 'rapports', 'uses' => 'App\Http\Controllers\RapportsController@tobuy']);
-    Route::get('/rapports/home_compare_user/{username}', ['as' => 'rapports', 'uses' => 'App\Http\Controllers\RapportsController@home_compare_user']);
-    Route::get('/compare/loadCompare/{username}', ['as' => 'loadCompare', 'uses' => 'App\Http\Controllers\RapportsController@loadCompare']);
-    Route::get('/compare/check_loading/{username}', ['as' => 'check_loading', 'uses' => 'App\Http\Controllers\RapportsController@check_loading']);
-    Route::get('/rapport/compare/{username}', ['as' => 'loadCompare', 'uses' => 'App\Http\Controllers\RapportsController@compare']);
+    Route::match(['get', 'post'], '/rapports/mensuel/{username}', ['as' => 'rapports_mensuel', 'uses' => 'App\Http\Controllers\RapportsController@mensuel']);
+    Route::match(['get', 'post'], '/rapports/annuel/{username}', ['as' => 'rapports_annuel', 'uses' => 'App\Http\Controllers\RapportsController@annuel']);
+    Route::get('/rapports/vendre/{username}', ['as' => 'rapports_vendre', 'uses' => 'App\Http\Controllers\RapportsController@vendre']);
+    Route::get('/rapports/tobuy/{username}', ['as' => 'rapports_tobuy', 'uses' => 'App\Http\Controllers\RapportsController@tobuy']);
+    Route::get('/rapports/home_compare_user/{username}', ['as' => 'rapports_compare', 'uses' => 'App\Http\Controllers\RapportsController@home_compare_user']);
+    Route::get('/compare/loadCompare/{username}', ['as' => 'compareLoadCompare', 'uses' => 'App\Http\Controllers\RapportsController@loadCompare']);
+    Route::get('/compare/check_loading/{username}', ['as' => 'compare_check_loading', 'uses' => 'App\Http\Controllers\RapportsController@check_loading']);
+    Route::get('/rapport/compare/{username}', ['as' => 'rapportCompareLoadCompare', 'uses' => 'App\Http\Controllers\RapportsController@compare']);
 
     // Routes for getting previous pages
     Route::get('ajaxPlayByMonth/{username}/{page}', ['as' => 'ajaxPlayByMonth', 'uses' => 'App\Http\Controllers\StatsController@ajaxPlayByMonth']);
