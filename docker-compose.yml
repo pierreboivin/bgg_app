@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: ./env/php/Dockerfile
-    container_name: app
+    container_name: bgg_app
     tty: true
     links:
       - db
@@ -17,7 +17,7 @@ services:
 
   webserver:
     image: nginx:alpine
-    container_name: webserver
+    container_name: bgg_webserver
     restart: unless-stopped
     tty: true
     ports:
@@ -31,7 +31,7 @@ services:
 
   db:
     image: mysql:5.7
-    container_name: db
+    container_name: bgg_db
     restart: unless-stopped
     tty: true
     ports:
@@ -48,6 +48,7 @@ services:
 
   npm:
     image: node:10
+    container_name: bgg_npm
     working_dir: /var/www/
     entrypoint: ["npm"]
     volumes:
