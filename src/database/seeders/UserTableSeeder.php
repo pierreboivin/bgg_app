@@ -19,7 +19,7 @@ class UserTableSeeder extends Seeder
             'password' => Hash::make('test'),
             'type' => 'admin',
             'bggusername' => 'pboivin',
-            'bggpassword' => 'ayw2n5ks1ucjd6dtul5vooqkkanj5js6'
+            'bggpassword' => 'j51btoq4m2ohjgd7lwmsoedcgkmyqjlr'
         ));
     }
 

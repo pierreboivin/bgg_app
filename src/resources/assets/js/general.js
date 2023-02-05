@@ -19,7 +19,7 @@ $(function () {
                         setTimeout(
                           function () {
                               checkIfBackgroundLoaded();
-                          }, 2000);
+                          }, 5000);
                     } else {
                         $('#background-loading').hide();
                     }

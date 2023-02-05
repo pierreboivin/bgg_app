@@ -402,7 +402,7 @@ class Stats
                     'name' => $gameProperties['name'],
                     'url' => Utility::urlToGame($gameId),
                     'totalPlays' => 0,
-                    'date' => '',
+                    'date' => 0,
                     'dateFormated' => '',
                     'since' => ''
                 ];

@@ -29,7 +29,7 @@ class Utility
 
     public static function compareDate($a, $b)
     {
-        if ($a['date'] && $b['date']) {
+        if (isset($a['date']) && is_int($a['date']) && isset($b['date']) && is_int($b['date'])) {
             return $a['date'] - $b['date'];
         }
         return 0;
