@@ -5,6 +5,7 @@ services:
       context: .
       dockerfile: ./env/php/Dockerfile
     container_name: bgg_app
+    restart: always
     tty: true
     links:
       - db
@@ -18,7 +19,7 @@ services:
   webserver:
     image: nginx:alpine
     container_name: bgg_webserver
-    restart: unless-stopped
+    restart: always
     tty: true
     ports:
       - "8181:80"
@@ -32,7 +33,7 @@ services:
   db:
     image: mysql:5.7
     container_name: bgg_db
-    restart: unless-stopped
+    restart: always
     tty: true
     ports:
       - "3306:3306"
@@ -49,6 +50,7 @@ services:
   npm:
     image: node:10
     container_name: bgg_npm
+    restart: always
     working_dir: /var/www/
     entrypoint: ["npm"]
     volumes:
